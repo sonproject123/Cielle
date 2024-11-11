@@ -1,0 +1,16 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UIElements;
+
+public class Camera : MonoBehaviour {
+    [SerializeField] Transform player;
+
+    private void Update() {
+        transform.position = Vector3.Lerp(
+            transform.position,
+            new Vector3(player.position.x, player.position.y + 3, -10),
+            10 * Time.fixedDeltaTime
+        );
+    }
+}
