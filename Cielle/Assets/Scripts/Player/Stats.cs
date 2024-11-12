@@ -16,7 +16,7 @@ public class Stats : Singleton<Stats> {
         hp = maxHp;
         maxShield = 0;
         shield = maxShield;
-        speed = 1;
+        speed = 10;
         attack = 1;
         defense = 0;
     }
