@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyStats : MonoBehaviour {
-    [SerializeField] protected GameObject bullet;
     [SerializeField] protected Transform player;
 
     [SerializeField] protected float hp;
@@ -47,9 +46,5 @@ public class EnemyStats : MonoBehaviour {
     public float Cooltime {
         get { return cooltime; }
         set { cooltime = value; }
-    }
-
-    protected void BulletSpawn() {
-        bullet = ResourcesManager.Instance.Instantiate("Bullet");
     }
 }

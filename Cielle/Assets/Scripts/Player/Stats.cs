@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Stats : Singleton<Stats> {
+public class Stats : Singleton<Stats>, IHitable {
     [SerializeField] private float hp;
     [SerializeField] private float maxHp;
     [SerializeField] private float shield;
@@ -34,5 +34,12 @@ public class Stats : Singleton<Stats> {
     public float Speed {
         get { return speed; }
         set { speed = value; }
+    }
+
+    public void Hit(float damage) {
+        hp -= Mathf.Max(1, defense - damage);
+        if (hp <= 0.0) {
+            Debug.Log("You Died");
+        }
     }
 }

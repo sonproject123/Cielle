@@ -2,12 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LesserFlyingGunDrone : EnemyStats {
+public class LesserFlyingGunDrone : EnemyStats, IInRange {
+    [SerializeField] Transform muzzleRotation;
     [SerializeField] Transform muzzle;
-
-    private void Awake() {
-        muzzle = transform.Find("Rotate Dummy");
-    }
+    [SerializeField] bool inRange = false;
 
     protected override void Start() {
         base.Start();
@@ -25,20 +23,33 @@ public class LesserFlyingGunDrone : EnemyStats {
         Muzzle();
     }
 
+    public void InRange(bool value) {
+        inRange = value;
+    }
+
     IEnumerator Attack() {
         while (true) {
             yield return CoroutineCache.WaitForSecond(cooltime);
-            Debug.Log("attack");
+
+            if(inRange)
+                BulletSpawn();
         }
     }
 
     private void Muzzle() {
-        float angle = MathCalculator.Instance.Angle(player.position, muzzle.position);
-        muzzle.rotation = Quaternion.Euler(0, 0, angle);
+        float angle = MathCalculator.Instance.Angle(player.position, muzzleRotation.position);
+        muzzleRotation.rotation = Quaternion.Euler(0, 0, angle);
     }
 
     private void BulletSpawn() {
-        base.BulletSpawn();
-        Debug.Log("spwan");
+        GameObject bullet = ResourcesManager.Instance.Instantiate("EnemyBullet");
+        bullet.transform.position = muzzle.transform.position;
+        bullet.transform.rotation = muzzle.transform.rotation;
+
+        BulletEnemy bulletEnemy = bullet.GetComponent<BulletEnemy>();
+        if(bulletEnemy != null) {
+            bulletEnemy.Atk = attack + Random.Range(1, 10);
+            bulletEnemy.Speed = 3;
+        }
     }
 }

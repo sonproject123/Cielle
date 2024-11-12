@@ -1,7 +1,7 @@
-public interface IInteractable {
-    public void Interact();
+public interface IInRange {
+    public void InRange(bool value);
 }
 
 public interface IHitable {
-    public void Activate();
+    public void Hit(float damage);
 }
