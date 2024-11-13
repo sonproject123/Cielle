@@ -1210,6 +1210,7 @@ MonoBehaviour:
   shield: 0
   maxShield: 0
   attack: 0
+  attackShield: 0
   defense: 0
   speed: 0
 --- !u!4 &1344541192

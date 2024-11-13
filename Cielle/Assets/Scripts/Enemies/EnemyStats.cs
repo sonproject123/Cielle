@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyStats : MonoBehaviour {
+public class EnemyStats : MonoBehaviour, IHitable {
     [SerializeField] protected Transform player;
 
     [SerializeField] protected float hp;
@@ -46,5 +46,14 @@ public class EnemyStats : MonoBehaviour {
     public float Cooltime {
         get { return cooltime; }
         set { cooltime = value; }
+    }
+
+    public void Hit(float damage) {
+        hp -= Mathf.Max(1, defense - damage);
+
+        if (hp <= 0.0)
+        {
+            Destroy(gameObject);
+        }
     }
 }

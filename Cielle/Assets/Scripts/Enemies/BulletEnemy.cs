@@ -5,6 +5,8 @@ using UnityEngine;
 public class BulletEnemy : MonoBehaviour {
     [SerializeField] protected float attack;
     [SerializeField] protected float speed;
+    [SerializeField] protected Vector3 target;
+    [SerializeField] Vector3 direction;
 
     public float Atk {
         get { return attack; }
@@ -16,8 +18,14 @@ public class BulletEnemy : MonoBehaviour {
         set { speed = value; } 
     }
 
+    public Vector3 Target {
+        get { return target; }
+        set { target = value; }
+    }
+
     private void FixedUpdate() {
-        transform.position += Vector3.forward * speed * Time.deltaTime;
+        Vector3 direction = (target - transform.position).normalized;
+        transform.position += direction * speed * Time.deltaTime;
     }
 
     private void OnTriggerEnter(Collider other) {
@@ -26,8 +34,7 @@ public class BulletEnemy : MonoBehaviour {
             hitable.Hit(attack);
             Destroy(gameObject);
         }
-
-        if (other.CompareTag("Wall")) {
+        else if (other.CompareTag("Wall")) {
             Destroy(gameObject);
         }
     }

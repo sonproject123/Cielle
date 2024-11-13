@@ -50,6 +50,7 @@ public class LesserFlyingGunDrone : EnemyStats, IInRange {
         if(bulletEnemy != null) {
             bulletEnemy.Atk = attack + Random.Range(1, 10);
             bulletEnemy.Speed = 3;
+            bulletEnemy.Target = player.position;
         }
     }
 }
