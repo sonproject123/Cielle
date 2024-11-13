@@ -13,6 +13,7 @@ public class Stats : Singleton<Stats> {
     [SerializeField] protected float attackShield;
                      
     [SerializeField] protected float defense;
+
     [SerializeField] protected float speed;
 
     private void Start() {

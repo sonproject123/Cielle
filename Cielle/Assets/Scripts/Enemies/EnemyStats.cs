@@ -1,9 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class EnemyStats : MonoBehaviour, IHitable {
+public class EnemyStats : MonoBehaviour, IHitable, IInRange {
     [SerializeField] protected Transform player;
+    [SerializeField] protected Transform muzzleRotation;
+    [SerializeField] protected Transform muzzle;
+    [SerializeField] protected bool inRange;
 
     [SerializeField] protected float hp;
     [SerializeField] protected float maxHp;
@@ -11,6 +15,7 @@ public class EnemyStats : MonoBehaviour, IHitable {
     [SerializeField] protected float defense;
     [SerializeField] protected float speed;
     [SerializeField] protected float cooltime;
+    [SerializeField] protected float bulletSpeed;
 
     protected virtual void Start() {
         maxHp = 100;
@@ -19,8 +24,10 @@ public class EnemyStats : MonoBehaviour, IHitable {
         attack = 1;
         defense = 0;
         cooltime = 1;
+        bulletSpeed = 5;
+        inRange = false;
 
-        player = GameObject.Find("Player").transform;
+        player = GameObject.Find("Player Center").transform;
     }
 
     public float Hp {
@@ -54,6 +61,23 @@ public class EnemyStats : MonoBehaviour, IHitable {
         if (hp <= 0.0)
         {
             Destroy(gameObject);
+        }
+    }
+
+    public void InRange(bool value) {
+        inRange = value;
+    }
+
+    protected void LinearBulletSpawn() {
+        GameObject bullet = ResourcesManager.Instance.Instantiate("EnemyBullet");
+        bullet.transform.position = muzzle.transform.position;
+        bullet.transform.rotation = muzzle.transform.rotation;
+
+        BulletEnemy bulletEnemy = bullet.GetComponent<BulletEnemy>();
+        if (bulletEnemy != null) {
+            bulletEnemy.Atk = attack + Random.Range(1, 10);
+            bulletEnemy.Speed = bulletSpeed;
+            bulletEnemy.Target = player.position;
         }
     }
 }

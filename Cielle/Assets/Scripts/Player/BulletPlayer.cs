@@ -6,10 +6,13 @@ public class BulletPlayer : MonoBehaviour {
     [SerializeField] protected float attack;
     [SerializeField] protected float speed;
     [SerializeField] protected Vector3 target;
+
+    [SerializeField] Transform bulletRotation;
     [SerializeField] Vector3 direction;
 
     private void Start() {
         Vector3 direction = (target - transform.position).normalized;
+        bulletRotation.rotation = Quaternion.LookRotation(direction);
     }
 
     public float Atk {
@@ -28,7 +31,7 @@ public class BulletPlayer : MonoBehaviour {
     }
 
     private void FixedUpdate() {
-        transform.position += direction * speed * Time.deltaTime;
+        transform.position += bulletRotation.forward * speed * Time.deltaTime;
     }
 
     private void OnTriggerEnter(Collider other) {
