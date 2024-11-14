@@ -1205,6 +1205,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84818badbe53dbe4b8a3519ca6f7e7d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mousePosition: {x: 0, y: 0, z: 0}
   hp: 0
   maxHp: 0
   shield: 0
