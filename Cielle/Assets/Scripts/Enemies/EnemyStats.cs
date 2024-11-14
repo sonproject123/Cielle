@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class EnemyStats : MonoBehaviour, IHitable, IInRange {
@@ -69,7 +68,7 @@ public class EnemyStats : MonoBehaviour, IHitable, IInRange {
     }
 
     protected void LinearBulletSpawn() {
-        GameObject bullet = ResourcesManager.Instance.Instantiate("EnemyBullet");
+        GameObject bullet = ObjectManager.Instance.UseObject(ObjectList.ENEMYBULLET);
         bullet.transform.position = muzzle.transform.position;
         bullet.transform.rotation = muzzle.transform.rotation;
 

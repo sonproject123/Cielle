@@ -38,10 +38,10 @@ public class BulletPlayer : MonoBehaviour {
         if (other.CompareTag("Enemy")) {
             IHitable hitable = other.GetComponent<IHitable>();
             hitable.Hit(attack);
-            Destroy(gameObject);
+            ObjectManager.Instance.ReturnObject(gameObject, ObjectList.PLAYERBULLET);
         }
         else if (other.CompareTag("Wall")) {
-            Destroy(gameObject);
+            ObjectManager.Instance.ReturnObject(gameObject, ObjectList.PLAYERBULLET);
         }
     }
 }

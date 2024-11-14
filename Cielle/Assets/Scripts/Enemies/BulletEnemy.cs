@@ -38,10 +38,10 @@ public class BulletEnemy : MonoBehaviour {
         if (other.CompareTag("Player")) {
             IHitable hitable = other.GetComponent<IHitable>();
             hitable.Hit(attack);
-            Destroy(gameObject);
+            ObjectManager.Instance.ReturnObject(gameObject, ObjectList.ENEMYBULLET);
         }
         else if (other.CompareTag("Wall")) {
-            Destroy(gameObject);
+            ObjectManager.Instance.ReturnObject(gameObject, ObjectList.ENEMYBULLET);
         }
     }
 }

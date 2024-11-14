@@ -29,7 +29,7 @@ public class Move : MonoBehaviour {
     }
 
     private void OnCollisionEnter(Collision collision) {
-        if (collision.gameObject.CompareTag("Wall")) {
+        if (collision.gameObject.CompareTag("Ground")) {
             isOnGround = true;
         }
     }
@@ -81,7 +81,7 @@ public class Move : MonoBehaviour {
     }
 
     private void Shoot() {
-        GameObject bullet = ResourcesManager.Instance.Instantiate("PlayerBullet");
+        GameObject bullet = ObjectManager.Instance.UseObject(ObjectList.PLAYERBULLET);
         bullet.transform.position = new Vector3(transform.position.x, transform.position.y + 1, 0);
         float angle = MathCalculator.Instance.Angle(transform.position, Stats.Instance.MouseLocation);
         bullet.transform.rotation = Quaternion.Euler(0, 0, angle);

@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class MouseManager : Singleton<MouseManager> {
     [SerializeField] Texture2D cursorNormal;
     [SerializeField] Texture2D cursorCross;
+    [SerializeField] Vector2 center;
 
     private void OnEnable() {
         SceneManager.sceneLoaded += OnSceneLoaded;
@@ -14,7 +15,6 @@ public class MouseManager : Singleton<MouseManager> {
     private void Start() {
         cursorNormal = ResourcesManager.Instance.Load<Texture2D>("CursorNormal");
         cursorCross = ResourcesManager.Instance.Load<Texture2D>("CursorCross");
-        Cursor.SetCursor(cursorNormal, Vector2.zero, CursorMode.ForceSoftware);
     }
 
     public void State(int state) {
@@ -23,7 +23,8 @@ public class MouseManager : Singleton<MouseManager> {
                 Cursor.SetCursor(cursorNormal, Vector2.zero, CursorMode.ForceSoftware);
                 break;
             case 1:
-                Cursor.SetCursor(cursorCross, Vector2.zero, CursorMode.ForceSoftware);
+                center = new Vector2(cursorCross.width / 2, cursorCross.height / 2);
+                Cursor.SetCursor(cursorCross, center, CursorMode.ForceSoftware);
                 break;
         }
     }
