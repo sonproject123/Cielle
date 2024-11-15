@@ -2,6 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RuinedCity : MonoBehaviour {
+public class Map_Sewer : MonoBehaviour { 
 
 }

@@ -9,6 +9,7 @@ public class BulletPlayer : MonoBehaviour {
 
     [SerializeField] Transform bulletRotation;
     [SerializeField] Vector3 direction;
+    [SerializeField] Guns guns;
 
     private void Start() {
         Vector3 direction = (target - transform.position).normalized;
@@ -30,6 +31,11 @@ public class BulletPlayer : MonoBehaviour {
         set { target = value; }
     }
 
+    public Guns Guns {
+        get { return guns; }
+        set { guns = value; }
+    }
+    
     private void FixedUpdate() {
         transform.position += bulletRotation.forward * speed * Time.deltaTime;
     }

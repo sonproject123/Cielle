@@ -9,6 +9,9 @@ public class Move : MonoBehaviour {
     [SerializeField] Rigidbody rigidBody;
     [SerializeField] LayerMask ground;
 
+    [SerializeField] Guns gunCategory;
+    [SerializeField] GameObject gun;
+
     [SerializeField] bool isMovable;
 
     [SerializeField] bool isOnGround;
@@ -26,6 +29,8 @@ public class Move : MonoBehaviour {
         isOnGround = true;
         isOnFlying = false;
         isDashable = true;
+
+        gunCategory = Guns.PISTOL;
     }
 
     private void OnCollisionEnter(Collision collision) {
@@ -76,21 +81,11 @@ public class Move : MonoBehaviour {
         }
 
         if (Input.GetMouseButtonDown(0)) {
-            Shoot();
+            GunFire.Instance.Shoot(gunCategory, transform);
         }
-    }
-
-    private void Shoot() {
-        GameObject bullet = ObjectManager.Instance.UseObject(ObjectList.PLAYERBULLET);
-        bullet.transform.position = new Vector3(transform.position.x, transform.position.y + 1, 0);
-        float angle = MathCalculator.Instance.Angle(transform.position, Stats.Instance.MouseLocation);
-        bullet.transform.rotation = Quaternion.Euler(0, 0, angle);
-
-        BulletPlayer bulletPlayer = bullet.GetComponent<BulletPlayer>();
-        if (bulletPlayer != null) {
-            bulletPlayer.Atk = Stats.Instance.Atk;
-            bulletPlayer.Speed = 20;
-            bulletPlayer.Target = Stats.Instance.MouseLocation;
+        if (Input.GetMouseButton(0)) {
+            if(gunCategory == Guns.RIFLE)
+                GunFire.Instance.Shoot(gunCategory, transform);
         }
     }
 

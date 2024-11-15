@@ -556,6 +556,50 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1296985837}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &881678224
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 881678226}
+  - component: {fileID: 881678225}
+  m_Layer: 0
+  m_Name: Gun Fire Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &881678225
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 881678224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7077960f37211b47b068db62173c577, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &881678226
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 881678224}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &909526314
 GameObject:
   m_ObjectHideFlags: 0
@@ -897,6 +941,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cursorNormal: {fileID: 0}
   cursorCross: {fileID: 0}
+  center: {x: 0, y: 0}
 --- !u!4 &1061255455
 Transform:
   m_ObjectHideFlags: 0
@@ -1915,6 +1960,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bd3ab2012cceb246a151f56e5a8839c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bulletCreateCount: 0
 --- !u!4 &1985367877
 Transform:
   m_ObjectHideFlags: 0
@@ -2303,6 +2349,7 @@ SceneRoots:
   - {fileID: 1842681903}
   - {fileID: 928783192}
   - {fileID: 1985367877}
+  - {fileID: 881678226}
   - {fileID: 2093322679}
   - {fileID: 1344541192}
   - {fileID: 2099325048}
