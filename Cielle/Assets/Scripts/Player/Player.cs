@@ -14,12 +14,11 @@ public class Player : MonoBehaviour, IHitable {
     }
 
     private void Update() {
-        Stats.Instance.MouseLocation = MathCalculator.Instance.MousePosition();
         LookAtCursor();
     }
 
     private void LookAtCursor() {
-        if(Stats.Instance.MouseLocation.x > transform.position.x)
+        if(GeneralStats.Instance.MouseLocation.x > transform.position.x)
             transform.rotation = Quaternion.Euler(0, 90, 0);
         else
             transform.rotation = Quaternion.Euler(0, 270, 0);

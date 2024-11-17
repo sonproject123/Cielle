@@ -15,11 +15,4 @@ public class MathCalculator : Singleton<MathCalculator> {
             angle += 360;
         return angle;
     }
-
-    public Vector3 MousePosition() {
-        return Camera.main.ScreenToWorldPoint(new Vector3(
-            Input.mousePosition.x,
-            Input.mousePosition.y,
-            -Camera.main.transform.position.z));
-    }
 }

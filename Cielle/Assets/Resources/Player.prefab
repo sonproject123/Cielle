@@ -613,6 +613,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 0}
   rigidBody: {fileID: 0}
+  playerCenter: {fileID: 9027441374142676770}
   ground:
     serializedVersion: 2
     m_Bits: 0

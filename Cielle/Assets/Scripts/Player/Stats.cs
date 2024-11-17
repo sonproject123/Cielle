@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Stats : Singleton<Stats> {
-    [SerializeField] Vector3 mousePosition;
-
     [SerializeField] protected float hp;
     [SerializeField] protected float maxHp;
 
@@ -18,6 +16,8 @@ public class Stats : Singleton<Stats> {
 
     [SerializeField] protected float speed;
 
+    [SerializeField] protected float mass;
+
     [SerializeField] protected float invincible;
 
     [SerializeField] protected float jumpHeight;
@@ -25,6 +25,10 @@ public class Stats : Singleton<Stats> {
     [SerializeField] protected float dashSpeed;
     [SerializeField] protected float dashTime;
     [SerializeField] protected float dashCooltime;
+
+    [SerializeField] protected float flyTime;
+    [SerializeField] protected float flySpeed;
+    [SerializeField] protected float flyDashSpeed;
 
     private void Start() {
         maxHp = 100;
@@ -40,18 +44,19 @@ public class Stats : Singleton<Stats> {
 
         speed = 15;
 
+        mass = 5;
+
         invincible = 1;
 
         jumpHeight = 50;
 
         dashSpeed = 30;
         dashTime = 0.3f;
-        dashCooltime = 1;
-    }
+        dashCooltime = 0.5f;
 
-    public Vector3 MouseLocation {
-        get { return mousePosition; }
-        set { mousePosition = value; }
+        flyTime = 0.3f;
+        flySpeed = 60;
+        flyDashSpeed = 60;
     }
 
     public float Hp {
@@ -84,6 +89,16 @@ public class Stats : Singleton<Stats> {
         set { speed = value; }
     }
 
+    public float Mass {
+        get { return mass; }
+        set {  mass = value; }
+    }
+
+    public float Invincible {
+        get { return invincible; }
+        set { invincible = value; }
+    }
+
     public float JumpHeight {
         get { return jumpHeight; }
         set { jumpHeight = value; }
@@ -102,5 +117,20 @@ public class Stats : Singleton<Stats> {
     public float DashCooltime {
         get { return dashCooltime; }
         set { dashCooltime = value; }
+    }
+
+    public float FlyTime {
+        get { return flyTime; }
+        set { flyTime = value; }
+    }
+
+    public float FlySpeed {
+        get { return flySpeed; }
+        set { flySpeed = value; }
+    }
+
+    public float FlyDashSpeed {
+        get { return flyDashSpeed; }
+        set { flyDashSpeed = value; }
     }
 }

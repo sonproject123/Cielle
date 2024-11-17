@@ -11,7 +11,7 @@ public class BulletEnemy : MonoBehaviour {
     [SerializeField] Vector3 direction;
 
     private void Start() {
-        Vector3 direction = (target - transform.position).normalized;
+        Vector3 direction = MathCalculator.Instance.Normalizer(target, transform.position);
         bulletRotation.rotation = Quaternion.LookRotation(direction);
     }
 

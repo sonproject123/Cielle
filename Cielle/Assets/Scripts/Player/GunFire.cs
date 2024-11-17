@@ -4,9 +4,14 @@ using UnityEngine;
 
 public enum Guns {
     PISTOL,
+    AKIMBO,
     RIFLE,
     SHOTGUN,
     SNIPER,
+    BOMBER,
+    ROCKET,
+    GATLING,
+    FLAMETHROWER,
     LASER,
     SATELLITE,
 }
@@ -14,6 +19,7 @@ public enum Guns {
 public class GunFire : Singleton<GunFire> {
     Transform muzzle;
     Guns guns;
+    bool isShootable = true;
 
     public void Shoot(Guns Pguns, Transform Pmuzzle) {
         muzzle = Pmuzzle;
@@ -26,7 +32,7 @@ public class GunFire : Singleton<GunFire> {
             case Guns.SHOTGUN:
                 break;
             case Guns.RIFLE:
-                PistolFire();
+                RifleFire();
                 break;
         }
     }
@@ -34,19 +40,35 @@ public class GunFire : Singleton<GunFire> {
     private void CreateNormalBullets() {
         GameObject bullet = ObjectManager.Instance.UseObject(ObjectList.PLAYERBULLET);
         bullet.transform.position = new Vector3(muzzle.position.x, muzzle.position.y + 1, 0);
-        float angle = MathCalculator.Instance.Angle(bullet.transform.position, Stats.Instance.MouseLocation);
+        float angle = MathCalculator.Instance.Angle(bullet.transform.position, GeneralStats.Instance.MouseLocation);
         bullet.transform.rotation = Quaternion.Euler(0, 0, angle);
 
         BulletPlayer bulletPlayer = bullet.GetComponent<BulletPlayer>();
         if (bulletPlayer != null) {
             bulletPlayer.Atk = Stats.Instance.Atk;
             bulletPlayer.Speed = 20;
-            bulletPlayer.Target = Stats.Instance.MouseLocation;
+            bulletPlayer.Target = GeneralStats.Instance.MouseLocation;
             bulletPlayer.Guns = guns;
         }
     }
 
     private void PistolFire() {
-        CreateNormalBullets();
+        if (isShootable) {
+            CreateNormalBullets();
+        }
+    }
+
+    private void RifleFire() {
+        Debug.Log("hi");
+        if (isShootable) {
+            CreateNormalBullets();
+            StartCoroutine(GunCooltime());
+        }
+    }
+
+    IEnumerator GunCooltime() {
+        isShootable = false;
+        yield return CoroutineCache.WaitForSecond(0.2f);
+        isShootable = true;
     }
 }
