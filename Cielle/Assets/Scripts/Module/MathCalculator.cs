@@ -15,4 +15,12 @@ public class MathCalculator : Singleton<MathCalculator> {
             angle += 360;
         return angle;
     }
+
+    public Vector3 RandomTarget(float rangeX, float rangeY) {
+        return new Vector3(
+            Random.Range(-rangeX, rangeX),
+            Random.Range(-rangeY, rangeY),
+            0
+        );
+    }
 }

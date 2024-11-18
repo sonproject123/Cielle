@@ -21,9 +21,9 @@ public class GunFire : Singleton<GunFire> {
     Guns guns;
     bool isShootable = true;
 
-    public void Shoot(Guns Pguns, Transform Pmuzzle) {
+    public void Shoot(Transform Pmuzzle) {
         muzzle = Pmuzzle;
-        guns = Pguns;
+        guns = Stats.Instance.GunCategory;
 
         switch (guns) {
             case Guns.PISTOL:
@@ -47,8 +47,10 @@ public class GunFire : Singleton<GunFire> {
         if (bulletPlayer != null) {
             bulletPlayer.Atk = Stats.Instance.Atk;
             bulletPlayer.Speed = 20;
-            bulletPlayer.Target = GeneralStats.Instance.MouseLocation;
             bulletPlayer.Guns = guns;
+
+            Vector3 randomRange = MathCalculator.Instance.RandomTarget(0.5f, 0.5f);
+            bulletPlayer.Target = GeneralStats.Instance.MouseLocation + randomRange;
         }
     }
 
@@ -59,7 +61,6 @@ public class GunFire : Singleton<GunFire> {
     }
 
     private void RifleFire() {
-        Debug.Log("hi");
         if (isShootable) {
             CreateNormalBullets();
             StartCoroutine(GunCooltime());
@@ -68,7 +69,7 @@ public class GunFire : Singleton<GunFire> {
 
     IEnumerator GunCooltime() {
         isShootable = false;
-        yield return CoroutineCache.WaitForSecond(0.2f);
+        yield return CoroutineCache.WaitForSecond(0.15f);
         isShootable = true;
     }
 }

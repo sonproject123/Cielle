@@ -12,15 +12,18 @@ public class Move : MonoBehaviour {
     [SerializeField] Transform playerCenter;
     [SerializeField] LayerMask ground;
 
-    [SerializeField] Guns gunCategory;
     [SerializeField] GameObject gun;
 
     [SerializeField] bool isMovable;
-
     [SerializeField] bool isOnGround;
     [SerializeField] bool isOnFlying;
+    [SerializeField] bool isDashable;
 
-    [SerializeField] protected bool isDashable;
+    [SerializeField] float horizontalInput;
+    [SerializeField] float verticalInput;
+    [SerializeField] float horizontalDash;
+    [SerializeField] float verticalDash;
+    [SerializeField] bool isDashBack;
 
     void Awake() {
         animator = GetComponent<Animator>();
@@ -35,7 +38,11 @@ public class Move : MonoBehaviour {
 
         rigidBody.mass = Stats.Instance.Mass;
 
-        gunCategory = Guns.PISTOL;
+        horizontalInput = 0;
+        verticalInput = 0;
+        horizontalDash = 0;
+        verticalDash = 0;
+        isDashBack = false;
     }
 
     private void OnCollisionEnter(Collision collision) {
@@ -52,28 +59,40 @@ public class Move : MonoBehaviour {
         InputManager.Instance.action += OnkeyUpdate;
     }
 
+    private void Update() {
+        if (!Stats.Instance.IsMove) {
+            if (isOnFlying)
+                return;
+            else
+                animator.SetBool("Run", false);
+        }
+    }
+
     private void OnkeyUpdate() {
         if (GeneralStats.Instance.Pause == true)
             return;
+        Stats.Instance.IsMove = true;
 
         // Move
-        if (Input.GetKey(KeyCode.A) && isMovable) {
-            if (isOnFlying) 
-                FlyMove(Vector3.left);
-            else 
-                GroundMove(Vector3.left);
+        horizontalInput = 0;
+        verticalInput = 0;
+
+        if (isMovable && (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))) {
+            if (Input.GetKey(KeyCode.A))
+                verticalInput = -1;
+            else if (Input.GetKey(KeyCode.D))
+                verticalInput = 1;
+
+            if (Input.GetKey(KeyCode.W))
+                horizontalInput = 1;
+            else if (Input.GetKey(KeyCode.S))
+                horizontalInput = -1;
+
+            if (isOnFlying)
+                FlyMove();
+            else if (verticalInput != 0)
+                GroundMove();
         }
-        if (Input.GetKey(KeyCode.D) && isMovable) {
-            if (isOnFlying) 
-                FlyMove(Vector3.right);
-            else 
-                GroundMove(Vector3.right);
-        }
-        if (Input.GetKey(KeyCode.W) && isMovable && isOnFlying) 
-            FlyMove(Vector3.up);
-        if (Input.GetKey(KeyCode.S) && isMovable && isOnFlying) 
-            FlyMove(Vector3.down);
-        
 
         // Jump & Fly
         if (Input.GetKeyDown(KeyCode.Space)) {
@@ -88,43 +107,65 @@ public class Move : MonoBehaviour {
         }
 
         // Dash
+        horizontalDash = 0;
+        verticalDash = 0;
+
         if (Input.GetKeyDown(KeyCode.LeftShift) && isDashable) {
-            if(Input.GetKey(KeyCode.A) && transform.position.x - GeneralStats.Instance.MouseLocation.x > 0)
-                StartCoroutine(Dash(false));
-            else if (Input.GetKey(KeyCode.D) && transform.position.x - GeneralStats.Instance.MouseLocation.x < 0)
-                StartCoroutine(Dash(false));
+            if (Input.GetKey(KeyCode.A)) {
+                verticalDash = -1;
+                if (Stats.Instance.IsLeft)
+                    isDashBack = false;
+                else
+                    isDashBack = true;
+            }
+            else if (Input.GetKey(KeyCode.D)) {
+                verticalDash = 1;
+                if (!Stats.Instance.IsLeft)
+                    isDashBack = false;
+                else
+                    isDashBack = true;
+            }
+            else {
+                if (Stats.Instance.IsLeft)
+                    verticalDash = -1;
+                else
+                    verticalDash = 1;
+                isDashBack = false;
+            }
 
-            else if(Input.GetKey(KeyCode.A) && transform.position.x - GeneralStats.Instance.MouseLocation.x < 0)
-                StartCoroutine(Dash(true));
-            else if (Input.GetKey(KeyCode.D) && transform.position.x - GeneralStats.Instance.MouseLocation.x > 0)
-                StartCoroutine(Dash(true));
+            if (Input.GetKey(KeyCode.W) && isOnFlying)
+                horizontalDash = 1;
+            else if (Input.GetKey(KeyCode.S) && isOnFlying)
+                horizontalDash = -1;
 
-            else
-                StartCoroutine(Dash(false));
+            StartCoroutine(Dash());
         }
 
         // Shoot
         if (Input.GetMouseButtonDown(0)) {
-            GunFire.Instance.Shoot(gunCategory, transform);
+            GunFire.Instance.Shoot(transform);
         }
         if (Input.GetMouseButton(0)) {
-            if(gunCategory == Guns.RIFLE)
-                GunFire.Instance.Shoot(gunCategory, transform);
+            if(Stats.Instance.GunCategory == Guns.RIFLE)
+                GunFire.Instance.Shoot(transform);
         }
     }
 
-    private void GroundMove(Vector3 dir) {
-        animator.SetBool("Run", true);
-        transform.position += dir * Stats.Instance.Speed * Time.deltaTime;
-
+    private void RigidMove(Vector3 dir, float speed) {
+        if(!Physics.Raycast(rigidBody.position, dir, 0.5f, LayerMask.GetMask("Wall")))
+            rigidBody.MovePosition(rigidBody.position + dir * speed * Time.deltaTime);
     }
 
-    private void FlyMove(Vector3 dir) {
-        //Ray ray = new Ray(rigidBody.position, dir);
-        //RaycastHit hit;
-        //
-        //if(!Physics.Raycast(ray, out hit, dir.magnitude))
-            rigidBody.MovePosition(transform.position + dir * Stats.Instance.FlySpeed * Time.deltaTime);
+    private void GroundMove() {
+        animator.SetBool("Run", true);
+
+        Vector3 dir = new Vector3(verticalInput, 0, 0);
+        RigidMove(dir, Stats.Instance.Speed);
+    }
+
+    private void FlyMove() {
+        Vector3 dir = new Vector3(verticalInput, horizontalInput, 0).normalized;
+        RigidMove(dir, Stats.Instance.FlySpeed);
     }
 
     private void Jump() {
@@ -145,8 +186,8 @@ public class Move : MonoBehaviour {
         while (flytime < Stats.Instance.FlyTime) {
             Vector3 direction = (GeneralStats.Instance.MouseLocation - playerCenter.position).normalized;
             playerCenter.rotation = Quaternion.LookRotation(direction);
-            transform.position += playerCenter.forward * flyDashSpeed * Time.fixedDeltaTime;
-            flyDashSpeed += Mathf.Max(flySpeed - speed, 0) * Time.fixedDeltaTime * 5;
+            RigidMove(playerCenter.forward, flyDashSpeed);
+            flyDashSpeed += Mathf.Max(flySpeed - speed, 0) * Time.fixedDeltaTime * 10;
 
             flytime += Time.fixedDeltaTime;
             yield return wffu;
@@ -177,13 +218,13 @@ public class Move : MonoBehaviour {
         rigidBody.mass = mass;
     }
 
-    IEnumerator Dash(bool back) {
+    IEnumerator Dash() {
         isDashable = false;
         isMovable = false;
 
         float dashTime = 0;
-        Vector3 dashDirection = transform.forward;
-        if (back)
+        Vector3 dashDirection = new Vector3(verticalDash, horizontalDash, 0).normalized;
+        if (isDashBack)
             dashDirection *= -1;
 
         float dashSpeed;
@@ -192,10 +233,12 @@ public class Move : MonoBehaviour {
         else
            dashSpeed = Stats.Instance.DashSpeed;
 
+        WaitForFixedUpdate wffu = GeneralStats.Instance.WFFU;
+
         while (dashTime < Stats.Instance.DashTime) {
-            transform.position += dashDirection * Time.deltaTime * dashSpeed;
-            dashTime += Time.deltaTime;
-            yield return null;
+            RigidMove(dashDirection, dashSpeed);
+            dashTime += Time.fixedDeltaTime;
+            yield return wffu;
         }
         isMovable = true;
 

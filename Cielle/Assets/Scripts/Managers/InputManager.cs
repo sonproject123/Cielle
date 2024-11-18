@@ -7,8 +7,10 @@ public class InputManager : Singleton<InputManager> {
     public Action action;
 
     void Update() {
-        if (Input.anyKey == false)
+        if (Input.anyKey == false) {
+            Stats.Instance.IsMove = false;
             return;
+        }
 
         if (action != null)
             action.Invoke();

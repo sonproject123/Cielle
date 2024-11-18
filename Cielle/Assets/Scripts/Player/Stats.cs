@@ -30,6 +30,11 @@ public class Stats : Singleton<Stats> {
     [SerializeField] protected float flySpeed;
     [SerializeField] protected float flyDashSpeed;
 
+    [SerializeField] protected bool isMove;
+    [SerializeField] protected bool isLeft;
+
+    [SerializeField] Guns gunCategory;
+
     private void Start() {
         maxHp = 100;
         hp = maxHp;
@@ -48,15 +53,20 @@ public class Stats : Singleton<Stats> {
 
         invincible = 1;
 
-        jumpHeight = 50;
+        jumpHeight = 60;
 
         dashSpeed = 30;
         dashTime = 0.3f;
         dashCooltime = 0.5f;
 
-        flyTime = 0.3f;
-        flySpeed = 60;
-        flyDashSpeed = 60;
+        flyTime = 0.5f;
+        flySpeed = 20;
+        flyDashSpeed = 40;
+
+        isMove = false;
+        isLeft = false;
+
+        gunCategory = Guns.PISTOL;
     }
 
     public float Hp {
@@ -132,5 +142,20 @@ public class Stats : Singleton<Stats> {
     public float FlyDashSpeed {
         get { return flyDashSpeed; }
         set { flyDashSpeed = value; }
+    }
+
+    public bool IsMove {
+        get { return isMove; }
+        set { isMove = value; }
+    }
+
+    public bool IsLeft {
+        get { return isLeft; }
+        set { isLeft = value; }
+    }
+
+    public Guns GunCategory {
+        get { return gunCategory; }
+        set { gunCategory = value; }
     }
 }
