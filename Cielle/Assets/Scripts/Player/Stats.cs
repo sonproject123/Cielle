@@ -34,6 +34,7 @@ public class Stats : Singleton<Stats> {
     [SerializeField] protected bool isLeft;
 
     [SerializeField] Guns gunCategory;
+    [SerializeField] GunFireType gunFireType;
 
     private void Start() {
         maxHp = 100;
@@ -67,6 +68,7 @@ public class Stats : Singleton<Stats> {
         isLeft = false;
 
         gunCategory = Guns.PISTOL;
+        gunFireType = GunFireType.SINGLE;
     }
 
     public float Hp {
@@ -157,5 +159,10 @@ public class Stats : Singleton<Stats> {
     public Guns GunCategory {
         get { return gunCategory; }
         set { gunCategory = value; }
+    }
+
+    public GunFireType GunFireType {
+        get { return gunFireType; }
+        set { gunFireType = value; }
     }
 }

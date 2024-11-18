@@ -23,7 +23,6 @@ public class Move : MonoBehaviour {
     [SerializeField] float verticalInput;
     [SerializeField] float horizontalDash;
     [SerializeField] float verticalDash;
-    [SerializeField] bool isDashBack;
 
     void Awake() {
         animator = GetComponent<Animator>();
@@ -42,7 +41,6 @@ public class Move : MonoBehaviour {
         verticalInput = 0;
         horizontalDash = 0;
         verticalDash = 0;
-        isDashBack = false;
     }
 
     private void OnCollisionEnter(Collision collision) {
@@ -96,12 +94,10 @@ public class Move : MonoBehaviour {
 
         // Jump & Fly
         if (Input.GetKeyDown(KeyCode.Space)) {
-            if (Input.GetKey(KeyCode.W) && !isOnFlying) {
+            if (Input.GetKey(KeyCode.W) && !isOnFlying) 
                 StartCoroutine(FlyStart());
-            }
-            else if (isOnFlying) {
+            else if (isOnFlying) 
                 StartCoroutine(FlyEnd());
-            }
             else if (isOnGround && !isOnFlying)
                 Jump();
         }
@@ -111,26 +107,15 @@ public class Move : MonoBehaviour {
         verticalDash = 0;
 
         if (Input.GetKeyDown(KeyCode.LeftShift) && isDashable) {
-            if (Input.GetKey(KeyCode.A)) {
+            if (Input.GetKey(KeyCode.A))
                 verticalDash = -1;
-                if (Stats.Instance.IsLeft)
-                    isDashBack = false;
-                else
-                    isDashBack = true;
-            }
-            else if (Input.GetKey(KeyCode.D)) {
+            else if (Input.GetKey(KeyCode.D)) 
                 verticalDash = 1;
-                if (!Stats.Instance.IsLeft)
-                    isDashBack = false;
-                else
-                    isDashBack = true;
-            }
             else {
                 if (Stats.Instance.IsLeft)
                     verticalDash = -1;
                 else
                     verticalDash = 1;
-                isDashBack = false;
             }
 
             if (Input.GetKey(KeyCode.W) && isOnFlying)
@@ -142,12 +127,14 @@ public class Move : MonoBehaviour {
         }
 
         // Shoot
-        if (Input.GetMouseButtonDown(0)) {
+        if (Input.GetMouseButtonDown(0) && Stats.Instance.GunFireType == GunFireType.SINGLE) {
+            animator.SetTrigger("GunFire");
             GunFire.Instance.Shoot(transform);
+
         }
-        if (Input.GetMouseButton(0)) {
-            if(Stats.Instance.GunCategory == Guns.RIFLE)
-                GunFire.Instance.Shoot(transform);
+        if (Input.GetMouseButton(0) && Stats.Instance.GunFireType == GunFireType.REPEAT) {
+            animator.SetTrigger("GunFire");
+            GunFire.Instance.Shoot(transform);
         }
     }
 
@@ -206,7 +193,8 @@ public class Move : MonoBehaviour {
 
         WaitForFixedUpdate wffu = GeneralStats.Instance.WFFU;
         float mass = Stats.Instance.Mass;
-        rigidBody.mass = mass * 10;
+        rigidBody.AddForce(Vector3.down * 300, ForceMode.Impulse);
+        rigidBody.mass = mass * 100;
 
         while (!isOnGround) {
             rigidBody.mass += mass * 10 * Time.fixedDeltaTime;
@@ -224,8 +212,6 @@ public class Move : MonoBehaviour {
 
         float dashTime = 0;
         Vector3 dashDirection = new Vector3(verticalDash, horizontalDash, 0).normalized;
-        if (isDashBack)
-            dashDirection *= -1;
 
         float dashSpeed;
         if (isOnFlying)

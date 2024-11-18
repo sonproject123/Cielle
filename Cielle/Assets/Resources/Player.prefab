@@ -547,9 +547,9 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.2
-  m_Height: 1.8
+  m_Height: 1.4
   m_Direction: 1
-  m_Center: {x: 0, y: 0.9, z: 0}
+  m_Center: {x: 0, y: 0.7, z: 0}
 --- !u!54 &4656513400886410549
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -617,12 +617,16 @@ MonoBehaviour:
   ground:
     serializedVersion: 2
     m_Bits: 0
-  gunCategory: 0
   gun: {fileID: 0}
   isMovable: 0
   isOnGround: 0
   isOnFlying: 0
   isDashable: 0
+  horizontalInput: 0
+  verticalInput: 0
+  horizontalDash: 0
+  verticalDash: 0
+  isDashBack: 0
 --- !u!114 &7115406224397675481
 MonoBehaviour:
   m_ObjectHideFlags: 0

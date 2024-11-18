@@ -5,17 +5,21 @@ using UnityEngine;
 
 public enum ObjectList {
     PLAYERBULLET,
+    PLAYERSHOTGUNBULLET,
     ENEMYBULLET
 }
 
 public class ObjectManager : Singleton<ObjectManager>{
     [SerializeField] Queue<GameObject> playerBullets = new Queue<GameObject>();
+    [SerializeField] Queue<GameObject> playerShotgunBullets = new Queue<GameObject>();
     [SerializeField] Queue<GameObject> enemyBullets = new Queue<GameObject>();
 
     [SerializeField] int bulletCreateCount;
+    [SerializeField] int shotgunBulletCreateCount;
 
     private void Start() {
-        bulletCreateCount = 500;
+        bulletCreateCount = 200;
+        shotgunBulletCreateCount = 50;
         CreateObjects();
     }
 
@@ -24,6 +28,8 @@ public class ObjectManager : Singleton<ObjectManager>{
             CreateObject(playerBullets, "PlayerBullet");
             CreateObject(enemyBullets, "EnemyBullet");
         }
+        for (int i = 0; i < shotgunBulletCreateCount; i++)
+            CreateObject(playerShotgunBullets, "PlayerShotgunBullet");
     }
 
     private void CreateObject(Queue<GameObject> queue, string name) {
@@ -49,6 +55,12 @@ public class ObjectManager : Singleton<ObjectManager>{
                 else
                     obj = CreateRObject(playerBullets, "PlayerBullet");
                 break;
+            case ObjectList.PLAYERSHOTGUNBULLET:
+                if (playerShotgunBullets.Count > 0)
+                    obj = playerShotgunBullets.Dequeue();
+                else
+                    obj = CreateRObject(playerShotgunBullets, "PlayerShotgunBullet");
+                break;
             case ObjectList.ENEMYBULLET:
                 if (enemyBullets.Count > 0)
                     obj = enemyBullets.Dequeue();
@@ -69,6 +81,9 @@ public class ObjectManager : Singleton<ObjectManager>{
         switch (oList) { 
             case ObjectList.PLAYERBULLET:
                 playerBullets.Enqueue(obj);
+                break;
+            case ObjectList.PLAYERSHOTGUNBULLET:
+                playerShotgunBullets.Enqueue(obj);
                 break;
             case ObjectList.ENEMYBULLET:
                 enemyBullets.Enqueue(obj);

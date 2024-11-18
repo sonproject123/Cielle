@@ -7,9 +7,9 @@ public class BulletPlayer : MonoBehaviour {
     [SerializeField] protected float speed;
     [SerializeField] protected Vector3 target;
 
-    [SerializeField] Transform bulletRotation;
-    [SerializeField] Vector3 direction;
-    [SerializeField] Guns guns;
+    [SerializeField] protected Transform bulletRotation;
+    [SerializeField] protected Vector3 direction;
+    [SerializeField] protected Guns guns;
 
     private void Start() {
         Vector3 direction = (target - transform.position).normalized;
@@ -34,20 +34,5 @@ public class BulletPlayer : MonoBehaviour {
     public Guns Guns {
         get { return guns; }
         set { guns = value; }
-    }
-    
-    private void FixedUpdate() {
-        transform.position += bulletRotation.forward * speed * Time.deltaTime;
-    }
-
-    private void OnTriggerEnter(Collider other) {
-        if (other.CompareTag("Enemy")) {
-            IHitable hitable = other.GetComponent<IHitable>();
-            hitable.Hit(attack);
-            ObjectManager.Instance.ReturnObject(gameObject, ObjectList.PLAYERBULLET);
-        }
-        else if (other.CompareTag("Wall")) {
-            ObjectManager.Instance.ReturnObject(gameObject, ObjectList.PLAYERBULLET);
-        }
     }
 }

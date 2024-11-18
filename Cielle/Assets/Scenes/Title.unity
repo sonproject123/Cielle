@@ -1258,6 +1258,7 @@ MonoBehaviour:
   attackShield: 0
   defense: 0
   speed: 0
+  mass: 0
   invincible: 0
   jumpHeight: 0
   dashSpeed: 0
@@ -1265,7 +1266,11 @@ MonoBehaviour:
   dashCooltime: 0
   flyTime: 0
   flySpeed: 0
-  flyAccel: 0
+  flyDashSpeed: 0
+  isMove: 0
+  isLeft: 0
+  gunCategory: 0
+  gunFireType: 0
 --- !u!4 &1344541192
 Transform:
   m_ObjectHideFlags: 0
@@ -1963,6 +1968,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletCreateCount: 0
+  shotgunBulletCreateCount: 0
 --- !u!4 &1985367877
 Transform:
   m_ObjectHideFlags: 0

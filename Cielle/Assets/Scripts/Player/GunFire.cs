@@ -16,20 +16,30 @@ public enum Guns {
     SATELLITE,
 }
 
+public enum GunFireType {
+    SINGLE,
+    REPEAT
+}
+
 public class GunFire : Singleton<GunFire> {
     Transform muzzle;
+    Vector3 mouse;
+    float atk;
     Guns guns;
     bool isShootable = true;
 
     public void Shoot(Transform Pmuzzle) {
         muzzle = Pmuzzle;
+        atk = Stats.Instance.Atk;
         guns = Stats.Instance.GunCategory;
+        mouse = GeneralStats.Instance.MouseLocation;
 
         switch (guns) {
             case Guns.PISTOL:
                 PistolFire();
                 break;
             case Guns.SHOTGUN:
+                ShotgunFire();
                 break;
             case Guns.RIFLE:
                 RifleFire();
@@ -40,17 +50,36 @@ public class GunFire : Singleton<GunFire> {
     private void CreateNormalBullets() {
         GameObject bullet = ObjectManager.Instance.UseObject(ObjectList.PLAYERBULLET);
         bullet.transform.position = new Vector3(muzzle.position.x, muzzle.position.y + 1, 0);
-        float angle = MathCalculator.Instance.Angle(bullet.transform.position, GeneralStats.Instance.MouseLocation);
+
+        float angle = MathCalculator.Instance.Angle(bullet.transform.position, mouse);
         bullet.transform.rotation = Quaternion.Euler(0, 0, angle);
 
-        BulletPlayer bulletPlayer = bullet.GetComponent<BulletPlayer>();
+        BulletNormal bulletPlayer = bullet.GetComponent<BulletNormal>();
         if (bulletPlayer != null) {
-            bulletPlayer.Atk = Stats.Instance.Atk;
-            bulletPlayer.Speed = 20;
+            bulletPlayer.Atk = atk;
+            bulletPlayer.Speed = 50;
             bulletPlayer.Guns = guns;
 
             Vector3 randomRange = MathCalculator.Instance.RandomTarget(0.5f, 0.5f);
-            bulletPlayer.Target = GeneralStats.Instance.MouseLocation + randomRange;
+            bulletPlayer.Target = mouse + randomRange;
+        }
+    }
+
+    private void CreateShotgunBullets() {
+        GameObject bullet = ObjectManager.Instance.UseObject(ObjectList.PLAYERSHOTGUNBULLET);
+        bullet.transform.position = new Vector3(muzzle.position.x, muzzle.position.y + 1, 0);
+
+        float angle = MathCalculator.Instance.Angle(bullet.transform.position, mouse);
+        bullet.transform.rotation = Quaternion.Euler(0, 0, angle);
+
+        BulletShotgun bulletPlayer = bullet.GetComponent<BulletShotgun>();
+        if (bulletPlayer != null) {
+            bulletPlayer.Atk = atk;
+            bulletPlayer.Speed = 70;
+            bulletPlayer.Guns = guns;
+
+            Vector3 randomRange = MathCalculator.Instance.RandomTarget(0.5f, 0.5f);
+            bulletPlayer.Target = mouse + randomRange;
         }
     }
 
@@ -60,16 +89,23 @@ public class GunFire : Singleton<GunFire> {
         }
     }
 
+    private void ShotgunFire() {
+        if (isShootable) {
+            for (int i = 0; i < 8; i++)
+                CreateShotgunBullets();
+            StartCoroutine(GunCooltime(1.0f));
+        }
+    }
     private void RifleFire() {
         if (isShootable) {
             CreateNormalBullets();
-            StartCoroutine(GunCooltime());
+            StartCoroutine(GunCooltime(0.15f));
         }
     }
 
-    IEnumerator GunCooltime() {
+    IEnumerator GunCooltime(float cooltime) {
         isShootable = false;
-        yield return CoroutineCache.WaitForSecond(0.15f);
+        yield return CoroutineCache.WaitForSecond(cooltime);
         isShootable = true;
     }
 }
