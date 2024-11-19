@@ -1,0 +1,14 @@
+{
+  "Guns": [
+    {
+      "id": 1,
+      "name": "Pistol",
+      "atk": 10,
+      "speed": 50,
+      "cooltime": 0.01,
+      "radian": 0.5,
+      "bullet": 999999,
+      "type": "SINGLE"
+    }
+  ]
+}

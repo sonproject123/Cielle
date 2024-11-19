@@ -75,10 +75,10 @@ public class GunFire : Singleton<GunFire> {
         BulletShotgun bulletPlayer = bullet.GetComponent<BulletShotgun>();
         if (bulletPlayer != null) {
             bulletPlayer.Atk = atk;
-            bulletPlayer.Speed = 70;
+            bulletPlayer.Speed = Random.Range(50, 70);
             bulletPlayer.Guns = guns;
 
-            Vector3 randomRange = MathCalculator.Instance.RandomTarget(0.5f, 0.5f);
+            Vector3 randomRange = MathCalculator.Instance.RandomTarget(1f, 1f);
             bulletPlayer.Target = mouse + randomRange;
         }
     }
