@@ -43,7 +43,7 @@ public class Stats : Singleton<Stats> {
         maxShield = 0;
         shield = maxShield;
 
-        attack = 1;
+        attack = 10;
         attackShield = 0;
 
         defense = 0;

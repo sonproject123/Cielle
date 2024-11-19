@@ -9,7 +9,7 @@ public class PlayerCamera : MonoBehaviour {
     private void Update() {
         transform.position = Vector3.Lerp(
             transform.position,
-            new Vector3(player.position.x, player.position.y + 3, transform.position.z),
+            new Vector3(player.position.x, player.position.y + 5, transform.position.z),
             120 * Time.fixedDeltaTime
         );
     }

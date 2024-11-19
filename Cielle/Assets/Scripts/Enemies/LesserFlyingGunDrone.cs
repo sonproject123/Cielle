@@ -5,7 +5,7 @@ using UnityEngine;
 public class LesserFlyingGunDrone : EnemyStats {
     protected override void Start() {
         base.Start();
-        maxHp = Random.Range(100.0f, 110.0f);
+        maxHp = 100;
         hp = maxHp;
         speed = 0;
         attack = 10;

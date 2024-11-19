@@ -6,6 +6,8 @@ public class EnemyStats : MonoBehaviour, IHitable, IInRange {
     [SerializeField] protected Transform player;
     [SerializeField] protected Transform muzzleRotation;
     [SerializeField] protected Transform muzzle;
+    [SerializeField] protected Transform ui;
+    [SerializeField] protected EnemyUI enemyUI;
     [SerializeField] protected bool inRange;
 
     [SerializeField] protected float hp;
@@ -16,6 +18,11 @@ public class EnemyStats : MonoBehaviour, IHitable, IInRange {
     [SerializeField] protected float cooltime;
     [SerializeField] protected float bulletSpeed;
 
+    private void Awake() {
+        enemyUI = ui.GetComponent<EnemyUI>();
+        player = GameObject.Find("Player Center").transform;
+    }
+
     protected virtual void Start() {
         maxHp = 100;
         hp = maxHp;
@@ -25,8 +32,6 @@ public class EnemyStats : MonoBehaviour, IHitable, IInRange {
         cooltime = 1;
         bulletSpeed = 5;
         inRange = false;
-
-        player = GameObject.Find("Player Center").transform;
     }
 
     public float Hp {
@@ -55,10 +60,10 @@ public class EnemyStats : MonoBehaviour, IHitable, IInRange {
     }
 
     public void Hit(float damage) {
-        hp -= Mathf.Max(1, defense - damage);
+        hp -= Mathf.Max(1, damage - defense);
+        enemyUI.HpBar();
 
-        if (hp <= 0.0)
-        {
+        if (hp <= 0.0) {
             Destroy(gameObject);
         }
     }

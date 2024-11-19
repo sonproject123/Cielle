@@ -86,6 +86,7 @@ public class GunFire : Singleton<GunFire> {
     private void PistolFire() {
         if (isShootable) {
             CreateNormalBullets();
+            StartCoroutine(GunCooltime(0.01f));
         }
     }
 
@@ -99,7 +100,7 @@ public class GunFire : Singleton<GunFire> {
     private void RifleFire() {
         if (isShootable) {
             CreateNormalBullets();
-            StartCoroutine(GunCooltime(0.15f));
+            StartCoroutine(GunCooltime(0.1f));
         }
     }
 

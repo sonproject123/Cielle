@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class Player : MonoBehaviour, IHitable {
     [SerializeField] bool isInvincible = false;
+
     public void Hit(float damage) {
-        Stats.Instance.Hp -= Mathf.Max(1, Stats.Instance.Def - damage);
+        Stats.Instance.Hp -= Mathf.Max(1, damage - Stats.Instance.Def);
+        UIManager.OnUpdateHpBar();
 
         if (Stats.Instance.Hp <= 0.0) {
             Debug.Log("You Died");
@@ -25,5 +27,8 @@ public class Player : MonoBehaviour, IHitable {
             Stats.Instance.IsLeft = true;
             transform.rotation = Quaternion.Euler(0, 270, 0);
         }
+    }
+
+    private void OnDestroy() {
     }
 }
