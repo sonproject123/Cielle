@@ -138,8 +138,8 @@ public class Move : MonoBehaviour {
         }
     }
 
-    private void RigidMove(Vector3 dir, float speed) {
-        if(!Physics.Raycast(rigidBody.position, dir, 0.5f, LayerMask.GetMask("Wall")))
+    private void RigidMove(Vector3 dir, float speed, float wallSensor) {
+        if(!Physics.Raycast(rigidBody.position, dir, wallSensor, LayerMask.GetMask("Wall")))
             rigidBody.MovePosition(rigidBody.position + dir * speed * Time.deltaTime);
     }
 
@@ -147,12 +147,12 @@ public class Move : MonoBehaviour {
         animator.SetBool("Run", true);
 
         Vector3 dir = new Vector3(verticalInput, 0, 0);
-        RigidMove(dir, Stats.Instance.Speed);
+        RigidMove(dir, Stats.Instance.Speed, 0.5f);
     }
 
     private void FlyMove() {
         Vector3 dir = new Vector3(verticalInput, horizontalInput, 0).normalized;
-        RigidMove(dir, Stats.Instance.FlySpeed);
+        RigidMove(dir, Stats.Instance.FlySpeed, 0.5f);
     }
 
     private void Jump() {
@@ -173,7 +173,7 @@ public class Move : MonoBehaviour {
         while (flytime < Stats.Instance.FlyTime) {
             Vector3 direction = (GeneralStats.Instance.MouseLocation - playerCenter.position).normalized;
             playerCenter.rotation = Quaternion.LookRotation(direction);
-            RigidMove(playerCenter.forward, flyDashSpeed);
+            RigidMove(playerCenter.forward, flyDashSpeed, 0.7f);
             flyDashSpeed += Mathf.Max(flySpeed - speed, 0) * Time.fixedDeltaTime * 10;
 
             flytime += Time.fixedDeltaTime;
@@ -193,11 +193,10 @@ public class Move : MonoBehaviour {
 
         WaitForFixedUpdate wffu = GeneralStats.Instance.WFFU;
         float mass = Stats.Instance.Mass;
-        rigidBody.AddForce(Vector3.down * 300, ForceMode.Impulse);
-        rigidBody.mass = mass * 100;
+        rigidBody.AddForce(Vector3.down * 200, ForceMode.Impulse);
 
-        while (!isOnGround) {
-            rigidBody.mass += mass * 10 * Time.fixedDeltaTime;
+        while (!isOnGround && !Physics.Raycast(rigidBody.position, Vector3.down, 2.0f, LayerMask.GetMask("Wall"))) {
+            rigidBody.MovePosition(rigidBody.position + Vector3.down * 50 * Time.deltaTime);
             yield return wffu;
         }
 
@@ -211,6 +210,7 @@ public class Move : MonoBehaviour {
         isMovable = false;
 
         float dashTime = 0;
+        float dashEndTime = Stats.Instance.DashTime;
         Vector3 dashDirection = new Vector3(verticalDash, horizontalDash, 0).normalized;
 
         float dashSpeed;
@@ -221,8 +221,8 @@ public class Move : MonoBehaviour {
 
         WaitForFixedUpdate wffu = GeneralStats.Instance.WFFU;
 
-        while (dashTime < Stats.Instance.DashTime) {
-            RigidMove(dashDirection, dashSpeed);
+        while (dashTime < dashEndTime) {
+            RigidMove(dashDirection, dashSpeed, 0.8f);
             dashTime += Time.fixedDeltaTime;
             yield return wffu;
         }

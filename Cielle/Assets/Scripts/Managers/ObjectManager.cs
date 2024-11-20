@@ -6,7 +6,9 @@ using UnityEngine;
 public enum ObjectList {
     PLAYERBULLET,
     PLAYERSHOTGUNBULLET,
-    ENEMYBULLET
+    ENEMYBULLET,
+
+    BREAKOBJECT
 }
 
 public class ObjectManager : Singleton<ObjectManager>{
@@ -14,22 +16,31 @@ public class ObjectManager : Singleton<ObjectManager>{
     [SerializeField] Queue<GameObject> playerShotgunBullets = new Queue<GameObject>();
     [SerializeField] Queue<GameObject> enemyBullets = new Queue<GameObject>();
 
+    [SerializeField] Queue<GameObject> breakObject = new Queue<GameObject>();
+
     [SerializeField] int bulletCreateCount;
     [SerializeField] int shotgunBulletCreateCount;
+    [SerializeField] int breakObjectCreateCount;
 
     private void Start() {
         bulletCreateCount = 200;
         shotgunBulletCreateCount = 50;
+        breakObjectCreateCount = 500;
+
         CreateObjects();
     }
 
     private void CreateObjects() {
         for (int i = 0; i < bulletCreateCount; i++) {
-            CreateObject(playerBullets, "PlayerBullet");
-            CreateObject(enemyBullets, "EnemyBullet");
+            CreateObject(playerBullets, "Bullet_Player_Normal");
+            CreateObject(enemyBullets, "Bullet_Enemy_Normal");
         }
+
         for (int i = 0; i < shotgunBulletCreateCount; i++)
-            CreateObject(playerShotgunBullets, "PlayerShotgunBullet");
+            CreateObject(playerShotgunBullets, "Bullet_Player_Shotgun");
+
+        for (int i = 0; i < breakObjectCreateCount; i++)
+            CreateObject(breakObject, "Break_Object");
     }
 
     private void CreateObject(Queue<GameObject> queue, string name) {
@@ -53,19 +64,26 @@ public class ObjectManager : Singleton<ObjectManager>{
                 if(playerBullets.Count > 0)
                     obj = playerBullets.Dequeue();
                 else
-                    obj = CreateRObject(playerBullets, "PlayerBullet");
+                    obj = CreateRObject(playerBullets, "Bullet_Player_Normal");
                 break;
             case ObjectList.PLAYERSHOTGUNBULLET:
                 if (playerShotgunBullets.Count > 0)
                     obj = playerShotgunBullets.Dequeue();
                 else
-                    obj = CreateRObject(playerShotgunBullets, "PlayerShotgunBullet");
+                    obj = CreateRObject(playerShotgunBullets, "Bullet_Player_Shotgun");
                 break;
             case ObjectList.ENEMYBULLET:
                 if (enemyBullets.Count > 0)
                     obj = enemyBullets.Dequeue();
                 else
-                    obj = CreateRObject(enemyBullets, "EnemyBullet");
+                    obj = CreateRObject(enemyBullets, "Bullet_Enemy_Normal");
+                break;
+
+            case ObjectList.BREAKOBJECT:
+                if (breakObject.Count > 0)
+                    obj = breakObject.Dequeue();
+                else
+                    obj = CreateRObject(breakObject, "Break_Object");
                 break;
         }
 
@@ -87,6 +105,10 @@ public class ObjectManager : Singleton<ObjectManager>{
                 break;
             case ObjectList.ENEMYBULLET:
                 enemyBullets.Enqueue(obj);
+                break;
+
+            case ObjectList.BREAKOBJECT:
+                breakObject.Enqueue(obj);
                 break;
         }
     }

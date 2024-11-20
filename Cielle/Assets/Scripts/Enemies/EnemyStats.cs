@@ -18,6 +18,8 @@ public class EnemyStats : MonoBehaviour, IHitable, IInRange {
     [SerializeField] protected float cooltime;
     [SerializeField] protected float bulletSpeed;
 
+    [SerializeField] protected bool isDead;
+
     private void Awake() {
         enemyUI = ui.GetComponent<EnemyUI>();
         player = GameObject.Find("Player Center").transform;
@@ -31,7 +33,9 @@ public class EnemyStats : MonoBehaviour, IHitable, IInRange {
         defense = 0;
         cooltime = 1;
         bulletSpeed = 5;
+
         inRange = false;
+        isDead = false;
     }
 
     public float Hp {
@@ -59,11 +63,14 @@ public class EnemyStats : MonoBehaviour, IHitable, IInRange {
         set { cooltime = value; }
     }
 
-    public void Hit(float damage) {
+    public void Hit(float damage, Vector3 hitPosition) {
         hp -= Mathf.Max(1, damage - defense);
         enemyUI.HpBar();
 
-        if (hp <= 0.0) {
+        if (hp <= 0.0 && !isDead) {
+            isDead = true;
+            for (int i = 0; i < 10; i++)
+                BreakObject(hitPosition);
             Destroy(gameObject);
         }
     }
@@ -82,6 +89,22 @@ public class EnemyStats : MonoBehaviour, IHitable, IInRange {
             bulletEnemy.Atk = attack + Random.Range(1, 10);
             bulletEnemy.Speed = bulletSpeed;
             bulletEnemy.Target = player.position;
+        }
+    }
+
+    protected void BreakObject(Vector3 hitPosition) {
+        GameObject obj = ObjectManager.Instance.UseObject(ObjectList.BREAKOBJECT);
+        obj.transform.position = transform.position;
+
+        float angle = MathCalculator.Instance.Angle(obj.transform.position, hitPosition);
+        obj.transform.rotation = Quaternion.Euler(0, 0, angle);
+
+        BreakObject bo = obj.GetComponent<BreakObject>();
+        if (bo != null) {
+            bo.Speed = Random.Range(120, 150);
+
+            Vector3 randomRange = MathCalculator.Instance.RandomTarget(2f, 2f);
+            bo.Direction = obj.transform.forward + randomRange;
         }
     }
 }

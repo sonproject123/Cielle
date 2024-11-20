@@ -10,10 +10,21 @@ public class BulletPlayer : MonoBehaviour {
     [SerializeField] protected Transform bulletRotation;
     [SerializeField] protected Vector3 direction;
     [SerializeField] protected Guns guns;
+    [SerializeField] protected ObjectList objType;
 
     private void Start() {
         Vector3 direction = (target - transform.position).normalized;
         bulletRotation.rotation = Quaternion.LookRotation(direction);
+    }
+
+    private void OnTriggerEnter(Collider other) {
+        if (other.CompareTag("Enemy")) {
+            IHitable hitable = other.GetComponent<IHitable>();
+            hitable.Hit(attack, transform.position);
+            ObjectManager.Instance.ReturnObject(gameObject, objType);
+        }
+        else if (other.CompareTag("Wall"))
+            ObjectManager.Instance.ReturnObject(gameObject, objType);
     }
 
     public float Atk {
@@ -34,5 +45,10 @@ public class BulletPlayer : MonoBehaviour {
     public Guns Guns {
         get { return guns; }
         set { guns = value; }
+    }
+
+    public ObjectList ObjType {
+        get { return objType; }
+        set { objType = value; }
     }
 }

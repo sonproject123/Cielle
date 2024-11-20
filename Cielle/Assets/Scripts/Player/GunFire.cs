@@ -26,6 +26,7 @@ public class GunFire : Singleton<GunFire> {
     Vector3 mouse;
     float atk;
     Guns guns;
+    ObjectList objType;
     bool isShootable = true;
 
     public void Shoot(Transform Pmuzzle) {
@@ -36,19 +37,22 @@ public class GunFire : Singleton<GunFire> {
 
         switch (guns) {
             case Guns.PISTOL:
+                objType = ObjectList.PLAYERBULLET;
                 PistolFire();
                 break;
             case Guns.SHOTGUN:
+                objType = ObjectList.PLAYERSHOTGUNBULLET;
                 ShotgunFire();
                 break;
             case Guns.RIFLE:
+                objType = ObjectList.PLAYERBULLET;
                 RifleFire();
                 break;
         }
     }
 
     private void CreateNormalBullets() {
-        GameObject bullet = ObjectManager.Instance.UseObject(ObjectList.PLAYERBULLET);
+        GameObject bullet = ObjectManager.Instance.UseObject(objType);
         bullet.transform.position = new Vector3(muzzle.position.x, muzzle.position.y + 1, 0);
 
         float angle = MathCalculator.Instance.Angle(bullet.transform.position, mouse);
@@ -57,8 +61,9 @@ public class GunFire : Singleton<GunFire> {
         BulletNormal bulletPlayer = bullet.GetComponent<BulletNormal>();
         if (bulletPlayer != null) {
             bulletPlayer.Atk = atk;
-            bulletPlayer.Speed = 50;
+            bulletPlayer.Speed = Random.Range(50, 50);
             bulletPlayer.Guns = guns;
+            bulletPlayer.ObjType = objType;
 
             Vector3 randomRange = MathCalculator.Instance.RandomTarget(0.5f, 0.5f);
             bulletPlayer.Target = mouse + randomRange;
@@ -66,7 +71,7 @@ public class GunFire : Singleton<GunFire> {
     }
 
     private void CreateShotgunBullets() {
-        GameObject bullet = ObjectManager.Instance.UseObject(ObjectList.PLAYERSHOTGUNBULLET);
+        GameObject bullet = ObjectManager.Instance.UseObject(objType);
         bullet.transform.position = new Vector3(muzzle.position.x, muzzle.position.y + 1, 0);
 
         float angle = MathCalculator.Instance.Angle(bullet.transform.position, mouse);
@@ -77,6 +82,7 @@ public class GunFire : Singleton<GunFire> {
             bulletPlayer.Atk = atk;
             bulletPlayer.Speed = Random.Range(50, 70);
             bulletPlayer.Guns = guns;
+            bulletPlayer.ObjType = objType;
 
             Vector3 randomRange = MathCalculator.Instance.RandomTarget(1f, 1f);
             bulletPlayer.Target = mouse + randomRange;

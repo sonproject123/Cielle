@@ -37,7 +37,7 @@ public class BulletEnemy : MonoBehaviour {
     private void OnTriggerEnter(Collider other) {
         if (other.CompareTag("Player")) {
             IHitable hitable = other.GetComponent<IHitable>();
-            hitable.Hit(attack);
+            hitable.Hit(attack, transform.position);
             ObjectManager.Instance.ReturnObject(gameObject, ObjectList.ENEMYBULLET);
         }
         else if (other.CompareTag("Wall")) {

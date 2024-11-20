@@ -5,12 +5,16 @@ using UnityEngine;
 public class Player : MonoBehaviour, IHitable {
     [SerializeField] bool isInvincible = false;
 
-    public void Hit(float damage) {
-        Stats.Instance.Hp -= Mathf.Max(1, damage - Stats.Instance.Def);
-        UIManager.OnUpdateHpBar();
+    public void Hit(float damage, Vector3 hitPosition) {
+        if (!isInvincible) {
+            Stats.Instance.Hp -= Mathf.Max(1, damage - Stats.Instance.Def);
+            UIManager.OnUpdateHpBar();
 
-        if (Stats.Instance.Hp <= 0.0) {
-            Debug.Log("You Died");
+            if (Stats.Instance.Hp <= 0.0) {
+                Debug.Log("You Died");
+            }
+            else
+                StartCoroutine(Invincible());
         }
     }
 
@@ -29,6 +33,11 @@ public class Player : MonoBehaviour, IHitable {
         }
     }
 
+    IEnumerator Invincible() {
+        isInvincible = true;
+        yield return CoroutineCache.WaitForSecond(Stats.Instance.Invincible);
+        isInvincible = false;
+    }
     private void OnDestroy() {
     }
 }

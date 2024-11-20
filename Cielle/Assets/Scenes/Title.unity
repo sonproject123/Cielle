@@ -1969,6 +1969,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletCreateCount: 0
   shotgunBulletCreateCount: 0
+  breakObjectCreateCount: 0
 --- !u!4 &1985367877
 Transform:
   m_ObjectHideFlags: 0

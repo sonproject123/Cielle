@@ -18,16 +18,6 @@ public class BulletShotgun : BulletPlayer {
             yield return wffu;
         }
 
-        ObjectManager.Instance.ReturnObject(gameObject, ObjectList.PLAYERSHOTGUNBULLET);
-    }
-
-    private void OnTriggerEnter(Collider other) {
-        if (other.CompareTag("Enemy")) {
-            IHitable hitable = other.GetComponent<IHitable>();
-            hitable.Hit(attack);
-            ObjectManager.Instance.ReturnObject(gameObject, ObjectList.PLAYERSHOTGUNBULLET);
-        }
-        else if (other.CompareTag("Wall"))
-            ObjectManager.Instance.ReturnObject(gameObject, ObjectList.PLAYERSHOTGUNBULLET);
+        ObjectManager.Instance.ReturnObject(gameObject, objType);
     }
 }
