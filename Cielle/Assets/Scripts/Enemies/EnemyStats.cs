@@ -96,15 +96,15 @@ public class EnemyStats : MonoBehaviour, IHitable, IInRange {
         GameObject obj = ObjectManager.Instance.UseObject(ObjectList.BREAKOBJECT);
         obj.transform.position = transform.position;
 
-        float angle = MathCalculator.Instance.Angle(obj.transform.position, hitPosition);
-        obj.transform.rotation = Quaternion.Euler(0, 0, angle);
+        Vector3 direction = (transform.position - hitPosition).normalized;
 
         BreakObject bo = obj.GetComponent<BreakObject>();
         if (bo != null) {
             bo.Speed = Random.Range(120, 150);
 
-            Vector3 randomRange = MathCalculator.Instance.RandomTarget(2f, 2f);
-            bo.Direction = obj.transform.forward + randomRange;
+            Vector3 randomRange = MathCalculator.Instance.RandomTarget(0.5f, 0.5f);
+            bo.Direction = direction + randomRange;
+            bo.OnDead();
         }
     }
 }

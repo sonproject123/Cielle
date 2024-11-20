@@ -12,12 +12,10 @@ public class BreakObject : MonoBehaviour {
 
     private void Awake() {
         rigidBody = GetComponent<Rigidbody>();
+        OnDead = () => { ObjectForce(); };
     }
 
-    private void OnEnable() {
-        Debug.Log(direction);
-        Debug.Log(speed);
-
+    private void ObjectForce() {
         rigidBody.AddForce(direction * speed, ForceMode.Impulse);
     }
 

@@ -3,11 +3,37 @@
     {
       "id": 1,
       "name": "Pistol",
+      "discript": "가벼운 한손 권총. 안정적이고, 약하고.",
       "atk": 10,
-      "speed": 50,
+      "minSpeed": 50,
+      "maxSpeed": 50,
       "cooltime": 0.01,
       "radian": 0.5,
       "bullet": 999999,
+      "type": "SINGLE"
+    },
+    {
+      "id": 2,
+      "name": "Rifle",
+      "discript": "연발이 가능한 돌격 소총.",
+      "atk": 8,
+      "minSpeed": 50,
+      "maxSpeed": 50,
+      "cooltime": 0.1,
+      "radian": 0.7,
+      "bullet": 30,
+      "type": "REPEAT"
+    },
+    {
+      "id": 3,
+      "name": "Shotgun",
+      "discript": "한번에 탄을 다발로 발사하는 샷건.",
+      "atk": 10,
+      "minSpeed": 50,
+      "maxSpeed": 70,
+      "cooltime": 1.0,
+      "radian": 1.0,
+      "bullet": 5,
       "type": "SINGLE"
     }
   ]
