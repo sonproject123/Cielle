@@ -13,8 +13,8 @@ public class GunData {
     public float cooltime;
     public float recoil;
     public int bullet;
-    public GunFireType type;
-    public Guns code;
+    public string type;
+    public string code;
 }
 
 [System.Serializable]

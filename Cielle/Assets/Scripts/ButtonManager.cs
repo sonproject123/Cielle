@@ -5,18 +5,18 @@ using UnityEngine.UIElements;
 
 public class ButtonManager : Singleton<ButtonManager> {
     public void Pistol() {
-        Stats.Instance.GunCategory = Guns.PISTOL;
-        Stats.Instance.GunFireType = GunFireType.SINGLE;
+        Stats.Instance.MainWeaponId = 1;
+        Stats.Instance.GunChange();
     }
 
     public void Rifle() {
-        Stats.Instance.GunCategory = Guns.RIFLE;
-        Stats.Instance.GunFireType = GunFireType.REPEAT;
+        Stats.Instance.MainWeaponId = 2;
+        Stats.Instance.GunChange();
     }
 
     public void Shotgun() {
-        Stats.Instance.GunCategory = Guns.SHOTGUN;
-        Stats.Instance.GunFireType = GunFireType.SINGLE;
+        Stats.Instance.MainWeaponId = 3;
+        Stats.Instance.GunChange();
     }
 
 

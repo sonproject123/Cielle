@@ -12,7 +12,7 @@ public class JsonManager : Singleton<JsonManager> {
     private void LoadData() {
         TextAsset jsonData = Resources.Load<TextAsset>("JsonDatas/Gun");
         GunDataList gunData = JsonUtility.FromJson<GunDataList>(jsonData.text);
-        foreach(var gun in gunData.gunsData)
+        foreach (var gun in gunData.gunsData)
             gunDict.Add(gun.id, gun);
         
     }

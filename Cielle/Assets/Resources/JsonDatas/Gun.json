@@ -10,8 +10,8 @@
       "cooltime": 0.01,
       "recoil": 0.5,
       "bullet": 999999,
-      "type": "GunFireType.SINGLE",
-      "code": "Guns.PISTOL"
+      "type": "SINGLE",
+      "code": "PISTOL"
     },
     {
       "id": 2,
@@ -23,8 +23,8 @@
       "cooltime": 0.1,
       "recoil": 0.7,
       "bullet": 30,
-      "type": "GunFireType.REPEAT",
-      "code": "Guns.RIFLE"
+      "type": "REPEAT",
+      "code": "RIFLE"
     },
     {
       "id": 3,
@@ -36,8 +36,8 @@
       "cooltime": 1.0,
       "recoil": 1.0,
       "bullet": 5,
-      "type": "GunFireType.SINGLE",
-      "code": "Guns.SHOTGUN"
+      "type": "SINGLE",
+      "code": "SHOTGUN"
     }
   ]
 }

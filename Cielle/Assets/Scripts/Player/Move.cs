@@ -129,12 +129,12 @@ public class Move : MonoBehaviour {
         }
 
         // Shoot
-        if (Input.GetMouseButtonDown(0) && Stats.Instance.MainGunData.type == GunFireType.SINGLE) {
+        if (Input.GetMouseButtonDown(0) && Stats.Instance.MainGunFireType == GunFireType.SINGLE) {
             animator.SetTrigger("GunFire");
             GunFire.Instance.Shoot(transform);
 
         }
-        if (Input.GetMouseButton(0) && Stats.Instance.MainGunData.type == GunFireType.REPEAT) {
+        if (Input.GetMouseButton(0) && Stats.Instance.MainGunFireType == GunFireType.REPEAT) {
             animator.SetTrigger("GunFire");
             GunFire.Instance.Shoot(transform);
         }
@@ -144,10 +144,8 @@ public class Move : MonoBehaviour {
             isWeaponChangeable = false;
 
             (Stats.Instance.MainWeaponId, Stats.Instance.SubWeaponId) = (Stats.Instance.SubWeaponId, Stats.Instance.MainWeaponId);
-            GunData temp;
-            JsonManager.Instance.GunDict.TryGetValue(Stats.Instance.MainWeaponId, out temp);
-            Stats.Instance.MainGunData = temp;
-            
+            Stats.Instance.GunChange();
+
             StartCoroutine(WeaponChangeCooltime());
         }
     }

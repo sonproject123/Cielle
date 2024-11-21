@@ -37,13 +37,13 @@ public class Stats : Singleton<Stats> {
     [SerializeField] protected int subWeaponId;
     [SerializeField] protected GunData mainGunData;
 
-    [SerializeField] Guns gunCategory;
-    [SerializeField] GunFireType gunFireType;
+    [SerializeField] Guns mainGunCode;
+    [SerializeField] GunFireType mainGunFireType;
 
     private void Start() {
         mainWeaponId = 1;
         subWeaponId = 2;
-        JsonManager.Instance.GunDict.TryGetValue(mainWeaponId, out mainGunData);
+        GunChange();
 
         maxHp = 100;
         hp = maxHp;
@@ -74,10 +74,6 @@ public class Stats : Singleton<Stats> {
 
         isMove = false;
         isLeft = false;
-
-
-        gunCategory = Guns.PISTOL;
-        gunFireType = GunFireType.SINGLE;
     }
 
     public float Hp {
@@ -167,16 +163,23 @@ public class Stats : Singleton<Stats> {
         set { subWeaponId = value; }
     }
 
-    public Guns GunCategory {
-        get { return gunCategory; }
-        set { gunCategory = value; }
+    public Guns MainGunCode {
+        get { return mainGunCode; }
+        set { mainGunCode = value; }
     }
-    public GunFireType GunFireType {
-        get { return gunFireType; }
-        set { gunFireType = value; }
+    public GunFireType MainGunFireType {
+        get { return mainGunFireType; }
+        set { mainGunFireType = value; }
     }
     public GunData MainGunData {
         get { return mainGunData; }
         set { mainGunData = value; }
+    }
+
+    public void GunChange() {
+        JsonManager.Instance.GunDict.TryGetValue(MainWeaponId, out mainGunData);
+
+        mainGunCode = (Guns)System.Enum.Parse(typeof(Guns), mainGunData.code);
+        mainGunFireType = (GunFireType)System.Enum.Parse(typeof(GunFireType), mainGunData.type);
     }
 }

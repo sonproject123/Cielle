@@ -36,13 +36,13 @@ public class GunFire : Singleton<GunFire> {
         mouse = GeneralStats.Instance.MouseLocation;
 
         gun = Stats.Instance.MainGunData;
-        atk = Stats.Instance.Atk + Stats.Instance.MainGunData.atk;
-        gunCode = Stats.Instance.MainGunData.code;
+        atk = Stats.Instance.Atk + gun.atk;
+        gunCode = Stats.Instance.MainGunCode;
 
         switch (gunCode) {
             case Guns.PISTOL:
                 objType = ObjectList.PLAYERBULLET;
-                PistolFire();
+                NormalFire();
                 break;
             case Guns.SHOTGUN:
                 objType = ObjectList.PLAYERSHOTGUNBULLET;
@@ -50,67 +50,42 @@ public class GunFire : Singleton<GunFire> {
                 break;
             case Guns.RIFLE:
                 objType = ObjectList.PLAYERBULLET;
-                RifleFire();
+                NormalFire();
                 break;
         }
     }
 
-    private void CreateNormalBullets() {
+    private void CreateBullets() {
         GameObject bullet = ObjectManager.Instance.UseObject(objType);
         bullet.transform.position = new Vector3(muzzle.position.x, muzzle.position.y + 1, 0);
 
         float angle = MathCalculator.Instance.Angle(bullet.transform.position, mouse);
         bullet.transform.rotation = Quaternion.Euler(0, 0, angle);
 
-        BulletNormal bulletPlayer = bullet.GetComponent<BulletNormal>();
+        BulletPlayer bulletPlayer = bullet.GetComponent<BulletPlayer>();
         if (bulletPlayer != null) {
             bulletPlayer.Atk = atk;
-            bulletPlayer.Speed = Random.Range(50, 50);
+            bulletPlayer.Speed = Random.Range(gun.minSpeed, gun.maxSpeed);
             bulletPlayer.Guns = gunCode;
             bulletPlayer.ObjType = objType;
 
-            Vector3 randomRange = MathCalculator.Instance.RandomTarget(0.5f, 0.5f);
+            Vector3 randomRange = MathCalculator.Instance.RandomTarget(gun.recoil, gun.recoil);
             bulletPlayer.Target = mouse + randomRange;
         }
     }
 
-    private void CreateShotgunBullets() {
-        GameObject bullet = ObjectManager.Instance.UseObject(objType);
-        bullet.transform.position = new Vector3(muzzle.position.x, muzzle.position.y + 1, 0);
-
-        float angle = MathCalculator.Instance.Angle(bullet.transform.position, mouse);
-        bullet.transform.rotation = Quaternion.Euler(0, 0, angle);
-
-        BulletShotgun bulletPlayer = bullet.GetComponent<BulletShotgun>();
-        if (bulletPlayer != null) {
-            bulletPlayer.Atk = atk;
-            bulletPlayer.Speed = Random.Range(50, 70);
-            bulletPlayer.Guns = gunCode;
-            bulletPlayer.ObjType = objType;
-
-            Vector3 randomRange = MathCalculator.Instance.RandomTarget(1f, 1f);
-            bulletPlayer.Target = mouse + randomRange;
-        }
-    }
-
-    private void PistolFire() {
+    private void NormalFire() {
         if (isShootable) {
-            CreateNormalBullets();
-            StartCoroutine(GunCooltime(0.01f));
+            CreateBullets();
+            StartCoroutine(GunCooltime(gun.cooltime));
         }
     }
 
     private void ShotgunFire() {
         if (isShootable) {
             for (int i = 0; i < 8; i++)
-                CreateShotgunBullets();
+                CreateBullets();
             StartCoroutine(GunCooltime(1.0f));
-        }
-    }
-    private void RifleFire() {
-        if (isShootable) {
-            CreateNormalBullets();
-            StartCoroutine(GunCooltime(0.1f));
         }
     }
 
