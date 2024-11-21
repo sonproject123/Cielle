@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class LesserFlyingGunDrone : EnemyStats {
+    
+
     protected override void Start() {
         base.Start();
         maxHp = 100;
@@ -12,21 +14,21 @@ public class LesserFlyingGunDrone : EnemyStats {
         defense = 0;
         cooltime = 3;
         bulletSpeed = 5;
-
-        StartCoroutine(Attack());
     }
 
     private void Update() {
         Muzzle();
+
+        if (inRange && !isAttack) {
+            isAttack = true;
+            StartCoroutine(Attack());
+        }
     }
 
     IEnumerator Attack() {
-        while (true) {
-            yield return CoroutineCache.WaitForSecond(cooltime);
-
-            if(inRange)
-                LinearBulletSpawn();
-        }
+        yield return CoroutineCache.WaitForSecond(cooltime);
+        LinearBulletSpawn();
+        isAttack = false;
     }
 
     private void Muzzle() {

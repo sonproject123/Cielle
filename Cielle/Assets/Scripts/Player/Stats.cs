@@ -33,17 +33,25 @@ public class Stats : Singleton<Stats> {
     [SerializeField] protected bool isMove;
     [SerializeField] protected bool isLeft;
 
+    [SerializeField] protected int mainWeaponId;
+    [SerializeField] protected int subWeaponId;
+    [SerializeField] protected GunData mainGunData;
+
     [SerializeField] Guns gunCategory;
     [SerializeField] GunFireType gunFireType;
 
     private void Start() {
+        mainWeaponId = 1;
+        subWeaponId = 2;
+        JsonManager.Instance.GunDict.TryGetValue(mainWeaponId, out mainGunData);
+
         maxHp = 100;
         hp = maxHp;
 
         maxShield = 0;
         shield = maxShield;
 
-        attack = 10;
+        attack = 0;
         attackShield = 0;
 
         defense = 0;
@@ -67,6 +75,7 @@ public class Stats : Singleton<Stats> {
         isMove = false;
         isLeft = false;
 
+
         gunCategory = Guns.PISTOL;
         gunFireType = GunFireType.SINGLE;
     }
@@ -75,7 +84,6 @@ public class Stats : Singleton<Stats> {
         get {  return hp; }
         set { hp = value; }
     }
-
     public float MaxHp {
         get { return maxHp; }
         set { maxHp = value; }
@@ -85,7 +93,6 @@ public class Stats : Singleton<Stats> {
         get { return attack; }
         set { attack = value; }
     }
-
     public float AtkShield {
         get { return attackShield; }
         set { attackShield = value; }
@@ -120,12 +127,10 @@ public class Stats : Singleton<Stats> {
         get { return dashSpeed; }
         set { dashSpeed = value; }
     }
-
     public float DashTime {
         get { return dashTime; }
         set { dashTime = value; }
     }
-
     public float DashCooltime {
         get { return dashCooltime; }
         set { dashCooltime = value; }
@@ -135,12 +140,10 @@ public class Stats : Singleton<Stats> {
         get { return flyTime; }
         set { flyTime = value; }
     }
-
     public float FlySpeed {
         get { return flySpeed; }
         set { flySpeed = value; }
     }
-
     public float FlyDashSpeed {
         get { return flyDashSpeed; }
         set { flyDashSpeed = value; }
@@ -150,19 +153,30 @@ public class Stats : Singleton<Stats> {
         get { return isMove; }
         set { isMove = value; }
     }
-
     public bool IsLeft {
         get { return isLeft; }
         set { isLeft = value; }
+    }
+
+    public int MainWeaponId {
+        get { return mainWeaponId; }
+        set { mainWeaponId = value; }
+    }
+    public int SubWeaponId {
+        get { return subWeaponId; }
+        set { subWeaponId = value; }
     }
 
     public Guns GunCategory {
         get { return gunCategory; }
         set { gunCategory = value; }
     }
-
     public GunFireType GunFireType {
         get { return gunFireType; }
         set { gunFireType = value; }
+    }
+    public GunData MainGunData {
+        get { return mainGunData; }
+        set { mainGunData = value; }
     }
 }

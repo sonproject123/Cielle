@@ -18,6 +18,7 @@ public class Move : MonoBehaviour {
     [SerializeField] bool isOnGround;
     [SerializeField] bool isOnFlying;
     [SerializeField] bool isDashable;
+    [SerializeField] bool isWeaponChangeable;
 
     [SerializeField] float horizontalInput;
     [SerializeField] float verticalInput;
@@ -34,6 +35,7 @@ public class Move : MonoBehaviour {
         isOnGround = true;
         isOnFlying = false;
         isDashable = true;
+        isWeaponChangeable = true;
 
         rigidBody.mass = Stats.Instance.Mass;
 
@@ -127,14 +129,26 @@ public class Move : MonoBehaviour {
         }
 
         // Shoot
-        if (Input.GetMouseButtonDown(0) && Stats.Instance.GunFireType == GunFireType.SINGLE) {
+        if (Input.GetMouseButtonDown(0) && Stats.Instance.MainGunData.type == GunFireType.SINGLE) {
             animator.SetTrigger("GunFire");
             GunFire.Instance.Shoot(transform);
 
         }
-        if (Input.GetMouseButton(0) && Stats.Instance.GunFireType == GunFireType.REPEAT) {
+        if (Input.GetMouseButton(0) && Stats.Instance.MainGunData.type == GunFireType.REPEAT) {
             animator.SetTrigger("GunFire");
             GunFire.Instance.Shoot(transform);
+        }
+
+        // Weapon Change
+        if(Input.mouseScrollDelta.y != 0 && isWeaponChangeable) {
+            isWeaponChangeable = false;
+
+            (Stats.Instance.MainWeaponId, Stats.Instance.SubWeaponId) = (Stats.Instance.SubWeaponId, Stats.Instance.MainWeaponId);
+            GunData temp;
+            JsonManager.Instance.GunDict.TryGetValue(Stats.Instance.MainWeaponId, out temp);
+            Stats.Instance.MainGunData = temp;
+            
+            StartCoroutine(WeaponChangeCooltime());
         }
     }
 
@@ -230,6 +244,11 @@ public class Move : MonoBehaviour {
 
         yield return CoroutineCache.WaitForSecond(Stats.Instance.DashCooltime);
         isDashable = true;
+    }
+
+    IEnumerator WeaponChangeCooltime() {
+        yield return CoroutineCache.WaitForSecond(0.2f);
+        isWeaponChangeable = true;
     }
 
     private void OnDisable() {

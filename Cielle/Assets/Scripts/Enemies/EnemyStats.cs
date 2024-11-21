@@ -19,6 +19,7 @@ public class EnemyStats : MonoBehaviour, IHitable, IInRange {
     [SerializeField] protected float bulletSpeed;
 
     [SerializeField] protected bool isDead;
+    [SerializeField] protected bool isAttack;
 
     private void Awake() {
         enemyUI = ui.GetComponent<EnemyUI>();
@@ -36,6 +37,7 @@ public class EnemyStats : MonoBehaviour, IHitable, IInRange {
 
         inRange = false;
         isDead = false;
+        isAttack = false;
     }
 
     public float Hp {

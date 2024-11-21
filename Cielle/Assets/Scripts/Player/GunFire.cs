@@ -24,18 +24,22 @@ public enum GunFireType {
 public class GunFire : Singleton<GunFire> {
     Transform muzzle;
     Vector3 mouse;
+
+    GunData gun;
     float atk;
-    Guns guns;
+    Guns gunCode;
     ObjectList objType;
     bool isShootable = true;
 
     public void Shoot(Transform Pmuzzle) {
         muzzle = Pmuzzle;
-        atk = Stats.Instance.Atk;
-        guns = Stats.Instance.GunCategory;
         mouse = GeneralStats.Instance.MouseLocation;
 
-        switch (guns) {
+        gun = Stats.Instance.MainGunData;
+        atk = Stats.Instance.Atk + Stats.Instance.MainGunData.atk;
+        gunCode = Stats.Instance.MainGunData.code;
+
+        switch (gunCode) {
             case Guns.PISTOL:
                 objType = ObjectList.PLAYERBULLET;
                 PistolFire();
@@ -62,7 +66,7 @@ public class GunFire : Singleton<GunFire> {
         if (bulletPlayer != null) {
             bulletPlayer.Atk = atk;
             bulletPlayer.Speed = Random.Range(50, 50);
-            bulletPlayer.Guns = guns;
+            bulletPlayer.Guns = gunCode;
             bulletPlayer.ObjType = objType;
 
             Vector3 randomRange = MathCalculator.Instance.RandomTarget(0.5f, 0.5f);
@@ -81,7 +85,7 @@ public class GunFire : Singleton<GunFire> {
         if (bulletPlayer != null) {
             bulletPlayer.Atk = atk;
             bulletPlayer.Speed = Random.Range(50, 70);
-            bulletPlayer.Guns = guns;
+            bulletPlayer.Guns = gunCode;
             bulletPlayer.ObjType = objType;
 
             Vector3 randomRange = MathCalculator.Instance.RandomTarget(1f, 1f);

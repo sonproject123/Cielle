@@ -100,7 +100,7 @@ GameObject:
   - component: {fileID: 4448213115528409639}
   - component: {fileID: 5402091786233690930}
   m_Layer: 7
-  m_Name: Enemy_LesserFlyingGunDrone
+  m_Name: Lesser_Gun_Drone
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

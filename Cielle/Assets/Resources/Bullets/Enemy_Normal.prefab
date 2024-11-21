@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &689639107626791227
+--- !u!1 &1387018301023075315
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,7 +8,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 989615095794416512}
+  - component: {fileID: 712401172097635015}
   m_Layer: 0
   m_Name: Bullet Rotation
   m_TagString: Untagged
@@ -16,13 +16,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &989615095794416512
+--- !u!4 &712401172097635015
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 689639107626791227}
+  m_GameObject: {fileID: 1387018301023075315}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -43,10 +43,10 @@ GameObject:
   - component: {fileID: 564172864956333610}
   - component: {fileID: 6831099053905421660}
   - component: {fileID: 3511297353509849541}
-  - component: {fileID: 1755408125779184497}
-  - component: {fileID: -189236710156653093}
+  - component: {fileID: 4023832087833951520}
+  - component: {fileID: 2062900312440988189}
   m_Layer: 0
-  m_Name: Bullet_Player_Normal
+  m_Name: Enemy_Normal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -65,7 +65,7 @@ Transform:
   m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_ConstrainProportionsScale: 1
   m_Children:
-  - {fileID: 989615095794416512}
+  - {fileID: 712401172097635015}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &564172864956333610
@@ -99,7 +99,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c2e40fa84d53ccd428f640eac126b1fb, type: 2}
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -144,7 +144,7 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!54 &1755408125779184497
+--- !u!54 &4023832087833951520
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -169,9 +169,9 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 64
+  m_Constraints: 8
   m_CollisionDetection: 0
---- !u!114 &-189236710156653093
+--- !u!114 &2062900312440988189
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -180,12 +180,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 2444720563230431467}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f4edb9637b1d874382c6d50b00a003d, type: 3}
+  m_Script: {fileID: 11500000, guid: 3b1910db05bc4f4468132e9a57a0c922, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   attack: 0
   speed: 0
   target: {x: 0, y: 0, z: 0}
-  bulletRotation: {fileID: 989615095794416512}
+  bulletRotation: {fileID: 712401172097635015}
   direction: {x: 0, y: 0, z: 0}
-  guns: 0

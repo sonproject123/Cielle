@@ -2158,7 +2158,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyList:
-  - Enemy_LesserFlyingGunDrone
+  - Enemies/Lesser_Gun_Drone
   enemy: {fileID: 0}
   positionX: 0
 --- !u!1 &1344597709

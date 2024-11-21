@@ -32,12 +32,12 @@ public class ObjectManager : Singleton<ObjectManager>{
 
     private void CreateObjects() {
         for (int i = 0; i < bulletCreateCount; i++) {
-            CreateObject(playerBullets, "Bullet_Player_Normal");
-            CreateObject(enemyBullets, "Bullet_Enemy_Normal");
+            CreateObject(playerBullets, "Bullets/Player_Normal");
+            CreateObject(enemyBullets, "Bullets/Enemy_Normal");
         }
 
         for (int i = 0; i < shotgunBulletCreateCount; i++)
-            CreateObject(playerShotgunBullets, "Bullet_Player_Shotgun");
+            CreateObject(playerShotgunBullets, "Bullets/Player_Shotgun");
 
         for (int i = 0; i < breakObjectCreateCount; i++)
             CreateObject(breakObject, "Break_Object");
@@ -64,19 +64,19 @@ public class ObjectManager : Singleton<ObjectManager>{
                 if(playerBullets.Count > 0)
                     obj = playerBullets.Dequeue();
                 else
-                    obj = CreateRObject(playerBullets, "Bullet_Player_Normal");
+                    obj = CreateRObject(playerBullets, "Bullets/Player_Normal");
                 break;
             case ObjectList.PLAYERSHOTGUNBULLET:
                 if (playerShotgunBullets.Count > 0)
                     obj = playerShotgunBullets.Dequeue();
                 else
-                    obj = CreateRObject(playerShotgunBullets, "Bullet_Player_Shotgun");
+                    obj = CreateRObject(playerShotgunBullets, "Bullets/Player_Shotgun");
                 break;
             case ObjectList.ENEMYBULLET:
                 if (enemyBullets.Count > 0)
                     obj = enemyBullets.Dequeue();
                 else
-                    obj = CreateRObject(enemyBullets, "Bullet_Enemy_Normal");
+                    obj = CreateRObject(enemyBullets, "Bullets/Enemy_Normal");
                 break;
 
             case ObjectList.BREAKOBJECT:
