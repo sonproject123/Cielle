@@ -7,8 +7,10 @@
       "atk": 10,
       "minSpeed": 50,
       "maxSpeed": 50,
-      "cooltime": 0.01,
+      "cooltime": 0.05,
+      "reload": 0,
       "recoil": 0.5,
+      "playerRecoil":  0.02,
       "bullet": 999999,
       "type": "SINGLE",
       "code": "PISTOL"
@@ -21,7 +23,9 @@
       "minSpeed": 50,
       "maxSpeed": 50,
       "cooltime": 0.1,
+      "reload": 1.5,
       "recoil": 0.7,
+      "playerRecoil": 0.05,
       "bullet": 30,
       "type": "REPEAT",
       "code": "RIFLE"
@@ -34,7 +38,9 @@
       "minSpeed": 50,
       "maxSpeed": 70,
       "cooltime": 1.0,
+      "reload": 2.0,
       "recoil": 1.0,
+      "playerRecoil": 0.1,
       "bullet": 5,
       "type": "SINGLE",
       "code": "SHOTGUN"

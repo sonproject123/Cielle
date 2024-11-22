@@ -18,6 +18,8 @@ public class Move : MonoBehaviour {
     [SerializeField] bool isOnGround;
     [SerializeField] bool isOnFlying;
     [SerializeField] bool isDashable;
+    [SerializeField] bool isFireable;
+    [SerializeField] bool isReloading;
     [SerializeField] bool isWeaponChangeable;
 
     [SerializeField] float horizontalInput;
@@ -35,6 +37,8 @@ public class Move : MonoBehaviour {
         isOnGround = true;
         isOnFlying = false;
         isDashable = true;
+        isFireable = true;
+        isReloading = false;
         isWeaponChangeable = true;
 
         rigidBody.mass = Stats.Instance.Mass;
@@ -129,18 +133,27 @@ public class Move : MonoBehaviour {
         }
 
         // Shoot
-        if (Input.GetMouseButtonDown(0) && Stats.Instance.MainGunFireType == GunFireType.SINGLE) {
-            animator.SetTrigger("GunFire");
-            GunFire.Instance.Shoot(transform);
-
+        if (isFireable) {
+            if (Input.GetMouseButtonDown(0) && Stats.Instance.MainGunFireType == GunFireType.SINGLE)
+                GunFire.Instance.Shoot(transform, animator);
+            if (Input.GetMouseButton(0) && Stats.Instance.MainGunFireType == GunFireType.REPEAT)
+                GunFire.Instance.Shoot(transform, animator);
         }
-        if (Input.GetMouseButton(0) && Stats.Instance.MainGunFireType == GunFireType.REPEAT) {
-            animator.SetTrigger("GunFire");
-            GunFire.Instance.Shoot(transform);
+
+        // Reload
+        if(Input.GetKeyDown(KeyCode.R) && !isReloading) {
+            if (Stats.Instance.BulletRemain == Stats.Instance.BulletMax)
+                return;
+
+            isReloading = true;
+            isFireable = false;
+            isWeaponChangeable = false;
+            // Sound reloading
+            StartCoroutine(WeaponReload());
         }
 
         // Weapon Change
-        if(Input.mouseScrollDelta.y != 0 && isWeaponChangeable) {
+        if(Input.GetAxis("Mouse ScrollWheel") != 0 && isWeaponChangeable) {
             isWeaponChangeable = false;
 
             (Stats.Instance.MainWeaponId, Stats.Instance.SubWeaponId) = (Stats.Instance.SubWeaponId, Stats.Instance.MainWeaponId);
@@ -245,8 +258,19 @@ public class Move : MonoBehaviour {
     }
 
     IEnumerator WeaponChangeCooltime() {
-        yield return CoroutineCache.WaitForSecond(0.2f);
+        yield return CoroutineCache.WaitForSecond(1.0f);
         isWeaponChangeable = true;
+    }
+
+    IEnumerator WeaponReload() {
+        float reload = Stats.Instance.MainGunData.reload;
+        yield return CoroutineCache.WaitForSecond(reload);
+
+        Stats.Instance.BulletRemain = Stats.Instance.BulletMax;
+        isFireable = true;
+        isWeaponChangeable = true;
+        isReloading = false;
+        UIManager.OnBulletUse();
     }
 
     private void OnDisable() {

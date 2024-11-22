@@ -1327,8 +1327,8 @@ MonoBehaviour:
     bullet: 0
     type: 0
     code: 0
-  gunCategory: 0
-  gunFireType: 0
+  mainGunCode: 0
+  mainGunFireType: 0
 --- !u!4 &1344541192
 Transform:
   m_ObjectHideFlags: 0

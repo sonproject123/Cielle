@@ -11,7 +11,9 @@ public class GunData {
     public float minSpeed;
     public float maxSpeed;
     public float cooltime;
+    public float reload;
     public float recoil;
+    public float playerRecoil;
     public int bullet;
     public string type;
     public string code;

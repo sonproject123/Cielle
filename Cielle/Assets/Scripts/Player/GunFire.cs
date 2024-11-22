@@ -24,6 +24,7 @@ public enum GunFireType {
 public class GunFire : Singleton<GunFire> {
     Transform muzzle;
     Vector3 mouse;
+    Animator animator;
 
     GunData gun;
     float atk;
@@ -31,9 +32,15 @@ public class GunFire : Singleton<GunFire> {
     ObjectList objType;
     bool isShootable = true;
 
-    public void Shoot(Transform Pmuzzle) {
+    public void Shoot(Transform Pmuzzle, Animator Panimator) {
+        if (Stats.Instance.BulletRemain <= 0) {
+            // Sound tic tic
+            return;
+        }
+
         muzzle = Pmuzzle;
         mouse = GeneralStats.Instance.MouseLocation;
+        animator = Panimator;
 
         gun = Stats.Instance.MainGunData;
         atk = Stats.Instance.Atk + gun.atk;
@@ -76,6 +83,11 @@ public class GunFire : Singleton<GunFire> {
 
     private void NormalFire() {
         if (isShootable) {
+            animator.SetTrigger("GunFire");
+            // Sound baam
+            Stats.Instance.BulletRemain--;
+            UIManager.OnBulletUse();
+
             CreateBullets();
             StartCoroutine(GunCooltime(gun.cooltime));
         }
@@ -83,6 +95,11 @@ public class GunFire : Singleton<GunFire> {
 
     private void ShotgunFire() {
         if (isShootable) {
+            animator.SetTrigger("GunFire");
+            // Sound baam
+            Stats.Instance.BulletRemain--;
+            UIManager.OnBulletUse();
+
             for (int i = 0; i < 8; i++)
                 CreateBullets();
             StartCoroutine(GunCooltime(1.0f));
