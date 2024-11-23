@@ -38,6 +38,4 @@ public class Player : MonoBehaviour, IHitable {
         yield return CoroutineCache.WaitForSecond(Stats.Instance.Invincible);
         isInvincible = false;
     }
-    private void OnDestroy() {
-    }
 }

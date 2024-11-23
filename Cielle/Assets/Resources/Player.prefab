@@ -9,6 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9027441374142676770}
+  - component: {fileID: 8173841658238005801}
+  - component: {fileID: 1322183071542098969}
   m_Layer: 6
   m_Name: Player Center
   m_TagString: Untagged
@@ -31,6 +33,39 @@ Transform:
   m_Children: []
   m_Father: {fileID: 8590385487805445776}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &8173841658238005801
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5805724812170420877}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 4
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1322183071542098969
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5805724812170420877}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 172ca2a7b2088e747bd642104add8d2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8814604448618756180
 GameObject:
   m_ObjectHideFlags: 0
@@ -622,6 +657,9 @@ MonoBehaviour:
   isOnGround: 0
   isOnFlying: 0
   isDashable: 0
+  isFireable: 0
+  isReloading: 0
+  isWeaponChangeable: 0
   horizontalInput: 0
   verticalInput: 0
   horizontalDash: 0

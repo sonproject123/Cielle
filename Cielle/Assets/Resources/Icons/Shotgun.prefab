@@ -87,7 +87,7 @@ GameObject:
   - component: {fileID: 3934588418089333351}
   - component: {fileID: 477223015000032752}
   m_Layer: 5
-  m_Name: Shotgun
+  m_Name: SHOTGUN
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

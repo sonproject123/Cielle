@@ -40,7 +40,7 @@ public class ObjectManager : Singleton<ObjectManager>{
             CreateObject(playerShotgunBullets, "Bullets/Player_Shotgun");
 
         for (int i = 0; i < breakObjectCreateCount; i++)
-            CreateObject(breakObject, "Break_Object");
+            CreateObject(breakObject, "Objects/Break_Object");
     }
 
     private void CreateObject(Queue<GameObject> queue, string name) {
@@ -83,7 +83,7 @@ public class ObjectManager : Singleton<ObjectManager>{
                 if (breakObject.Count > 0)
                     obj = breakObject.Dequeue();
                 else
-                    obj = CreateRObject(breakObject, "Break_Object");
+                    obj = CreateRObject(breakObject, "Objects/Break_Object");
                 break;
         }
 

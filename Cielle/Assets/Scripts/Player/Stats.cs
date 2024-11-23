@@ -3,45 +3,48 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Stats : Singleton<Stats> {
-    [SerializeField] protected float hp;
-    [SerializeField] protected float maxHp;
+    [SerializeField] float hp;
+    [SerializeField] float maxHp;
 
-    [SerializeField] protected float shield;
-    [SerializeField] protected float maxShield;
+    [SerializeField] float shield;
+    [SerializeField] float maxShield;
                      
-    [SerializeField] protected float attack;
-    [SerializeField] protected float attackShield;
+    [SerializeField] float attack;
+    [SerializeField] float attackShield;
                      
-    [SerializeField] protected float defense;
+    [SerializeField] float defense;
 
-    [SerializeField] protected float speed;
+    [SerializeField] float speed;
 
-    [SerializeField] protected float mass;
+    [SerializeField] float mass;
 
-    [SerializeField] protected float invincible;
+    [SerializeField] float invincible;
 
-    [SerializeField] protected float jumpHeight;
+    [SerializeField] float jumpHeight;
 
-    [SerializeField] protected float dashSpeed;
-    [SerializeField] protected float dashTime;
-    [SerializeField] protected float dashCooltime;
+    [SerializeField] float dashSpeed;
+    [SerializeField] float dashTime;
+    [SerializeField] float dashCooltime;
 
-    [SerializeField] protected float flyTime;
-    [SerializeField] protected float flySpeed;
-    [SerializeField] protected float flyDashSpeed;
+    [SerializeField] float flyTime;
+    [SerializeField] float flySpeed;
+    [SerializeField] float flyDashSpeed;
 
-    [SerializeField] protected bool isMove;
-    [SerializeField] protected bool isLeft;
+    [SerializeField] bool isMove;
+    [SerializeField] bool isLeft;
 
-    [SerializeField] protected int mainWeaponId;
-    [SerializeField] protected int subWeaponId;
-    [SerializeField] protected GunData mainGunData;
+    [SerializeField] int mainWeaponId;
+    [SerializeField] int subWeaponId;
+    [SerializeField] GunData mainGunData;
 
-    [SerializeField] protected int bulletMax;
-    [SerializeField] protected int bulletRemain;
+    [SerializeField] int bulletMax;
+    [SerializeField] int bulletRemain;
 
     [SerializeField] Guns mainGunCode;
     [SerializeField] GunFireType mainGunFireType;
+
+    [SerializeField] float gainRange;
+    [SerializeField] float metals;
 
     private void Start() {
         mainWeaponId = 1;
@@ -77,6 +80,9 @@ public class Stats : Singleton<Stats> {
 
         isMove = false;
         isLeft = false;
+
+        gainRange = 4;
+        metals = 0;
     }
 
     public float Hp {
@@ -187,6 +193,11 @@ public class Stats : Singleton<Stats> {
     public GunData MainGunData {
         get { return mainGunData; }
         set { mainGunData = value; }
+    }
+
+    public float GainRange {
+        get { return gainRange; }
+        set { gainRange = value; }
     }
 
     public void GunInit() {

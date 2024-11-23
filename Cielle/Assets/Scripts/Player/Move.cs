@@ -263,8 +263,7 @@ public class Move : MonoBehaviour {
     }
 
     IEnumerator WeaponReload() {
-        float reload = Stats.Instance.MainGunData.reload;
-        yield return CoroutineCache.WaitForSecond(reload);
+        yield return CoroutineCache.WaitForSecond(Stats.Instance.MainGunData.reload);
 
         Stats.Instance.BulletRemain = Stats.Instance.BulletMax;
         isFireable = true;
