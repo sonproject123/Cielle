@@ -3,9 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Gain : MonoBehaviour {
-    private void OnTriggerEnter(Collider other) {
-        if (other.CompareTag("Metal")) {
+    [SerializeField] Transform player;
 
+    private void OnTriggerStay(Collider other) {
+        if (other.CompareTag("Metal")) {
+            MetalObject mo = other.GetComponent<MetalObject>();
+            if (mo != null) {
+                mo.Target = player;
+                mo.OnPlayerAceessed();
+            }
         }
     }
 }

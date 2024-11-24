@@ -8,7 +8,8 @@ public enum ObjectList {
     PLAYERSHOTGUNBULLET,
     ENEMYBULLET,
 
-    BREAKOBJECT
+    BREAKOBJECT,
+    METALOBJECT
 }
 
 public class ObjectManager : Singleton<ObjectManager>{
@@ -17,15 +18,17 @@ public class ObjectManager : Singleton<ObjectManager>{
     [SerializeField] Queue<GameObject> enemyBullets = new Queue<GameObject>();
 
     [SerializeField] Queue<GameObject> breakObject = new Queue<GameObject>();
+    [SerializeField] Queue<GameObject> metalObject = new Queue<GameObject>();
 
     [SerializeField] int bulletCreateCount;
     [SerializeField] int shotgunBulletCreateCount;
-    [SerializeField] int breakObjectCreateCount;
+
+    [SerializeField] int deadObjectCreateCount;
 
     private void Start() {
         bulletCreateCount = 200;
         shotgunBulletCreateCount = 50;
-        breakObjectCreateCount = 500;
+        deadObjectCreateCount = 500;
 
         CreateObjects();
     }
@@ -39,8 +42,10 @@ public class ObjectManager : Singleton<ObjectManager>{
         for (int i = 0; i < shotgunBulletCreateCount; i++)
             CreateObject(playerShotgunBullets, "Bullets/Player_Shotgun");
 
-        for (int i = 0; i < breakObjectCreateCount; i++)
+        for (int i = 0; i < deadObjectCreateCount; i++) {
             CreateObject(breakObject, "Objects/Break_Object");
+            CreateObject(metalObject, "Objects/Metal");
+        }
     }
 
     private void CreateObject(Queue<GameObject> queue, string name) {
@@ -85,6 +90,12 @@ public class ObjectManager : Singleton<ObjectManager>{
                 else
                     obj = CreateRObject(breakObject, "Objects/Break_Object");
                 break;
+            case ObjectList.METALOBJECT:
+                if (metalObject.Count > 0)
+                    obj = metalObject.Dequeue();
+                else
+                    obj = CreateRObject(metalObject, "Objects/Metal");
+                break;
         }
 
         obj.SetActive(true);
@@ -109,6 +120,9 @@ public class ObjectManager : Singleton<ObjectManager>{
 
             case ObjectList.BREAKOBJECT:
                 breakObject.Enqueue(obj);
+                break;
+            case ObjectList.METALOBJECT:
+                metalObject.Enqueue(obj);
                 break;
         }
     }

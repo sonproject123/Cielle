@@ -7,17 +7,21 @@ using UnityEngine.UI;
 public class UIManager : MonoBehaviour {
     [SerializeField] Slider hpBar;
     [SerializeField] Slider bulletBar;
+
     [SerializeField] Text bulletRemainText;
     [SerializeField] Text bulletMaxText;
+    [SerializeField] Text MetalText;
 
     public static Action OnUpdateHpBar;
     public static Action OnBulletUse;
     public static Action OnBulletChange;
+    public static Action OnMetalChange;
 
     private void Awake() {
         OnUpdateHpBar = () => { HpBar(); };
         OnBulletUse = () => { BulletUse(); };
         OnBulletChange = () => { BulletChange(); };
+        OnMetalChange = () => { MetalChange(); };
     }
 
     private void Start() {
@@ -25,6 +29,8 @@ public class UIManager : MonoBehaviour {
         hpBar.value = Stats.Instance.Hp;
 
         BulletChange();
+
+        MetalText.text = Stats.Instance.Metals.ToString();
     }
 
     public void HpBar() {
@@ -53,5 +59,9 @@ public class UIManager : MonoBehaviour {
             bulletMaxText.text = Stats.Instance.BulletMax.ToString();
             bulletRemainText.text = Stats.Instance.BulletRemain.ToString();
         }
+    }
+
+    public void MetalChange() {
+        MetalText.text = Stats.Instance.Metals.ToString();
     }
 }

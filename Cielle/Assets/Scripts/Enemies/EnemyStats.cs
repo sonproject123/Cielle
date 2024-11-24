@@ -17,6 +17,7 @@ public class EnemyStats : MonoBehaviour, IHitable, IInRange {
     [SerializeField] protected float speed;
     [SerializeField] protected float cooltime;
     [SerializeField] protected float bulletSpeed;
+    [SerializeField] protected int price;
 
     [SerializeField] protected bool isDead;
     [SerializeField] protected bool isAttack;
@@ -34,6 +35,7 @@ public class EnemyStats : MonoBehaviour, IHitable, IInRange {
         defense = 0;
         cooltime = 1;
         bulletSpeed = 5;
+        price = 1;
 
         inRange = false;
         isDead = false;
@@ -71,8 +73,13 @@ public class EnemyStats : MonoBehaviour, IHitable, IInRange {
 
         if (hp <= 0.0 && !isDead) {
             isDead = true;
+
             for (int i = 0; i < 10; i++)
                 BreakObject(hitPosition);
+
+            for (int i = 0; i < 10; i++)
+                MetalObject();
+
             Destroy(gameObject);
         }
     }
@@ -104,9 +111,21 @@ public class EnemyStats : MonoBehaviour, IHitable, IInRange {
         if (bo != null) {
             bo.Speed = Random.Range(120, 150);
 
-            Vector3 randomRange = MathCalculator.Instance.RandomTarget(0.5f, 0.5f);
+            Vector3 randomRange = MathCalculator.Instance.RandomTarget(0.3f, 0.3f);
             bo.Direction = direction + randomRange;
             bo.OnDead();
+        }
+    }
+
+    protected void MetalObject() {
+        GameObject obj = ObjectManager.Instance.UseObject(ObjectList.METALOBJECT);
+        obj.transform.position = transform.position;
+
+        MetalObject mo = obj.GetComponent<MetalObject>();
+        if (mo != null) {
+            Vector3 randomRange = MathCalculator.Instance.RandomTarget(0.1f, 0.1f);
+            mo.Direction = Vector3.down + randomRange;
+            mo.Price = price;
         }
     }
 }

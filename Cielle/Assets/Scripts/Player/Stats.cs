@@ -44,7 +44,8 @@ public class Stats : Singleton<Stats> {
     [SerializeField] GunFireType mainGunFireType;
 
     [SerializeField] float gainRange;
-    [SerializeField] float metals;
+    [SerializeField] int metals;
+    [SerializeField] int totalMetals;
 
     private void Start() {
         mainWeaponId = 1;
@@ -198,6 +199,16 @@ public class Stats : Singleton<Stats> {
     public float GainRange {
         get { return gainRange; }
         set { gainRange = value; }
+    }
+
+    public int Metals {
+        get { return metals; }
+        set { metals = value; }
+    }
+
+    public int TotalMetals {
+        get { return totalMetals; }
+        set { totalMetals = value; }
     }
 
     public void GunInit() {
