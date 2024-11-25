@@ -3444,6 +3444,14 @@ PrefabInstance:
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3173851433278774833, guid: 66e68bad0d7da50449f460a2fb6c0d9d, type: 3}
+      propertyPath: playerUI
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3173851433278774833, guid: 66e68bad0d7da50449f460a2fb6c0d9d, type: 3}
+      propertyPath: playerUIParent
+      value: 
+      objectReference: {fileID: 4352756041611170219}
     - target: {fileID: 4248416080747024213, guid: 66e68bad0d7da50449f460a2fb6c0d9d, type: 3}
       propertyPath: m_Height
       value: 1.7
@@ -3521,6 +3529,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 66e68bad0d7da50449f460a2fb6c0d9d, type: 3}
+--- !u!1 &4352756041611170219 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1829830099058667407, guid: 66e68bad0d7da50449f460a2fb6c0d9d, type: 3}
+  m_PrefabInstance: {fileID: 4352756041611170218}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

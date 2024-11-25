@@ -7,7 +7,7 @@ public class EnemyStats : MonoBehaviour, IHitable, IInRange {
     [SerializeField] protected Transform player;
     [SerializeField] protected Transform muzzleRotation;
     [SerializeField] protected Transform muzzle;
-    [SerializeField] protected Transform ui;
+    [SerializeField] protected GameObject ui;
     [SerializeField] protected EnemyUI enemyUI;
     [SerializeField] protected bool inRange;
 

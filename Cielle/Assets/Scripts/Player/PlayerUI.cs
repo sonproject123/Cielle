@@ -7,13 +7,15 @@ using UnityEngine.UI;
 public class PlayerUI : MonoBehaviour {
     [SerializeField] Slider reloadBar;
 
-    public Action OnReloading;
+    public static Action OnReloading;
 
     private void Awake() {
-        
+        OnReloading = () => { Reload(); };
+        reloadBar.enabled = false;
     }
 
     private void Reload() {
+        reloadBar.enabled = true;
         
     }
 }

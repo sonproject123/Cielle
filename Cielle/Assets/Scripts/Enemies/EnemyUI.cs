@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class EnemyUI : MonoBehaviour {
-    [SerializeField] Transform mainObject;
+    [SerializeField] GameObject mainObject;
     [SerializeField] EnemyStats stats;
     [SerializeField] Slider hpBar;
 
