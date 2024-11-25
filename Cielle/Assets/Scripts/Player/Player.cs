@@ -1,8 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour, IHitable {
+    [SerializeField] Transform playerCenter;
     [SerializeField] bool isInvincible = false;
 
     public void Hit(float damage, Vector3 hitPosition) {

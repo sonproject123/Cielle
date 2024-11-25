@@ -1294,6 +1294,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84818badbe53dbe4b8a3519ca6f7e7d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 0}
   hp: 0
   maxHp: 0
   shield: 0
@@ -1323,12 +1324,19 @@ MonoBehaviour:
     minSpeed: 0
     maxSpeed: 0
     cooltime: 0
+    reload: 0
     recoil: 0
+    playerRecoil: 0
     bullet: 0
     type: 0
     code: 0
+  bulletMax: 0
+  bulletRemain: 0
   mainGunCode: 0
   mainGunFireType: 0
+  gainRange: 0
+  metals: 0
+  totalMetals: 0
 --- !u!4 &1344541192
 Transform:
   m_ObjectHideFlags: 0
@@ -2027,7 +2035,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletCreateCount: 0
   shotgunBulletCreateCount: 0
-  breakObjectCreateCount: 0
+  deadObjectCreateCount: 0
 --- !u!4 &1985367877
 Transform:
   m_ObjectHideFlags: 0

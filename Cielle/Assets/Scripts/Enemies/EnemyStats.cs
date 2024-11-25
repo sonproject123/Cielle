@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -24,7 +25,8 @@ public class EnemyStats : MonoBehaviour, IHitable, IInRange {
 
     private void Awake() {
         enemyUI = ui.GetComponent<EnemyUI>();
-        player = GameObject.Find("Player Center").transform;
+
+        player = Stats.Instance.PlayerCenter;
     }
 
     protected virtual void Start() {
@@ -95,7 +97,7 @@ public class EnemyStats : MonoBehaviour, IHitable, IInRange {
 
         BulletEnemy bulletEnemy = bullet.GetComponent<BulletEnemy>();
         if (bulletEnemy != null) {
-            bulletEnemy.Atk = attack + Random.Range(1, 10);
+            bulletEnemy.Atk = attack + UnityEngine.Random.Range(1, 10);
             bulletEnemy.Speed = bulletSpeed;
             bulletEnemy.Target = player.position;
         }
@@ -109,7 +111,7 @@ public class EnemyStats : MonoBehaviour, IHitable, IInRange {
 
         BreakObject bo = obj.GetComponent<BreakObject>();
         if (bo != null) {
-            bo.Speed = Random.Range(120, 150);
+            bo.Speed = UnityEngine.Random.Range(120, 150);
 
             Vector3 randomRange = MathCalculator.Instance.RandomTarget(0.3f, 0.3f);
             bo.Direction = direction + randomRange;
@@ -123,9 +125,8 @@ public class EnemyStats : MonoBehaviour, IHitable, IInRange {
 
         MetalObject mo = obj.GetComponent<MetalObject>();
         if (mo != null) {
-            Vector3 randomRange = MathCalculator.Instance.RandomTarget(0.1f, 0.1f);
-            mo.Direction = Vector3.down + randomRange;
             mo.Price = price;
+            mo.OnDrop();
         }
     }
 }

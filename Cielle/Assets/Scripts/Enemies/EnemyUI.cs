@@ -5,12 +5,12 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class EnemyUI : MonoBehaviour {
-    [SerializeField] Transform parent;
+    [SerializeField] Transform mainObject;
     [SerializeField] EnemyStats stats;
     [SerializeField] Slider hpBar;
 
     private void Awake() {
-        stats = parent.GetComponent<EnemyStats>();
+        stats = mainObject.GetComponent<EnemyStats>();
     }
 
     private void Start() {

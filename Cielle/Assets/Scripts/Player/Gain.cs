@@ -14,4 +14,13 @@ public class Gain : MonoBehaviour {
             }
         }
     }
+
+    private void OnTriggerExit(Collider other) {
+        if (other.CompareTag("Metal")) {
+            MetalObject mo = other.GetComponent<MetalObject>();
+            if (mo != null) {
+                mo.OnPlayerExit();
+            }
+        }
+    }
 }

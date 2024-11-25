@@ -15,18 +15,22 @@ public class MetalObject : MonoBehaviour {
 
     public Action OnDrop;
     public Action OnPlayerAceessed;
+    public Action OnPlayerExit;
 
     private void Awake() {
         metalCollider = GetComponent<Collider>();
         rigidBody = GetComponent<Rigidbody>();
-        OnPlayerAceessed = () => { GoToPlayer(); };
-        OnDrop = () => { Drop(); };
 
-        speed = 30;
+        OnDrop = () => { Drop(); };
+        OnPlayerAceessed = () => { GoToPlayer(); };
+        OnPlayerExit = () => { PlayerExit(); };
+
+        speed = 20;
     }
 
     public void Drop() {
-        rigidBody.AddForce(direction * 100, ForceMode.Impulse);
+        direction = new Vector3(UnityEngine.Random.Range(-5f, 5f), -1, 0).normalized;
+        rigidBody.AddForce(direction * 0.02f, ForceMode.Impulse);
     }
 
     public void GoToPlayer() {
@@ -38,6 +42,11 @@ public class MetalObject : MonoBehaviour {
 
         Vector3 dir = (target.position - transform.position).normalized;
         rigidBody.MovePosition(rigidBody.position + dir * speed * Time.deltaTime);
+    }
+
+    public void PlayerExit() {
+        metalCollider.isTrigger = false;
+        rigidBody.useGravity = true;
     }
 
     private void OnTriggerEnter(Collider other) {
@@ -56,10 +65,6 @@ public class MetalObject : MonoBehaviour {
     public int Price {
         get { return price; }
         set { price = value; }
-    }
-
-    public Vector3 Direction {
-        set { direction = value; }
     }
 
     public Transform Target {

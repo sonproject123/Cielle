@@ -1,8 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Stats : Singleton<Stats> {
+    [SerializeField] Transform player;
+
     [SerializeField] float hp;
     [SerializeField] float maxHp;
 
@@ -47,6 +50,20 @@ public class Stats : Singleton<Stats> {
     [SerializeField] int metals;
     [SerializeField] int totalMetals;
 
+    private void OnEnable() {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    void OnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode) {
+        if (scene.buildIndex == 0)
+            return;
+        player = GameObject.Find("Player Center").transform;
+    }
+
+    private void OnDisable() {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
     private void Start() {
         mainWeaponId = 1;
         subWeaponId = 2;
@@ -84,6 +101,10 @@ public class Stats : Singleton<Stats> {
 
         gainRange = 4;
         metals = 0;
+    }
+
+    public Transform PlayerCenter {
+        get { return player; }
     }
 
     public float Hp {

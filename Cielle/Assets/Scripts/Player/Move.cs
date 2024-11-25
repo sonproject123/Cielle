@@ -10,6 +10,8 @@ public class Move : MonoBehaviour {
     [SerializeField] Animator animator;
     [SerializeField] Rigidbody rigidBody;
     [SerializeField] Transform playerCenter;
+    [SerializeField] GameObject playerUIParent;
+    [SerializeField] PlayerUI playerUI;
     [SerializeField] LayerMask ground;
 
     [SerializeField] GameObject gun;
@@ -30,6 +32,7 @@ public class Move : MonoBehaviour {
     void Awake() {
         animator = GetComponent<Animator>();
         rigidBody = GetComponent<Rigidbody>();
+        playerUI = playerUIParent.GetComponent<PlayerUI>();
     }
 
     private void Start() {
@@ -141,15 +144,11 @@ public class Move : MonoBehaviour {
         }
 
         // Reload
-        if(Input.GetKeyDown(KeyCode.R) && !isReloading) {
+        if(Input.GetKeyDown(KeyCode.R)) {
             if (Stats.Instance.BulletRemain == Stats.Instance.BulletMax)
                 return;
 
-            isReloading = true;
-            isFireable = false;
-            isWeaponChangeable = false;
-            // Sound reloading
-            StartCoroutine(WeaponReload());
+            Reload();
         }
 
         // Weapon Change
@@ -262,8 +261,26 @@ public class Move : MonoBehaviour {
         isWeaponChangeable = true;
     }
 
+    private void Reload() {
+        if (isReloading)
+            return;
+
+        isReloading = true;
+        isFireable = false;
+        isWeaponChangeable = false;
+        // Sound reloading
+        StartCoroutine(WeaponReload());
+    }
+
     IEnumerator WeaponReload() {
-        yield return CoroutineCache.WaitForSecond(Stats.Instance.MainGunData.reload);
+        float time = 0;
+        float reloadTime = Stats.Instance.MainGunData.reload;
+        WaitForFixedUpdate wffu = GeneralStats.Instance.WFFU;
+
+        while(time < reloadTime) {
+            yield return wffu;
+            time += Time.deltaTime;
+        }
 
         Stats.Instance.BulletRemain = Stats.Instance.BulletMax;
         isFireable = true;
