@@ -46,19 +46,21 @@ public class GunFire : Singleton<GunFire> {
         atk = Stats.Instance.Atk + gun.atk;
         gunCode = Stats.Instance.MainGunCode;
 
-        switch (gunCode) {
-            case Guns.PISTOL:
-                objType = ObjectList.PLAYERBULLET;
-                NormalFire();
-                break;
-            case Guns.SHOTGUN:
-                objType = ObjectList.PLAYERSHOTGUNBULLET;
-                ShotgunFire();
-                break;
-            case Guns.RIFLE:
-                objType = ObjectList.PLAYERBULLET;
-                NormalFire();
-                break;
+        if (isShootable) {
+            switch (gunCode) {
+                case Guns.PISTOL:
+                    objType = ObjectList.PLAYERBULLET;
+                    NormalFire();
+                    break;
+                case Guns.SHOTGUN:
+                    objType = ObjectList.PLAYERSHOTGUNBULLET;
+                    ShotgunFire();
+                    break;
+                case Guns.RIFLE:
+                    objType = ObjectList.PLAYERBULLET;
+                    NormalFire();
+                    break;
+            }
         }
     }
 
@@ -81,34 +83,46 @@ public class GunFire : Singleton<GunFire> {
         }
     }
 
-    private void NormalFire() {
-        if (isShootable) {
-            animator.SetTrigger("GunFire");
-            // Sound baam
-            Stats.Instance.BulletRemain--;
-            UIManager.OnBulletUse();
+    private void CommonFire() {
+        Stats.Instance.BulletRemain--;
+        UIManager.OnBulletUse?.Invoke();
+        StartCoroutine(GunCooltime(gun.cooltime));
+    }
 
-            CreateBullets();
-            StartCoroutine(GunCooltime(gun.cooltime));
-        }
+    private void NormalFire() {
+        animator.SetTrigger("GunFire");
+        // Sound baam
+
+        CreateBullets();
+        CommonFire();
     }
 
     private void ShotgunFire() {
-        if (isShootable) {
-            animator.SetTrigger("GunFire");
-            // Sound baam
-            Stats.Instance.BulletRemain--;
-            UIManager.OnBulletUse.Invoke();
+        animator.SetTrigger("GunFire");
+        // Sound baam
 
-            for (int i = 0; i < 8; i++)
-                CreateBullets();
-            StartCoroutine(GunCooltime(1.0f));
-        }
+        for (int i = 0; i < 8; i++)
+            CreateBullets();
+        CommonFire();
     }
 
     IEnumerator GunCooltime(float cooltime) {
         isShootable = false;
-        yield return CoroutineCache.WaitForSecond(cooltime);
+        float time = 0;
+        WaitForFixedUpdate wffu = GeneralStats.Instance.WFFU;
+
+        while (time < cooltime) {
+            time += Time.deltaTime;
+            if (cooltime >= 0.09f)
+                UIManager.OnWeaponCooltime?.Invoke(time, cooltime);
+            yield return wffu;
+        }
+
         isShootable = true;
+        UIManager.OnWeaponCooltime?.Invoke(0, 0);
+    }
+
+    public bool IsShootable { 
+        get { return isShootable; }
     }
 }

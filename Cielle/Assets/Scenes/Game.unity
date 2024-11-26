@@ -439,12 +439,12 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1491995080}
         m_TargetAssemblyTypeName: ButtonManager, Assembly-CSharp
-        m_MethodName: Rifle
-        m_Mode: 1
+        m_MethodName: WeaponChange
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 2
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -687,13 +687,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3b0af2ba7fc5c748a54cd92ccdd1f3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uiColor: {r: 0, g: 0, b: 0, a: 0}
   hpBar: {fileID: 1917714131}
   bulletBar: {fileID: 1898699590}
-  mainWeaponCooltime: {fileID: 0}
-  subWeaponCooltime: {fileID: 0}
-  mainWeaponIcon: {fileID: 0}
-  subWeaponIcon: {fileID: 0}
+  mainWeaponCooltime: {fileID: 1609825169}
+  subWeaponCooltime: {fileID: 571898106}
+  mainWeaponIcon: {fileID: 4981541903685739820}
+  subWeaponIcon: {fileID: 1519478655}
   bulletRemainText: {fileID: 321005274}
   bulletMaxText: {fileID: 1516992940}
   MetalText: {fileID: 1308573753}
@@ -1301,12 +1300,12 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1491995080}
         m_TargetAssemblyTypeName: ButtonManager, Assembly-CSharp
-        m_MethodName: Pistol
-        m_Mode: 1
+        m_MethodName: WeaponChange
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -1470,12 +1469,12 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1491995080}
         m_TargetAssemblyTypeName: ButtonManager, Assembly-CSharp
-        m_MethodName: Shotgun
-        m_Mode: 1
+        m_MethodName: WeaponChange
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 3
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -2975,7 +2974,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: fd64ea13bf3c5f64cb85586430393049, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -3960,7 +3959,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: c76f711f15c94d642b3beccc56d0d706, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

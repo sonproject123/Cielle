@@ -150,12 +150,19 @@ public class Move : MonoBehaviour {
 
         // Weapon Change
         if(Input.GetAxis("Mouse ScrollWheel") != 0 && isWeaponChangeable) {
+            if (GunFire.Instance.IsShootable == false)
+                return;
+            if (Stats.Instance.SubGunData.id == 0)
+                return;
+
             isWeaponChangeable = false;
+            float cooltime = Mathf.Max(Stats.Instance.MainGunData.reload, 1.0f);
 
             (Stats.Instance.MainWeaponId, Stats.Instance.SubWeaponId) = (Stats.Instance.SubWeaponId, Stats.Instance.MainWeaponId);
             Stats.Instance.GunInit();
+            UIManager.OnWeaponChange?.Invoke();
 
-            StartCoroutine(WeaponChangeCooltime());
+            StartCoroutine(WeaponChangeCooltime(cooltime));
         }
     }
 
@@ -253,9 +260,18 @@ public class Move : MonoBehaviour {
         isDashable = true;
     }
 
-    IEnumerator WeaponChangeCooltime() {
-        yield return CoroutineCache.WaitForSecond(1.0f);
+    IEnumerator WeaponChangeCooltime(float cooltime) {
+        float time = 0;
+        WaitForFixedUpdate wffu = GeneralStats.Instance.WFFU;
+
+        while (time < cooltime) {
+            yield return wffu;
+            time += Time.deltaTime;
+            UIManager.OnWeaponChangeCooltime?.Invoke(time, cooltime);
+        }
+
         isWeaponChangeable = true;
+        UIManager.OnWeaponChangeCooltime?.Invoke(0, 0);
     }
 
     private void Reload() {
@@ -265,7 +281,7 @@ public class Move : MonoBehaviour {
         isReloading = true;
         isFireable = false;
         isWeaponChangeable = false;
-        PlayerUI.OnReloading.Invoke(true);
+        PlayerUI.OnReloading?.Invoke(true);
         
         // Sound reloading
         StartCoroutine(WeaponReload());

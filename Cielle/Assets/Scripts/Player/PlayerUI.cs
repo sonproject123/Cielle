@@ -21,11 +21,7 @@ public class PlayerUI : MonoBehaviour {
         reloadBar.gameObject.SetActive(false);
     }
 
-    private void Update() {
-        CanvasRotate();
-    }
-
-    private void CanvasRotate() {
+    private void LateUpdate() {
         transform.rotation = fixRotation;
     }
 

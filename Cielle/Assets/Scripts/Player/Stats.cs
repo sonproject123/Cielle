@@ -219,6 +219,11 @@ public class Stats : Singleton<Stats> {
         set { mainGunData = value; }
     }
 
+    public GunData SubGunData {
+        get { return subGunData; }
+        set { subGunData = value; }
+    }
+
     public float GainRange {
         get { return gainRange; }
         set { gainRange = value; }
@@ -244,6 +249,6 @@ public class Stats : Singleton<Stats> {
        
         bulletMax = mainGunData.bullet;
         bulletRemain = bulletMax;
-        UIManager.OnBulletChange.Invoke();
+        UIManager.OnBulletChange?.Invoke();
     }
 }

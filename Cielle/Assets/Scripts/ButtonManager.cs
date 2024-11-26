@@ -4,21 +4,11 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 public class ButtonManager : Singleton<ButtonManager> {
-    public void Pistol() {
-        Stats.Instance.MainWeaponId = 1;
+    public void WeaponChange(int id) {
+        Stats.Instance.MainWeaponId = id;
         Stats.Instance.GunInit();
+        UIManager.OnWeaponChange?.Invoke();
     }
-
-    public void Rifle() {
-        Stats.Instance.MainWeaponId = 2;
-        Stats.Instance.GunInit();
-    }
-
-    public void Shotgun() {
-        Stats.Instance.MainWeaponId = 3;
-        Stats.Instance.GunInit();
-    }
-
 
     public void LesserDrone() {
         GameObject enemy = ResourcesManager.Instance.Instantiate("Enemies/Lesser_Gun_Drone");
