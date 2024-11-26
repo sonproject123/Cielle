@@ -1044,7 +1044,8 @@ MonoBehaviour:
   animator: {fileID: 0}
   rigidBody: {fileID: 0}
   playerCenter: {fileID: 9027441374142676770}
-  playerUI: {fileID: 1829830099058667407}
+  playerUIParent: {fileID: 0}
+  playerUI: {fileID: 3207547347200740131}
   ground:
     serializedVersion: 2
     m_Bits: 0

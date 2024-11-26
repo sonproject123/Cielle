@@ -1,8 +1,23 @@
 {
   "gunsData": [
     {
+      "id": 0,
+      "name": "blank",
+      "descriptions": "빈 손. (총 버전)",
+      "atk": 0,
+      "minSpeed": 0,
+      "maxSpeed": 0,
+      "cooltime": 0,
+      "reload": 0,
+      "recoil": 0,
+      "playerRecoil": 0,
+      "bullet": 999999,
+      "type": "SINGLE",
+      "code": "BLANK"
+    },
+    {
       "id": 1,
-      "name": "Pistol",
+      "name": "권총",
       "descriptions": "가벼운 한손 권총. 안정적이고, 약하고.",
       "atk": 10,
       "minSpeed": 50,
@@ -10,14 +25,14 @@
       "cooltime": 0.05,
       "reload": 0,
       "recoil": 0.5,
-      "playerRecoil":  0.02,
+      "playerRecoil": 0.02,
       "bullet": 999999,
       "type": "SINGLE",
       "code": "PISTOL"
     },
     {
       "id": 2,
-      "name": "Rifle",
+      "name": "소총",
       "descriptions": "연발이 가능한 돌격 소총.",
       "atk": 8,
       "minSpeed": 50,
@@ -32,7 +47,7 @@
     },
     {
       "id": 3,
-      "name": "Shotgun",
+      "name": "샷건",
       "descriptions": "한번에 탄을 다발로 발사하는 샷건.",
       "atk": 10,
       "minSpeed": 50,
@@ -44,6 +59,21 @@
       "bullet": 5,
       "type": "SINGLE",
       "code": "SHOTGUN"
+    },
+    {
+      "id": 4,
+      "name": "양손 권총",
+      "descriptions": "권총을 한 손에 하나씩 드는건 대체 무슨 생각인지.",
+      "atk": 10,
+      "minSpeed": 50,
+      "maxSpeed": 50,
+      "cooltime": 0.05,
+      "reload": 0,
+      "recoil": 1.0,
+      "playerRecoil": 0.02,
+      "bullet": 999999,
+      "type": "SINGLE",
+      "code": "AKIMBO"
     }
   ]
 }

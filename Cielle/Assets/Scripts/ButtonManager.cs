@@ -6,17 +6,17 @@ using UnityEngine.UIElements;
 public class ButtonManager : Singleton<ButtonManager> {
     public void Pistol() {
         Stats.Instance.MainWeaponId = 1;
-        Stats.Instance.GunChange();
+        Stats.Instance.GunInit();
     }
 
     public void Rifle() {
         Stats.Instance.MainWeaponId = 2;
-        Stats.Instance.GunChange();
+        Stats.Instance.GunInit();
     }
 
     public void Shotgun() {
         Stats.Instance.MainWeaponId = 3;
-        Stats.Instance.GunChange();
+        Stats.Instance.GunInit();
     }
 
 

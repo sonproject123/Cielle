@@ -98,7 +98,7 @@ public class GunFire : Singleton<GunFire> {
             animator.SetTrigger("GunFire");
             // Sound baam
             Stats.Instance.BulletRemain--;
-            UIManager.OnBulletUse();
+            UIManager.OnBulletUse.Invoke();
 
             for (int i = 0; i < 8; i++)
                 CreateBullets();

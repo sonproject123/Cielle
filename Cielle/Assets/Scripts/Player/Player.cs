@@ -10,7 +10,7 @@ public class Player : MonoBehaviour, IHitable {
     public void Hit(float damage, Vector3 hitPosition) {
         if (!isInvincible) {
             Stats.Instance.Hp -= Mathf.Max(1, damage - Stats.Instance.Def);
-            UIManager.OnUpdateHpBar();
+            UIManager.OnUpdateHpBar.Invoke();
 
             if (Stats.Instance.Hp <= 0.0) {
                 Debug.Log("You Died");

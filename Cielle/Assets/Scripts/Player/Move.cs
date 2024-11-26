@@ -10,8 +10,6 @@ public class Move : MonoBehaviour {
     [SerializeField] Animator animator;
     [SerializeField] Rigidbody rigidBody;
     [SerializeField] Transform playerCenter;
-    [SerializeField] GameObject playerUIParent;
-    [SerializeField] PlayerUI playerUI;
     [SerializeField] LayerMask ground;
 
     [SerializeField] GameObject gun;
@@ -32,7 +30,6 @@ public class Move : MonoBehaviour {
     void Awake() {
         animator = GetComponent<Animator>();
         rigidBody = GetComponent<Rigidbody>();
-        playerUI = playerUIParent.GetComponent<PlayerUI>();
     }
 
     private void Start() {
@@ -156,7 +153,7 @@ public class Move : MonoBehaviour {
             isWeaponChangeable = false;
 
             (Stats.Instance.MainWeaponId, Stats.Instance.SubWeaponId) = (Stats.Instance.SubWeaponId, Stats.Instance.MainWeaponId);
-            Stats.Instance.GunChange();
+            Stats.Instance.GunInit();
 
             StartCoroutine(WeaponChangeCooltime());
         }
@@ -268,6 +265,8 @@ public class Move : MonoBehaviour {
         isReloading = true;
         isFireable = false;
         isWeaponChangeable = false;
+        PlayerUI.OnReloading.Invoke(true);
+        
         // Sound reloading
         StartCoroutine(WeaponReload());
     }
@@ -280,13 +279,15 @@ public class Move : MonoBehaviour {
         while(time < reloadTime) {
             yield return wffu;
             time += Time.deltaTime;
+            PlayerUI.OnReloadingTime.Invoke(time, reloadTime);
         }
 
         Stats.Instance.BulletRemain = Stats.Instance.BulletMax;
         isFireable = true;
         isWeaponChangeable = true;
         isReloading = false;
-        UIManager.OnBulletUse();
+        PlayerUI.OnReloading.Invoke(false);
+        UIManager.OnBulletUse.Invoke();
     }
 
     private void OnDisable() {

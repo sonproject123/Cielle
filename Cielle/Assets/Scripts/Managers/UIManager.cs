@@ -5,8 +5,15 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour {
+    [SerializeField] Color uiColor;
+
     [SerializeField] Slider hpBar;
     [SerializeField] Slider bulletBar;
+    [SerializeField] Slider mainWeaponCooltime;
+    [SerializeField] Slider subWeaponCooltime;
+
+    [SerializeField] Image mainWeaponIcon;
+    [SerializeField] Image subWeaponIcon;
 
     [SerializeField] Text bulletRemainText;
     [SerializeField] Text bulletMaxText;
@@ -16,8 +23,11 @@ public class UIManager : MonoBehaviour {
     public static Action OnBulletUse;
     public static Action OnBulletChange;
     public static Action OnMetalChange;
+    public static Action OnWeaponCooltime;
 
     private void Awake() {
+        uiColor = GetComponent<Color>();
+
         OnUpdateHpBar = () => { HpBar(); };
         OnBulletUse = () => { BulletUse(); };
         OnBulletChange = () => { BulletChange(); };
@@ -63,5 +73,10 @@ public class UIManager : MonoBehaviour {
 
     public void MetalChange() {
         MetalText.text = Stats.Instance.Metals.ToString();
+    }
+
+    public void SlotChange() {
+        //mainWeaponIcon
+
     }
 }
