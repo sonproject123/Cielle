@@ -10,6 +10,7 @@ public class Player : MonoBehaviour, IHitable {
     [SerializeField] float shieldRegenTime;
     [SerializeField] float shieldBreakRegenTime;
     [SerializeField] bool isShieldBreak;
+    [SerializeField] bool isShieldRegen;
 
     private void Start() {
         shieldRegenTime = 0;
@@ -17,6 +18,7 @@ public class Player : MonoBehaviour, IHitable {
 
         isInvincible = false;
         isShieldBreak = false;
+        isShieldRegen = false;
     }
 
     public void Hit(float damage, float damageShield, Vector3 hitPosition) {
@@ -24,7 +26,6 @@ public class Player : MonoBehaviour, IHitable {
             if (Stats.Instance.IsShieldOn) {
                 Stats.Instance.Shield -= Mathf.Max(1, damage - Stats.Instance.ShieldDef);
                 UIManager.OnUpdateShieldBar?.Invoke();
-                shieldRegenTime = 0;
 
                 if (Stats.Instance.Shield <= 0.0) {
                     Debug.Log("Shield Break!");
@@ -37,7 +38,13 @@ public class Player : MonoBehaviour, IHitable {
                     }
                 }
                 else {
+                    shieldRegenTime = 0;
                     StartCoroutine(Invincible(Stats.Instance.ShieldInvincible));
+
+                    if(isShieldRegen == false) {
+                        isShieldRegen = true;
+                        StartCoroutine(ShieldRegen());
+                    }
                 }
             }
             else {
@@ -101,9 +108,19 @@ public class Player : MonoBehaviour, IHitable {
         WaitForFixedUpdate wffu = GeneralStats.Instance.WFFU;
 
         while (shieldRegenTime < shieldRegenTimeTotal) {
+            if (isShieldBreak) {
+                isShieldRegen = false;
+                shieldRegenTime = 0;
+                yield break;
+            }
+
             shieldRegenTime += Time.deltaTime;
             yield return wffu;
         }
+
+        isShieldRegen = false;
+        shieldRegenTime = 0;
+        StartCoroutine(ShieldRegenerator());
     }
 
     IEnumerator ShieldBreakRegen() {
@@ -118,5 +135,7 @@ public class Player : MonoBehaviour, IHitable {
         Stats.Instance.IsShieldOn = true;
         UIManager.OnShieldOnOff?.Invoke(true);
         isShieldBreak = false;
+        shieldBreakRegenTime = 0;
+        StartCoroutine(ShieldRegenerator());
     }
 }

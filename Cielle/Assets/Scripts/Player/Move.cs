@@ -100,12 +100,14 @@ public class Move : MonoBehaviour {
 
         // Jump & Fly
         if (Input.GetKeyDown(KeyCode.Space)) {
-            if (Input.GetKey(KeyCode.W) && !isOnFlying) 
+            if (Input.GetKey(KeyCode.W) && !isOnFlying)
                 StartCoroutine(FlyStart());
-            else if (isOnFlying) 
+            else if (isOnFlying)
                 StartCoroutine(FlyEnd());
             else if (isOnGround && !isOnFlying)
                 Jump();
+            else if (Input.GetKey(KeyCode.S) && !isOnFlying && !isOnGround)
+                StartCoroutine(FlyEnd());
         }
 
         // Dash
@@ -190,6 +192,7 @@ public class Move : MonoBehaviour {
     IEnumerator FlyStart() {
         isDashable = false;
         isMovable = false;
+        rigidBody.linearVelocity = Vector3.zero;
         rigidBody.useGravity = false;
 
         float flytime = 0;
