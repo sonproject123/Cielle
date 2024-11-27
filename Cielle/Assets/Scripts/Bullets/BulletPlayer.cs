@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class BulletPlayer : MonoBehaviour {
     [SerializeField] protected float attack;
+    [SerializeField] protected float attackShield;
     [SerializeField] protected float speed;
     [SerializeField] protected Vector3 target;
 
@@ -20,7 +21,7 @@ public class BulletPlayer : MonoBehaviour {
     private void OnTriggerEnter(Collider other) {
         if (other.CompareTag("Enemy")) {
             IHitable hitable = other.GetComponent<IHitable>();
-            hitable.Hit(attack, transform.position);
+            hitable.Hit(attack, attackShield,transform.position);
             ObjectManager.Instance.ReturnObject(gameObject, objType);
         }
         else if (other.CompareTag("Wall"))
@@ -30,6 +31,11 @@ public class BulletPlayer : MonoBehaviour {
     public float Atk {
         get { return attack; }
         set { attack = value; }
+    }
+
+    public float AtkShield {
+        get { return attackShield; }
+        set { attackShield = value; }
     }
 
     public float Speed {

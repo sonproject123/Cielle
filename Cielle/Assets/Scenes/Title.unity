@@ -1299,6 +1299,12 @@ MonoBehaviour:
   maxHp: 0
   shield: 0
   maxShield: 0
+  shieldDefense: 0
+  shieldRegen: 0
+  shieldCooltime: 0
+  shieldBreakCooltime: 0
+  shieldInvincible: 0
+  isShieldOn: 0
   attack: 0
   attackShield: 0
   defense: 0
@@ -1330,9 +1336,24 @@ MonoBehaviour:
     bullet: 0
     type: 0
     code: 0
+  subGunData:
+    id: 0
+    name: 
+    descriptions: 
+    atk: 0
+    minSpeed: 0
+    maxSpeed: 0
+    cooltime: 0
+    reload: 0
+    recoil: 0
+    playerRecoil: 0
+    bullet: 0
+    type: 
+    code: 
   bulletMax: 0
   bulletRemain: 0
   mainGunCode: 0
+  subGunCode: 0
   mainGunFireType: 0
   gainRange: 0
   metals: 0

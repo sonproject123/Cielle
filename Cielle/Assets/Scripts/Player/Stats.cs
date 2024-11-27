@@ -11,6 +11,12 @@ public class Stats : Singleton<Stats> {
 
     [SerializeField] float shield;
     [SerializeField] float maxShield;
+    [SerializeField] float shieldDefense;
+    [SerializeField] float shieldRegen;
+    [SerializeField] float shieldCooltime;
+    [SerializeField] float shieldBreakCooltime;
+    [SerializeField] float shieldInvincible;
+    [SerializeField] bool isShieldOn;
                      
     [SerializeField] float attack;
     [SerializeField] float attackShield;
@@ -67,6 +73,7 @@ public class Stats : Singleton<Stats> {
     }
 
     private void Start() {
+        #region Initialize
         mainWeaponId = 1;
         subWeaponId = 2;
         GunInit();
@@ -74,10 +81,16 @@ public class Stats : Singleton<Stats> {
         maxHp = 100;
         hp = maxHp;
 
-        maxShield = 0;
+        maxShield = 100;
         shield = maxShield;
+        shieldDefense = 1;
+        shieldRegen = 10; // per second
+        shieldCooltime = 10;
+        shieldBreakCooltime = 20;
+        shieldInvincible = 0.1f;
+        isShieldOn = true;
 
-        attack = 0;
+        attack = 1;
         attackShield = 0;
 
         defense = 0;
@@ -103,8 +116,10 @@ public class Stats : Singleton<Stats> {
 
         gainRange = 4;
         metals = 0;
+        #endregion
     }
 
+    #region Property
     public Transform PlayerCenter {
         get { return player; }
     }
@@ -116,6 +131,46 @@ public class Stats : Singleton<Stats> {
     public float MaxHp {
         get { return maxHp; }
         set { maxHp = value; }
+    }
+
+    public float Shield {
+        get { return shield; }
+        set { shield = value; }
+    }
+
+    public float MaxShield {
+        get { return maxShield; }
+        set { maxShield = value; }
+    }
+
+    public float ShieldDef {
+        get { return shieldDefense; }
+        set { shieldDefense = value; }
+    }
+
+    public float ShieldRegen {
+        get { return shieldRegen; }
+        set { shieldRegen = value; }
+    }
+
+    public float ShieldCooltime {
+        get { return shieldCooltime; }
+        set { shieldCooltime = value; }
+    }
+
+    public float ShieldBreakCooltime {
+        get { return shieldBreakCooltime; }
+        set { shieldBreakCooltime = value; }
+    }
+
+    public float ShieldInvincible {
+        get { return shieldInvincible; }
+        set { shieldInvincible = value; }
+    }
+
+    public bool IsShieldOn {
+        get { return isShieldOn; }
+        set { isShieldOn = value; }
     }
 
     public float Atk {
@@ -238,6 +293,8 @@ public class Stats : Singleton<Stats> {
         get { return totalMetals; }
         set { totalMetals = value; }
     }
+
+    #endregion
 
     public void GunInit() {
         JsonManager.Instance.GunDict.TryGetValue(mainWeaponId, out mainGunData);

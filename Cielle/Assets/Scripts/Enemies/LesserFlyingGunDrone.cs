@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class LesserFlyingGunDrone : EnemyStats {
-    
-
     protected override void Start() {
         base.Start();
         maxHp = 100;

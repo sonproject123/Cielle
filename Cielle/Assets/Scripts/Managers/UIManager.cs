@@ -7,18 +7,27 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour {
     [SerializeField] Slider hpBar;
+    [SerializeField] Text hpText;
+    [SerializeField] Text hpMaxText;
+
+    [SerializeField] Slider shieldBar;
+    [SerializeField] Text shieldText;
+    [SerializeField] Text shieldMaxText;
+
     [SerializeField] Slider bulletBar;
-    [SerializeField] Slider mainWeaponCooltime;
-    [SerializeField] Slider subWeaponCooltime;
-
-    [SerializeField] Image mainWeaponIcon;
-    [SerializeField] Image subWeaponIcon;
-
     [SerializeField] Text bulletRemainText;
     [SerializeField] Text bulletMaxText;
+
+    [SerializeField] Slider mainWeaponCooltime;
+    [SerializeField] Image mainWeaponIcon;
+    [SerializeField] Slider subWeaponCooltime;
+    [SerializeField] Image subWeaponIcon;
+
     [SerializeField] Text MetalText;
 
     public static Action OnUpdateHpBar;
+    public static Action OnUpdateShieldBar;
+    public static Action<bool> OnShieldOnOff;
     public static Action OnBulletUse;
     public static Action OnBulletChange;
     public static Action OnMetalChange;
@@ -28,17 +37,30 @@ public class UIManager : MonoBehaviour {
 
     private void Awake() {
         OnUpdateHpBar = () => { HpBar(); };
+
+        OnUpdateShieldBar = () => { ShieldBar(); };
+        OnShieldOnOff = (bool state) => { ShieldOnOff(state); };
+
         OnBulletUse = () => { BulletUse(); };
         OnBulletChange = () => { BulletChange(); };
+
         OnMetalChange = () => { MetalChange(); };
+
         OnWeaponCooltime = (float time, float maxTime) => { WeaponCooltime(time, maxTime); };
+
         OnWeaponChange = () => { WeaponChange(); };
         OnWeaponChangeCooltime = (float time, float maxTime) => { WeaponChangeCooltime(time, maxTime); };
     }
 
     private void Start() {
         hpBar.maxValue = Stats.Instance.MaxHp;
-        hpBar.value = Stats.Instance.Hp;
+        hpMaxText.text = Stats.Instance.MaxHp.ToString();
+        HpBar();
+
+        shieldBar.maxValue = Stats.Instance.MaxShield;
+        shieldMaxText.text = Stats.Instance.MaxShield.ToString();
+        ShieldBar();
+
         mainWeaponCooltime.maxValue = 0;
         mainWeaponCooltime.value = 0;
         subWeaponCooltime.maxValue = 0;
@@ -52,6 +74,22 @@ public class UIManager : MonoBehaviour {
 
     public void HpBar() {
         hpBar.value = Stats.Instance.Hp;
+        if (Stats.Instance.Hp <= 0.0)
+            hpText.text = "0";
+        else
+            hpText.text = Stats.Instance.Hp.ToString();
+    }
+
+    public void ShieldBar() {
+        shieldBar.value = Stats.Instance.Shield;
+        if (Stats.Instance.Shield <= 0.0)
+            shieldText.text = "0";
+        else
+            shieldText.text = Stats.Instance.Shield.ToString();
+    }
+
+    public void ShieldOnOff(bool state) {
+        shieldBar.gameObject.SetActive(state);
     }
 
     public void BulletUse() {

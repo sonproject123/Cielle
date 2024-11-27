@@ -14,6 +14,7 @@ public class EnemyStats : MonoBehaviour, IHitable, IInRange {
     [SerializeField] protected float hp;
     [SerializeField] protected float maxHp;
     [SerializeField] protected float attack;
+    [SerializeField] protected float attackShield;
     [SerializeField] protected float defense;
     [SerializeField] protected float speed;
     [SerializeField] protected float cooltime;
@@ -33,7 +34,8 @@ public class EnemyStats : MonoBehaviour, IHitable, IInRange {
         maxHp = 100;
         hp = maxHp;
         speed = 10;
-        attack = 1;
+        attack = 10;
+        attackShield = 0;
         defense = 0;
         cooltime = 1;
         bulletSpeed = 5;
@@ -51,12 +53,17 @@ public class EnemyStats : MonoBehaviour, IHitable, IInRange {
 
     public float MaxHp {
         get { return maxHp; }
-        set { hp = value; }
+        set { maxHp = value; }
     }
 
     public float Atk {
         get { return attack; }
-        set { hp = value; }
+        set { attack = value; }
+    }
+
+    public float AtkShield {
+        get { return attackShield; }
+        set { attackShield = value; }
     }
 
     public float Speed {
@@ -69,7 +76,7 @@ public class EnemyStats : MonoBehaviour, IHitable, IInRange {
         set { cooltime = value; }
     }
 
-    public void Hit(float damage, Vector3 hitPosition) {
+    public void Hit(float damage, float damageShield, Vector3 hitPosition) {
         hp -= Mathf.Max(1, damage - defense);
         enemyUI.HpBar();
 
@@ -90,17 +97,22 @@ public class EnemyStats : MonoBehaviour, IHitable, IInRange {
         inRange = value;
     }
 
+    protected void BulletStats(GameObject bullet) {
+        BulletEnemy bulletEnemy = bullet.GetComponent<BulletEnemy>();
+        if (bulletEnemy != null) {
+            bulletEnemy.Atk = attack;
+            bulletEnemy.AtkShield = attackShield;
+            bulletEnemy.Speed = bulletSpeed;
+            bulletEnemy.Target = player.position;
+        }
+    }
+
     protected void LinearBulletSpawn() {
         GameObject bullet = ObjectManager.Instance.UseObject(ObjectList.ENEMYBULLET);
         bullet.transform.position = muzzle.transform.position;
         bullet.transform.rotation = muzzle.transform.rotation;
 
-        BulletEnemy bulletEnemy = bullet.GetComponent<BulletEnemy>();
-        if (bulletEnemy != null) {
-            bulletEnemy.Atk = attack + UnityEngine.Random.Range(1, 10);
-            bulletEnemy.Speed = bulletSpeed;
-            bulletEnemy.Target = player.position;
-        }
+        BulletStats(bullet);
     }
 
     protected void BreakObject(Vector3 hitPosition) {

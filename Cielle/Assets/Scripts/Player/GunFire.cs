@@ -28,6 +28,7 @@ public class GunFire : Singleton<GunFire> {
 
     GunData gun;
     float atk;
+    float atkShield;
     Guns gunCode;
     ObjectList objType;
     bool isShootable = true;
@@ -43,7 +44,8 @@ public class GunFire : Singleton<GunFire> {
         animator = Panimator;
 
         gun = Stats.Instance.MainGunData;
-        atk = Stats.Instance.Atk + gun.atk;
+        atk = Stats.Instance.Atk * gun.atk;
+        atkShield = Stats.Instance.AtkShield;
         gunCode = Stats.Instance.MainGunCode;
 
         if (isShootable) {
@@ -74,6 +76,7 @@ public class GunFire : Singleton<GunFire> {
         BulletPlayer bulletPlayer = bullet.GetComponent<BulletPlayer>();
         if (bulletPlayer != null) {
             bulletPlayer.Atk = atk;
+            bulletPlayer.AtkShield = atk;
             bulletPlayer.Speed = Random.Range(gun.minSpeed, gun.maxSpeed);
             bulletPlayer.Guns = gunCode;
             bulletPlayer.ObjType = objType;
