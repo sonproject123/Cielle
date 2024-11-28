@@ -4,8 +4,13 @@ using UnityEngine;
 
 public class GeneralStats : Singleton<GeneralStats> {
     [SerializeField] bool pause = false;
+    [SerializeField] float originalFixedTime;
     [SerializeField] Vector3 mousePosition;
     [SerializeField] WaitForFixedUpdate wffu = new WaitForFixedUpdate();
+
+    private void Start() {
+        originalFixedTime = Time.fixedDeltaTime;
+    }
 
     public bool Pause {
         get { return pause; }
@@ -30,5 +35,10 @@ public class GeneralStats : Singleton<GeneralStats> {
             Input.mousePosition.x,
             Input.mousePosition.y,
             -Camera.main.transform.position.z));
+    }
+
+    public void SlowTime(float scale = 1.0f) {
+        Time.timeScale = scale;
+        Time.fixedDeltaTime = originalFixedTime * Time.timeScale;
     }
 }

@@ -28,7 +28,9 @@ public class Player : MonoBehaviour, IHitable {
                 UIManager.OnUpdateShieldBar?.Invoke();
 
                 if (Stats.Instance.Shield <= 0.0) {
-                    Debug.Log("Shield Break!");
+                    StartCoroutine(ShieldBreak());
+                    StartCoroutine(Invincible(Stats.Instance.Invincible));
+
                     Stats.Instance.IsShieldOn = false;
                     UIManager.OnShieldOnOff?.Invoke(false);
 
@@ -82,6 +84,13 @@ public class Player : MonoBehaviour, IHitable {
         isInvincible = false;
     }
 
+    private void Stun(float power, Vector3 hitPosition) {
+        Stats.Instance.IsMovable = false;
+        if(transform.position.x < hitPosition.x) {
+
+        }
+    }
+
     IEnumerator ShieldRegenerator() {
         float shieldRegenValue = Stats.Instance.MaxShield - Stats.Instance.Shield;
         float shieldRegenAmount = Stats.Instance.ShieldRegen / 10.0f;
@@ -90,6 +99,11 @@ public class Player : MonoBehaviour, IHitable {
 
         while (shieldRegenValue > 0.0f) {
             sec += Time.deltaTime;
+            if(Stats.Instance.IsShieldOn == false) {
+                shieldRegenValue = 0;
+                yield break;
+            }
+
             if(sec >= 0.1f) {
                 sec = 0;
                 shieldRegenValue -= shieldRegenAmount;
@@ -137,5 +151,22 @@ public class Player : MonoBehaviour, IHitable {
         isShieldBreak = false;
         shieldBreakRegenTime = 0;
         StartCoroutine(ShieldRegenerator());
+    }
+
+    IEnumerator ShieldBreak() {
+        float time = 0;
+        float slowTime = 0.1f;
+        WaitForFixedUpdate wffu = GeneralStats.Instance.WFFU;
+
+        GeneralStats.Instance.SlowTime(slowTime);
+        PlayerCamera.OnCameraZoomIn?.Invoke(true);
+
+        while(time < 1.0f * slowTime) {
+            time += Time.deltaTime;
+            yield return wffu;
+        }
+
+        GeneralStats.Instance.SlowTime();
+        PlayerCamera.OnCameraZoomIn?.Invoke(false);
     }
 }

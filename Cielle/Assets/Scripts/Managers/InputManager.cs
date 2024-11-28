@@ -12,7 +12,6 @@ public class InputManager : Singleton<InputManager> {
             return;
         }
 
-        if (action != null)
-            action.Invoke();
+        action?.Invoke();
     }
 }

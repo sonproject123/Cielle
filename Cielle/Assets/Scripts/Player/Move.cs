@@ -75,6 +75,8 @@ public class Move : MonoBehaviour {
     private void OnkeyUpdate() {
         if (GeneralStats.Instance.Pause == true)
             return;
+        if (Stats.Instance.IsMovable == false)
+            return;
         Stats.Instance.IsMove = true;
 
         // Move
@@ -259,7 +261,7 @@ public class Move : MonoBehaviour {
         }
         isMovable = true;
 
-        yield return CoroutineCache.WaitForSecond(Stats.Instance.DashCooltime);
+        //yield return CoroutineCache.WaitForSecond(Stats.Instance.DashCooltime);
         isDashable = true;
     }
 

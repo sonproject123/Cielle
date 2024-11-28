@@ -190,6 +190,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf381507ba583274f875cb08fed0588a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fixRotation: {x: 0, y: 0, z: 0, w: 0}
   reloadBar: {fileID: 518282873359315632}
 --- !u!1 &2602801150413364535
 GameObject:
@@ -1044,8 +1045,6 @@ MonoBehaviour:
   animator: {fileID: 0}
   rigidBody: {fileID: 0}
   playerCenter: {fileID: 9027441374142676770}
-  playerUIParent: {fileID: 0}
-  playerUI: {fileID: 3207547347200740131}
   ground:
     serializedVersion: 2
     m_Bits: 0
@@ -1075,3 +1074,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerCenter: {fileID: 9027441374142676770}
   isInvincible: 0
+  shieldRegenTime: 0
+  shieldBreakRegenTime: 0
+  isShieldBreak: 0
+  isShieldRegen: 0
