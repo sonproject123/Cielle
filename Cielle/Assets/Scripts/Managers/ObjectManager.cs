@@ -6,6 +6,9 @@ using UnityEngine;
 public enum ObjectList {
     PLAYERBULLET,
     PLAYERSHOTGUNBULLET,
+
+    PLAYERDIVEEXPLOSION,
+
     ENEMYBULLET,
 
     BREAKOBJECT,
@@ -14,20 +17,26 @@ public enum ObjectList {
 
 public class ObjectManager : Singleton<ObjectManager>{
     [SerializeField] Queue<GameObject> playerBullets = new Queue<GameObject>();
-    [SerializeField] Queue<GameObject> playerShotgunBullets = new Queue<GameObject>();
     [SerializeField] Queue<GameObject> enemyBullets = new Queue<GameObject>();
+    [SerializeField] int bulletCreateCount;
+
+    [SerializeField] Queue<GameObject> playerShotgunBullets = new Queue<GameObject>();
+    [SerializeField] int shotgunBulletCreateCount;
+
+    [SerializeField] Queue<GameObject> diveExplosions = new Queue<GameObject>();
+    [SerializeField] int diveExplosionCreateCount;
 
     [SerializeField] Queue<GameObject> breakObject = new Queue<GameObject>();
     [SerializeField] Queue<GameObject> metalObject = new Queue<GameObject>();
-
-    [SerializeField] int bulletCreateCount;
-    [SerializeField] int shotgunBulletCreateCount;
-
     [SerializeField] int deadObjectCreateCount;
+
+
 
     private void Start() {
         bulletCreateCount = 200;
         shotgunBulletCreateCount = 50;
+        diveExplosionCreateCount = 3;
+
         deadObjectCreateCount = 500;
 
         CreateObjects();
@@ -41,6 +50,9 @@ public class ObjectManager : Singleton<ObjectManager>{
 
         for (int i = 0; i < shotgunBulletCreateCount; i++)
             CreateObject(playerShotgunBullets, "Bullets/Player_Shotgun");
+
+        for (int i = 0; i < diveExplosionCreateCount; i++)
+            CreateObject(diveExplosions, "Bullets/Explosion_Dive_Attack");
 
         for (int i = 0; i < deadObjectCreateCount; i++) {
             CreateObject(breakObject, "Objects/Break_Object");
@@ -77,6 +89,13 @@ public class ObjectManager : Singleton<ObjectManager>{
                 else
                     obj = CreateRObject(playerShotgunBullets, "Bullets/Player_Shotgun");
                 break;
+            case ObjectList.PLAYERDIVEEXPLOSION:
+                if (diveExplosions.Count > 0)
+                    obj = diveExplosions.Dequeue();
+                else
+                    obj = CreateRObject(diveExplosions, "Bullets/Explosion_Dive_Attack");
+                break;
+
             case ObjectList.ENEMYBULLET:
                 if (enemyBullets.Count > 0)
                     obj = enemyBullets.Dequeue();
@@ -114,6 +133,11 @@ public class ObjectManager : Singleton<ObjectManager>{
             case ObjectList.PLAYERSHOTGUNBULLET:
                 playerShotgunBullets.Enqueue(obj);
                 break;
+
+            case ObjectList.PLAYERDIVEEXPLOSION:
+                diveExplosions.Enqueue(obj);
+                break;
+
             case ObjectList.ENEMYBULLET:
                 enemyBullets.Enqueue(obj);
                 break;

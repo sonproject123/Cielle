@@ -13,10 +13,15 @@ public class EnemyStats : MonoBehaviour, IHitable, IInRange {
 
     [SerializeField] protected float hp;
     [SerializeField] protected float maxHp;
+    [SerializeField] protected float shield;
+    [SerializeField] protected float maxShield;
     [SerializeField] protected float attack;
     [SerializeField] protected float attackShield;
     [SerializeField] protected float defense;
     [SerializeField] protected float speed;
+    [SerializeField] protected float stoppingPower;
+    [SerializeField] protected float stoppingTime;
+    [SerializeField] protected float stoppingResistance;
     [SerializeField] protected float cooltime;
     [SerializeField] protected float bulletSpeed;
     [SerializeField] protected int price;
@@ -39,6 +44,9 @@ public class EnemyStats : MonoBehaviour, IHitable, IInRange {
         defense = 0;
         cooltime = 1;
         bulletSpeed = 5;
+        stoppingPower = 0;
+        stoppingTime = 0;
+        stoppingResistance = 0;
         price = 1;
 
         inRange = false;
@@ -54,6 +62,16 @@ public class EnemyStats : MonoBehaviour, IHitable, IInRange {
     public float MaxHp {
         get { return maxHp; }
         set { maxHp = value; }
+    }
+
+    public float Shield {
+        get { return shield; }
+        set { shield = value; }
+    }
+
+    public float MaxShield {
+        get { return MaxShield; }
+        set { MaxShield = value; }
     }
 
     public float Atk {
@@ -76,9 +94,15 @@ public class EnemyStats : MonoBehaviour, IHitable, IInRange {
         set { cooltime = value; }
     }
 
-    public void Hit(float damage, float damageShield, Vector3 hitPosition) {
+    public void Hit(float damage, float damageShield, float stoppingPower, float stoppingTime, Vector3 hitPosition) {
         hp -= Mathf.Max(1, damage - defense);
         enemyUI.HpBar();
+
+        Vector3 dir = Vector3.right;
+        if (transform.position.x < hitPosition.x)
+            dir *= -1;
+
+        StartCoroutine(Stopping(dir, stoppingPower - stoppingResistance, stoppingTime));
 
         if (hp <= 0.0 && !isDead) {
             isDead = true;
@@ -93,6 +117,25 @@ public class EnemyStats : MonoBehaviour, IHitable, IInRange {
         }
     }
 
+    private void TransformMove(Vector3 dir, float speed, float wallSensor) {
+        if (!Physics.Raycast(transform.position, dir, wallSensor, LayerMask.GetMask("Wall")))
+            transform.position += dir * speed * Time.deltaTime;
+    }
+
+    IEnumerator Stopping(Vector3 dir, float stoppingPower, float stoppingTime) {
+        if (stoppingPower < 0)
+            yield break;
+
+        float time = 0;
+        WaitForFixedUpdate wffu = GeneralStats.Instance.WFFU;
+
+        while(time < stoppingTime) {
+            time += Time.deltaTime;
+            TransformMove(dir, stoppingPower, 1);
+            yield return wffu;
+        }
+    }
+
     public void InRange(bool value) {
         inRange = value;
     }
@@ -103,6 +146,8 @@ public class EnemyStats : MonoBehaviour, IHitable, IInRange {
             bulletEnemy.Atk = attack;
             bulletEnemy.AtkShield = attackShield;
             bulletEnemy.Speed = bulletSpeed;
+            bulletEnemy.StoppingPower = stoppingPower;
+            bulletEnemy.StoppingTime = stoppingTime;
             bulletEnemy.Target = player.position;
         }
     }

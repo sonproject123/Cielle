@@ -9,7 +9,7 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour {
     protected virtual void Awake() {
         if (instance == null)
             instance = (T)FindFirstObjectByType(typeof(T));
-        else  {
+        else {
             Destroy(gameObject);
             return;
         }

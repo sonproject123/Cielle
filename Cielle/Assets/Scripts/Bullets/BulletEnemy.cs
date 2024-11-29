@@ -6,6 +6,8 @@ public class BulletEnemy : MonoBehaviour {
     [SerializeField] protected float attack;
     [SerializeField] protected float attackShield;
     [SerializeField] protected float speed;
+    [SerializeField] protected float stoppingPower;
+    [SerializeField] protected float stoppingTime;
     [SerializeField] protected Vector3 target;
 
     [SerializeField] Transform bulletRotation;
@@ -29,6 +31,15 @@ public class BulletEnemy : MonoBehaviour {
         get { return speed; } 
         set { speed = value; } 
     }
+    public float StoppingPower {
+        get { return stoppingPower; }
+        set { stoppingPower = value; }
+    }
+
+    public float StoppingTime {
+        get { return stoppingTime; }
+        set { stoppingTime = value; }
+    }
 
     public Vector3 Target {
         get { return target; }
@@ -42,7 +53,7 @@ public class BulletEnemy : MonoBehaviour {
     private void OnTriggerEnter(Collider other) {
         if (other.CompareTag("Player")) {
             IHitable hitable = other.GetComponent<IHitable>();
-            hitable.Hit(attack, attackShield, transform.position);
+            hitable.Hit(attack, attackShield, stoppingPower, stoppingTime, transform.position);
             ObjectManager.Instance.ReturnObject(gameObject, ObjectList.ENEMYBULLET);
         }
         else if (other.CompareTag("Wall")) {

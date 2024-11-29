@@ -5,5 +5,5 @@ public interface IInRange {
 }
 
 public interface IHitable {
-    public void Hit(float damage, float shieldDamage, Vector3 hitPosition);
+    public void Hit(float damage, float shieldDamage, float stoppingPower, float stoppingTime, Vector3 hitPosition);
 }

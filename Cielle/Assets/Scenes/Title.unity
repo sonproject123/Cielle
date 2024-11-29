@@ -1319,6 +1319,7 @@ MonoBehaviour:
   flySpeed: 0
   flyDashSpeed: 0
   isMove: 0
+  isMovable: 0
   isLeft: 0
   mainWeaponId: 0
   subWeaponId: 0
@@ -1327,12 +1328,15 @@ MonoBehaviour:
     name: 
     descriptions: 
     atk: 0
+    atkShield: 0
     minSpeed: 0
     maxSpeed: 0
     cooltime: 0
     reload: 0
     recoil: 0
     playerRecoil: 0
+    stopping: 0
+    stoppingTime: 0
     bullet: 0
     type: 0
     code: 0
@@ -1341,12 +1345,15 @@ MonoBehaviour:
     name: 
     descriptions: 
     atk: 0
+    atkShield: 0
     minSpeed: 0
     maxSpeed: 0
     cooltime: 0
     reload: 0
     recoil: 0
     playerRecoil: 0
+    stopping: 0
+    stoppingTime: 0
     bullet: 0
     type: 
     code: 
@@ -2371,6 +2378,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pause: 0
+  originalFixedTime: 0
   mousePosition: {x: 0, y: 0, z: 0}
 --- !u!4 &2093322679
 Transform:

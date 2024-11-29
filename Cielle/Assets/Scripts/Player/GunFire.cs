@@ -4,9 +4,9 @@ using UnityEngine;
 
 public enum Guns {
     PISTOL,
-    AKIMBO,
     RIFLE,
     SHOTGUN,
+    AKIMBO,
     SNIPER,
     BOMBER,
     ROCKET,
@@ -29,16 +29,15 @@ public class GunFire : Singleton<GunFire> {
     GunData gun;
     float atk;
     float atkShield;
+    float minSpeed;
+    float maxSpeed;
+    float stoppingPower;
+    float stoppingTime;
     Guns gunCode;
     ObjectList objType;
     bool isShootable = true;
 
-    public void Shoot(Transform Pmuzzle, Animator Panimator) {
-        if (Stats.Instance.BulletRemain <= 0) {
-            // Sound tic tic
-            return;
-        }
-
+    public void Initialize(Transform Pmuzzle, Animator Panimator) {
         muzzle = Pmuzzle;
         mouse = GeneralStats.Instance.MouseLocation;
         animator = Panimator;
@@ -46,7 +45,20 @@ public class GunFire : Singleton<GunFire> {
         gun = Stats.Instance.MainGunData;
         atk = Stats.Instance.Atk * gun.atk;
         atkShield = Stats.Instance.AtkShield;
+        minSpeed = gun.minSpeed;
+        maxSpeed = gun.maxSpeed;
+        stoppingPower = gun.stopping;
+        stoppingTime = gun.stoppingTime;
         gunCode = Stats.Instance.MainGunCode;
+    }
+
+    public void Shoot(Transform Pmuzzle, Animator Panimator) {
+        if (Stats.Instance.BulletRemain <= 0) {
+            // Sound tic tic
+            return;
+        }
+
+        Initialize(Pmuzzle, Panimator);
 
         if (isShootable) {
             switch (gunCode) {
@@ -76,10 +88,13 @@ public class GunFire : Singleton<GunFire> {
         BulletPlayer bulletPlayer = bullet.GetComponent<BulletPlayer>();
         if (bulletPlayer != null) {
             bulletPlayer.Atk = atk;
-            bulletPlayer.AtkShield = atk;
-            bulletPlayer.Speed = Random.Range(gun.minSpeed, gun.maxSpeed);
+            bulletPlayer.AtkShield = atkShield;
+            bulletPlayer.Speed = Random.Range(minSpeed, maxSpeed);
+            bulletPlayer.StoppingPower = stoppingPower;
+            bulletPlayer.StoppingTime = stoppingTime;
             bulletPlayer.Guns = gunCode;
             bulletPlayer.ObjType = objType;
+            bulletPlayer.MuzzlePosition = muzzle.position;
 
             Vector3 randomRange = MathCalculator.Instance.RandomTarget(gun.recoil, gun.recoil);
             bulletPlayer.Target = mouse + randomRange;

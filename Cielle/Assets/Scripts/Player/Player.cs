@@ -21,7 +21,7 @@ public class Player : MonoBehaviour, IHitable {
         isShieldRegen = false;
     }
 
-    public void Hit(float damage, float damageShield, Vector3 hitPosition) {
+    public void Hit(float damage, float damageShield, float stoppingPower, float stoppingTime, Vector3 hitPosition) {
         if (!isInvincible) {
             if (Stats.Instance.IsShieldOn) {
                 Stats.Instance.Shield -= Mathf.Max(1, damage - Stats.Instance.ShieldDef);

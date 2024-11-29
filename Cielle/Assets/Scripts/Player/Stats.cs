@@ -100,7 +100,7 @@ public class Stats : Singleton<Stats> {
 
         mass = 5;
 
-        invincible = 1;
+        invincible = 0.5f;
 
         jumpHeight = 60;
 
