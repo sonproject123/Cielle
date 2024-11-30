@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyStats : MonoBehaviour, IHitable, IInRange {
+    [SerializeField] protected int id = 0;
+    [SerializeField] protected EnemyData enemyData;
     [SerializeField] protected Transform player;
     [SerializeField] protected Transform muzzleRotation;
     [SerializeField] protected Transform muzzle;
@@ -31,27 +33,38 @@ public class EnemyStats : MonoBehaviour, IHitable, IInRange {
 
     private void Awake() {
         enemyUI = ui.GetComponent<EnemyUI>();
-
-        player = Stats.Instance.PlayerCenter;
     }
 
-    protected virtual void Start() {
-        maxHp = 100;
+    private void OnEnable() {
+        if (id != 0) {
+            JsonManager.Instance.EnemyDict.TryGetValue(id, out enemyData);
+            Initialize();
+        }
+    }
+
+    private void Initialize() {
+        maxHp = enemyData.hp;
         hp = maxHp;
-        speed = 10;
-        attack = 10;
-        attackShield = 0;
-        defense = 0;
-        cooltime = 1;
-        bulletSpeed = 5;
-        stoppingPower = 0;
-        stoppingTime = 0;
-        stoppingResistance = 0;
-        price = 1;
+        speed = enemyData.speed;
+        attack = enemyData.attack;
+        attackShield = enemyData.attackShield;
+        defense = enemyData.defense;
+        cooltime = enemyData.cooltime;
+        bulletSpeed = enemyData.bulletSpeed;
+        stoppingPower = enemyData.stoppingPower;
+        stoppingTime = enemyData.stoppingTime;
+        stoppingResistance = enemyData.stoppingResistance;
+        price = enemyData.price;
 
         inRange = false;
         isDead = false;
         isAttack = false;
+        player = Stats.Instance.PlayerCenter;
+    }
+
+    public int Id {
+        get { return id; }
+        set { id = value; }
     }
 
     public float Hp {
@@ -113,7 +126,7 @@ public class EnemyStats : MonoBehaviour, IHitable, IInRange {
             for (int i = 0; i < 10; i++)
                 MetalObject();
 
-            Destroy(gameObject);
+            EnemyManager.Instance.ReturnEnemy(gameObject, id);
         }
     }
 
@@ -153,7 +166,7 @@ public class EnemyStats : MonoBehaviour, IHitable, IInRange {
     }
 
     protected void LinearBulletSpawn() {
-        GameObject bullet = ObjectManager.Instance.UseObject(ObjectList.ENEMYBULLET);
+        GameObject bullet = ObjectManager.Instance.UseObject("ENEMYBULLET");
         bullet.transform.position = muzzle.transform.position;
         bullet.transform.rotation = muzzle.transform.rotation;
 
@@ -161,29 +174,26 @@ public class EnemyStats : MonoBehaviour, IHitable, IInRange {
     }
 
     protected void BreakObject(Vector3 hitPosition) {
-        GameObject obj = ObjectManager.Instance.UseObject(ObjectList.BREAKOBJECT);
+        GameObject obj = ObjectManager.Instance.UseObject("BREAKOBJECT");
         obj.transform.position = transform.position;
 
         Vector3 direction = (transform.position - hitPosition).normalized;
 
         BreakObject bo = obj.GetComponent<BreakObject>();
         if (bo != null) {
-            bo.Speed = UnityEngine.Random.Range(120, 150);
+            float speed = UnityEngine.Random.Range(120, 150);
+            Vector3 dir = direction + MathCalculator.Instance.RandomTarget(0.3f, 0.3f);
 
-            Vector3 randomRange = MathCalculator.Instance.RandomTarget(0.3f, 0.3f);
-            bo.Direction = direction + randomRange;
-            bo.OnDead();
+            bo.OnDead(speed, dir);
         }
     }
 
     protected void MetalObject() {
-        GameObject obj = ObjectManager.Instance.UseObject(ObjectList.METALOBJECT);
+        GameObject obj = ObjectManager.Instance.UseObject("METALOBJECT");
         obj.transform.position = transform.position;
 
         MetalObject mo = obj.GetComponent<MetalObject>();
-        if (mo != null) {
-            mo.Price = price;
-            mo.OnDrop();
-        }
+        if (mo != null) 
+            mo.OnDrop(price);
     }
 }

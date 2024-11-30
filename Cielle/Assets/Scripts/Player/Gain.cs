@@ -8,10 +8,8 @@ public class Gain : MonoBehaviour {
     private void OnTriggerStay(Collider other) {
         if (other.CompareTag("Metal")) {
             MetalObject mo = other.GetComponent<MetalObject>();
-            if (mo != null) {
-                mo.Target = player;
-                mo.OnPlayerAceessed();
-            }
+            if (mo != null) 
+                mo.OnPlayerAceessed(player);
         }
     }
 

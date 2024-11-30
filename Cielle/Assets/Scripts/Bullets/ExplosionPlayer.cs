@@ -8,13 +8,13 @@ public class ExplosionPlayer : MonoBehaviour {
     [SerializeField] protected float stoppingPower;
     [SerializeField] protected float stoppingTime;
 
-    [SerializeField] protected ObjectList objType;
+    [SerializeField] protected string explosionName;
 
     private void OnTriggerEnter(Collider other) {
         if (other.CompareTag("Enemy")) {
             IHitable hitable = other.GetComponent<IHitable>();
             hitable.Hit(attack, attackShield, stoppingPower, stoppingTime, transform.position);
-            ObjectManager.Instance.ReturnObject(gameObject, objType);
+            ObjectManager.Instance.ReturnObject(gameObject, explosionName);
         }
     }
 
@@ -38,8 +38,8 @@ public class ExplosionPlayer : MonoBehaviour {
         set { stoppingTime = value; }
     }
 
-    public ObjectList ObjType {
-        get { return objType; }
-        set { objType = value; }
+    public string ExplosionName {
+        get { return explosionName; }
+        set { explosionName = value; }
     }
 }

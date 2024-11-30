@@ -18,6 +18,6 @@ public class BulletShotgun : BulletPlayer {
             yield return wffu;
         }
 
-        ObjectManager.Instance.ReturnObject(gameObject, objType);
+        ObjectManager.Instance.ReturnObject(gameObject, bulletName);
     }
 }

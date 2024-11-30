@@ -34,7 +34,7 @@ public class GunFire : Singleton<GunFire> {
     float stoppingPower;
     float stoppingTime;
     Guns gunCode;
-    ObjectList objType;
+    string bulletName;
     bool isShootable = true;
 
     public void Initialize(Transform Pmuzzle, Animator Panimator) {
@@ -50,6 +50,7 @@ public class GunFire : Singleton<GunFire> {
         stoppingPower = gun.stopping;
         stoppingTime = gun.stoppingTime;
         gunCode = Stats.Instance.MainGunCode;
+        bulletName = gun.bulletCode;
     }
 
     public void Shoot(Transform Pmuzzle, Animator Panimator) {
@@ -63,15 +64,12 @@ public class GunFire : Singleton<GunFire> {
         if (isShootable) {
             switch (gunCode) {
                 case Guns.PISTOL:
-                    objType = ObjectList.PLAYERBULLET;
                     NormalFire();
                     break;
                 case Guns.SHOTGUN:
-                    objType = ObjectList.PLAYERSHOTGUNBULLET;
                     ShotgunFire();
                     break;
                 case Guns.RIFLE:
-                    objType = ObjectList.PLAYERBULLET;
                     NormalFire();
                     break;
             }
@@ -79,7 +77,7 @@ public class GunFire : Singleton<GunFire> {
     }
 
     private void CreateBullets() {
-        GameObject bullet = ObjectManager.Instance.UseObject(objType);
+        GameObject bullet = ObjectManager.Instance.UseObject(bulletName);
         bullet.transform.position = new Vector3(muzzle.position.x, muzzle.position.y + 1, 0);
 
         float angle = MathCalculator.Instance.Angle(bullet.transform.position, mouse);
@@ -93,7 +91,7 @@ public class GunFire : Singleton<GunFire> {
             bulletPlayer.StoppingPower = stoppingPower;
             bulletPlayer.StoppingTime = stoppingTime;
             bulletPlayer.Guns = gunCode;
-            bulletPlayer.ObjType = objType;
+            bulletPlayer.BulletName = bulletName;
             bulletPlayer.MuzzlePosition = muzzle.position;
 
             Vector3 randomRange = MathCalculator.Instance.RandomTarget(gun.recoil, gun.recoil);

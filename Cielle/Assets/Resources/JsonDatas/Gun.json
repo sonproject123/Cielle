@@ -16,13 +16,14 @@
       "stopping": 0,
       "stoppingTime": 0,
       "type": "SINGLE",
-      "code": "BLANK"
+      "code": "BLANK",
+      "bulletCode": "BLANK"
     },
     {
       "id": 1,
       "name": "권총",
       "descriptions": "가벼운 한손 권총. 안정적이고, 약하고.",
-      "atk": 10,
+      "atk": 30,
       "atkShield": 0,
       "minSpeed": 50,
       "maxSpeed": 50,
@@ -34,13 +35,14 @@
       "stopping": 1,
       "stoppingTime": 0.1,
       "type": "SINGLE",
-      "code": "PISTOL"
+      "code": "PISTOL",
+      "bulletCode": "PLAYERBULLET"
     },
     {
       "id": 2,
       "name": "소총",
       "descriptions": "연발이 가능한 돌격 소총.",
-      "atk": 8,
+      "atk": 20,
       "atkShield": 0,
       "minSpeed": 50,
       "maxSpeed": 50,
@@ -52,13 +54,14 @@
       "stopping": 2,
       "stoppingTime": 0.05,
       "type": "REPEAT",
-      "code": "RIFLE"
+      "code": "RIFLE",
+      "bulletCode": "PLAYERBULLET"
     },
     {
       "id": 3,
       "name": "샷건",
       "descriptions": "한번에 탄을 다발로 발사하는 샷건.",
-      "atk": 10,
+      "atk": 15,
       "atkShield": 0,
       "minSpeed": 50,
       "maxSpeed": 70,
@@ -70,7 +73,8 @@
       "stopping": 3,
       "stoppingTime": 0.1,
       "type": "SINGLE",
-      "code": "SHOTGUN"
+      "code": "SHOTGUN",
+      "bulletCode": "PLAYERSHOTGUNBULLET"
     },
     {
       "id": 4,
@@ -88,7 +92,8 @@
       "stopping": 1,
       "stoppingTime": 0.1,
       "type": "SINGLE",
-      "code": "AKIMBO"
+      "code": "AKIMBO",
+      "bulletCode": "PLAYERBULLET"
     }
   ]
 }

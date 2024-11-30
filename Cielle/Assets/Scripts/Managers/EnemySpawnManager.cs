@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemySpawnManager : MonoBehaviour {
-    [SerializeField] List<string> enemyList = new List<string>();
-    [SerializeField] GameObject enemy;
-    [SerializeField] float positionX;
+    [SerializeField] List<int> enemyList = new List<int>();
 
     private void Start() {
         for (int i = 0; i < 3; i++)
@@ -13,9 +11,9 @@ public class EnemySpawnManager : MonoBehaviour {
     }
 
     public void Spawn() {
-        string enemyName = enemyList[Random.Range(0, enemyList.Capacity)];
-        enemy = ResourcesManager.Instance.Instantiate(enemyName);
-        positionX = Random.Range(10.0f, 20.0f);
+        int enemyId = enemyList[Random.Range(0, enemyList.Capacity)];
+        GameObject enemy = EnemyManager.Instance.UseEnemy(enemyId);
+        float positionX = Random.Range(10.0f, 20.0f);
         enemy.transform.localPosition = new Vector3(positionX, 0, 0);
     }
 }

@@ -1,0 +1,21 @@
+{
+  "enemysData": [
+    {
+      "id": 1,
+      "name": "양산형 셸레 드론",
+      "hp": 100,
+      "shield": 0,
+      "attack": 30,
+      "attackShield": 0,
+      "defense": 0,
+      "speed": 5,
+      "stoppingPower": 1,
+      "stoppingTime": 0.1,
+      "stoppingResistance": 0,
+      "cooltime": 2,
+      "bulletSpeed": 7,
+      "price": 1,
+      "code": "Lesser_Gun_Drone"
+    }
+  ]
+}

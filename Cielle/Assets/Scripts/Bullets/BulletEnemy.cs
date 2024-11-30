@@ -54,10 +54,10 @@ public class BulletEnemy : MonoBehaviour {
         if (other.CompareTag("Player")) {
             IHitable hitable = other.GetComponent<IHitable>();
             hitable.Hit(attack, attackShield, stoppingPower, stoppingTime, transform.position);
-            ObjectManager.Instance.ReturnObject(gameObject, ObjectList.ENEMYBULLET);
+            ObjectManager.Instance.ReturnObject(gameObject, "ENEMYBULLET");
         }
         else if (other.CompareTag("Wall")) {
-            ObjectManager.Instance.ReturnObject(gameObject, ObjectList.ENEMYBULLET);
+            ObjectManager.Instance.ReturnObject(gameObject, "ENEMYBULLET");
         }
     }
 }

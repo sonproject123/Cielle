@@ -20,6 +20,7 @@ public class GunData {
     public int bullet;         // 탄창 하나당 총알 수
     public string type;        // 단발, 연발
     public string code;
+    public string bulletCode;
 }
 
 [System.Serializable]

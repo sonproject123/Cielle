@@ -1,0 +1,34 @@
+{
+  "objectsData": [
+    {
+      "name": "PLAYERBULLET",
+      "count": 200,
+      "path": "Bullets/Player_Normal"
+    },
+    {
+      "name": "PLAYERSHOTGUNBULLET",
+      "count": 50,
+      "path": "Bullets/Player_Shotgun"
+    },
+    {
+      "name": "PLAYERDIVEEXPLOSION",
+      "count": 3,
+      "path": "Bullets/Explosion_Dive_Attack"
+    },
+    {
+      "name": "ENEMYBULLET",
+      "count": 200,
+      "path": "Bullets/Enemy_Normal"
+    },
+    {
+      "name": "BREAKOBJECT",
+      "count": 500,
+      "path": "Objects/Break_Object"
+    },
+    {
+      "name": "METALOBJECT",
+      "count": 500,
+      "path": "Objects/Metal"
+    }
+  ]
+}

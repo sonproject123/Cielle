@@ -10,8 +10,8 @@ public class ButtonManager : Singleton<ButtonManager> {
         UIManager.OnWeaponChange?.Invoke();
     }
 
-    public void LesserDrone() {
-        GameObject enemy = ResourcesManager.Instance.Instantiate("Enemies/Lesser_Gun_Drone");
+    public void EnemySpawn(int id) {
+        GameObject enemy = EnemyManager.Instance.UseEnemy(id);
         float positionX = Random.Range(10.0f, 20.0f);
         enemy.transform.localPosition = new Vector3(positionX, 0, 0);
     }

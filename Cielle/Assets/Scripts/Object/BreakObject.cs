@@ -5,33 +5,22 @@ using UnityEngine;
 
 public class BreakObject : MonoBehaviour {
     [SerializeField] Rigidbody rigidBody;
-    [SerializeField] protected float speed;
-    [SerializeField] protected Vector3 direction;
 
-    public Action OnDead;
+    public Action<float, Vector3> OnDead;
 
     private void Awake() {
         rigidBody = GetComponent<Rigidbody>();
-        OnDead = () => { ObjectForce(); };
+        OnDead = (float speed, Vector3 direction) => { ObjectForce(speed, direction); };
     }
 
-    private void ObjectForce() {
+    private void ObjectForce(float speed, Vector3 direction) {
+        rigidBody.linearVelocity = Vector3.zero;
         rigidBody.AddForce(direction * speed, ForceMode.Impulse);
     }
 
     private void OnTriggerEnter(Collider other) {
         if (other.CompareTag("Wall")) {
-            ObjectManager.Instance.ReturnObject(gameObject, ObjectList.BREAKOBJECT);
+            ObjectManager.Instance.ReturnObject(gameObject, "BREAKOBJECT");
         }
-    }
-
-    public float Speed {
-        get { return speed; }
-        set { speed = value; }
-    }
-
-    public Vector3 Direction {
-        get { return direction; }
-        set { direction = value; }
     }
 }
