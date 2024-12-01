@@ -11,6 +11,11 @@
       "path": "Bullets/Player_Shotgun"
     },
     {
+      "name": "PLAYERROCKETBULLET",
+      "count": 10,
+      "path": "Bullets/Player_Rocket"
+    },
+    {
       "name": "PLAYERDIVEEXPLOSION",
       "count": 3,
       "path": "Bullets/Explosion_Dive_Attack"

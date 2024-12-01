@@ -160,7 +160,7 @@ public class Move : MonoBehaviour {
                 return;
 
             isWeaponChangeable = false;
-            float cooltime = Mathf.Max(Stats.Instance.MainGunData.reload, 1.0f);
+            float cooltime = Mathf.Max(Stats.Instance.MainGunData.reload * 2, 1.0f);
 
             (Stats.Instance.MainWeaponId, Stats.Instance.SubWeaponId) = (Stats.Instance.SubWeaponId, Stats.Instance.MainWeaponId);
             Stats.Instance.GunInit();

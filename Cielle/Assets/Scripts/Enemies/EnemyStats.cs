@@ -111,12 +111,6 @@ public class EnemyStats : MonoBehaviour, IHitable, IInRange {
         hp -= Mathf.Max(1, damage - defense);
         enemyUI.HpBar();
 
-        Vector3 dir = Vector3.right;
-        if (transform.position.x < hitPosition.x)
-            dir *= -1;
-
-        StartCoroutine(Stopping(dir, stoppingPower - stoppingResistance, stoppingTime));
-
         if (hp <= 0.0 && !isDead) {
             isDead = true;
 
@@ -127,6 +121,12 @@ public class EnemyStats : MonoBehaviour, IHitable, IInRange {
                 MetalObject();
 
             EnemyManager.Instance.ReturnEnemy(gameObject, id);
+        }
+        else if (hp > 0.0) {
+            Vector3 dir = Vector3.right;
+            if (transform.position.x < hitPosition.x)
+                dir *= -1;
+            StartCoroutine(Stopping(dir, stoppingPower - stoppingResistance, stoppingTime));
         }
     }
 

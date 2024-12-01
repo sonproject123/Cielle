@@ -129,7 +129,11 @@ public class UIManager : MonoBehaviour {
         string mainWeaponIconPath = "Icons/" + Stats.Instance.MainGunData.code;
         string subWeaponIconPath = "Icons/" + Stats.Instance.SubGunData.code;
         mainWeaponIcon.sprite = Resources.Load<Sprite>(mainWeaponIconPath);
+        if (mainWeaponIcon.sprite == null)
+            mainWeaponIcon.sprite = Resources.Load<Sprite>("Icons/BLANK");
         subWeaponIcon.sprite = Resources.Load<Sprite>(subWeaponIconPath);
+        if (subWeaponIcon.sprite == null)
+            subWeaponIcon.sprite = Resources.Load<Sprite>("Icons/BLANK");
     }
 
     public void WeaponChangeCooltime(float time, float maxTime) {

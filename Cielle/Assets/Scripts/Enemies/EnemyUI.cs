@@ -13,7 +13,7 @@ public class EnemyUI : MonoBehaviour {
         stats = mainObject.GetComponent<EnemyStats>();
     }
 
-    private void Start() {
+    private void OnEnable() {
         hpBar.maxValue = stats.MaxHp;
         hpBar.value = stats.Hp;
     }

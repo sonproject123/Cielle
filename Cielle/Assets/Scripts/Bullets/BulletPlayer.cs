@@ -13,7 +13,6 @@ public class BulletPlayer : MonoBehaviour {
 
     [SerializeField] protected Transform bulletRotation;
     [SerializeField] protected Vector3 direction;
-    [SerializeField] protected Guns guns;
     [SerializeField] protected string bulletName;
 
     private void Start() {
@@ -63,11 +62,6 @@ public class BulletPlayer : MonoBehaviour {
     public Vector3 MuzzlePosition {
         get { return muzzlePosition; }
         set { muzzlePosition = value; }
-    }
-
-    public Guns Guns {
-        get { return guns; }
-        set { guns = value; }
     }
 
     public string BulletName {

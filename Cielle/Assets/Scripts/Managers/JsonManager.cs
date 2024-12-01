@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class JsonManager : Singleton<JsonManager> {
     [SerializeField] Dictionary<int, GunData> gunDict = new Dictionary<int, GunData>();
-    [SerializeField] Dictionary<int, ExplosionData> explosionDict = new Dictionary<int, ExplosionData>();
     [SerializeField] Dictionary<string, ObjectData> objectDict = new Dictionary<string, ObjectData>();
     [SerializeField] Dictionary<int, EnemyData> enemyDict = new Dictionary<int, EnemyData>();
 
@@ -19,11 +18,6 @@ public class JsonManager : Singleton<JsonManager> {
         foreach (var obj in gunData.gunsData)
             gunDict.Add(obj.id, obj);
 
-        jsonData = Resources.Load<TextAsset>("JsonDatas/Explosion");
-        ExplosionDataList explosionData = JsonUtility.FromJson<ExplosionDataList>(jsonData.text);
-        foreach (var obj in explosionData.explosionsData)
-            explosionDict.Add(obj.id, obj);
-
         jsonData = Resources.Load<TextAsset>("JsonDatas/Object");
         ObjectDataList objectData = JsonUtility.FromJson<ObjectDataList>(jsonData.text);
         foreach (var obj in objectData.objectsData)
@@ -37,10 +31,6 @@ public class JsonManager : Singleton<JsonManager> {
 
     public Dictionary<int, GunData> GunDict {
         get { return gunDict; }
-    }
-
-    public Dictionary<int, ExplosionData> ExplosionDict {
-        get { return explosionDict; }
     }
 
     public Dictionary<string, ObjectData> ObjectDict {

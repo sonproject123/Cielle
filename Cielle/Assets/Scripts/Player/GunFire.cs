@@ -2,19 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum Guns {
-    PISTOL,
-    RIFLE,
-    SHOTGUN,
-    AKIMBO,
-    SNIPER,
-    BOMBER,
-    ROCKET,
-    GATLING,
-    FLAMETHROWER,
-    LASER,
-    SATELLITE,
-}
+//SNIPER,
+//BOMBER,
+//ROCKET,
+//GATLING,
+//FLAMETHROWER,
+//LASER,
+//SATELLITE,
 
 public enum GunFireType {
     SINGLE,
@@ -33,7 +27,7 @@ public class GunFire : Singleton<GunFire> {
     float maxSpeed;
     float stoppingPower;
     float stoppingTime;
-    Guns gunCode;
+    string code;
     string bulletName;
     bool isShootable = true;
 
@@ -49,7 +43,7 @@ public class GunFire : Singleton<GunFire> {
         maxSpeed = gun.maxSpeed;
         stoppingPower = gun.stopping;
         stoppingTime = gun.stoppingTime;
-        gunCode = Stats.Instance.MainGunCode;
+        code = gun.code;
         bulletName = gun.bulletCode;
     }
 
@@ -62,14 +56,20 @@ public class GunFire : Singleton<GunFire> {
         Initialize(Pmuzzle, Panimator);
 
         if (isShootable) {
-            switch (gunCode) {
-                case Guns.PISTOL:
+            switch (code) {
+                case "PISTOL":
                     NormalFire();
                     break;
-                case Guns.SHOTGUN:
+                case "SHOTGUN":
                     ShotgunFire();
                     break;
-                case Guns.RIFLE:
+                case "RIFLE":
+                    NormalFire();
+                    break;
+                case "AKIMBO":
+                    StartCoroutine(AkimboFire());
+                    break;
+                case "ROCKET":
                     NormalFire();
                     break;
             }
@@ -90,7 +90,6 @@ public class GunFire : Singleton<GunFire> {
             bulletPlayer.Speed = Random.Range(minSpeed, maxSpeed);
             bulletPlayer.StoppingPower = stoppingPower;
             bulletPlayer.StoppingTime = stoppingTime;
-            bulletPlayer.Guns = gunCode;
             bulletPlayer.BulletName = bulletName;
             bulletPlayer.MuzzlePosition = muzzle.position;
 
@@ -119,6 +118,20 @@ public class GunFire : Singleton<GunFire> {
 
         for (int i = 0; i < 8; i++)
             CreateBullets();
+        CommonFire();
+    }
+
+    IEnumerator AkimboFire() {
+        float cooltime = 0.1f;
+
+        animator.SetTrigger("GunFire");
+        // Sound baam
+        CreateBullets();
+
+        yield return CoroutineCache.WaitForSecond(cooltime);
+
+        // Sound baam
+        CreateBullets();
         CommonFire();
     }
 

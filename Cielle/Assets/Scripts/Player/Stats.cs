@@ -51,8 +51,8 @@ public class Stats : Singleton<Stats> {
     [SerializeField] int bulletMax;
     [SerializeField] int bulletRemain;
 
-    [SerializeField] Guns mainGunCode;
-    [SerializeField] Guns subGunCode;
+    [SerializeField] string mainGunCode;
+    [SerializeField] string subGunCode;
     [SerializeField] GunFireType mainGunFireType;
 
     [SerializeField] float gainRange;
@@ -268,7 +268,7 @@ public class Stats : Singleton<Stats> {
         set { bulletRemain = value; }
     }
 
-    public Guns MainGunCode {
+    public string MainGunCode {
         get { return mainGunCode; }
         set { mainGunCode = value; }
     }
@@ -307,9 +307,9 @@ public class Stats : Singleton<Stats> {
         JsonManager.Instance.GunDict.TryGetValue(mainWeaponId, out mainGunData);
         JsonManager.Instance.GunDict.TryGetValue(subWeaponId, out subGunData);
 
-        mainGunCode = (Guns)System.Enum.Parse(typeof(Guns), mainGunData.code);
+        mainGunCode = mainGunData.code;
         mainGunFireType = (GunFireType)System.Enum.Parse(typeof(GunFireType), mainGunData.type);
-        subGunCode = (Guns)System.Enum.Parse(typeof(Guns), subGunData.code);
+        subGunCode = subGunData.code;
        
         bulletMax = mainGunData.bullet;
         bulletRemain = bulletMax;
