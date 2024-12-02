@@ -10,6 +10,7 @@ public class Move : MonoBehaviour {
     [SerializeField] Animator animator;
     [SerializeField] Rigidbody rigidBody;
     [SerializeField] Transform playerCenter;
+    [SerializeField] Transform playerFoot;
     [SerializeField] LayerMask ground;
 
     [SerializeField] GameObject gun;
@@ -171,8 +172,10 @@ public class Move : MonoBehaviour {
     }
 
     private void RigidMove(Vector3 dir, float speed, float wallSensor) {
-        if(!Physics.Raycast(rigidBody.position, dir, wallSensor, LayerMask.GetMask("Wall")))
+        if (!Physics.Raycast(playerFoot.position, dir, wallSensor, LayerMask.GetMask("Wall")))
             rigidBody.MovePosition(rigidBody.position + dir * speed * Time.deltaTime);
+        else
+            rigidBody.linearVelocity = Vector3.zero;
     }
 
     private void GroundMove() {
@@ -229,10 +232,11 @@ public class Move : MonoBehaviour {
         float mass = Stats.Instance.Mass;
         rigidBody.AddForce(Vector3.down * 200, ForceMode.Impulse);
 
-        while (!isOnGround && !Physics.Raycast(rigidBody.position, Vector3.down, 2.0f, LayerMask.GetMask("Wall"))) {
+        while (!isOnGround && !Physics.Raycast(rigidBody.position, Vector3.down, 0.5f, LayerMask.GetMask("Wall"))) {
             rigidBody.MovePosition(rigidBody.position + Vector3.down * 50 * Time.deltaTime);
             yield return wffu;
         }
+        rigidBody.linearVelocity = Vector3.zero;
 
         isMovable = true;
         isDashable = true;

@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &553134783673783436
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1639969809532182082}
+  m_Layer: 6
+  m_Name: Player Foot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1639969809532182082
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 553134783673783436}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.2, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8590385487805445776}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &983721891713695436
 GameObject:
   m_ObjectHideFlags: 0
@@ -927,6 +958,9 @@ PrefabInstance:
       addedObject: {fileID: 9027441374142676770}
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: c198524414f414e4fbcba05e68ea7c98, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 1639969809532182082}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: c198524414f414e4fbcba05e68ea7c98, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 856058842340175670}
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: c198524414f414e4fbcba05e68ea7c98, type: 3}
       insertIndex: -1
@@ -1045,6 +1079,7 @@ MonoBehaviour:
   animator: {fileID: 0}
   rigidBody: {fileID: 0}
   playerCenter: {fileID: 9027441374142676770}
+  playerFoot: {fileID: 1639969809532182082}
   ground:
     serializedVersion: 2
     m_Bits: 0

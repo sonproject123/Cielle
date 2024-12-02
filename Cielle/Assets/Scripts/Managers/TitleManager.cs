@@ -9,6 +9,10 @@ public class TitleManager : MonoBehaviour {
         StartCoroutine(SceneryManager.Instance.AsyncLoad(1));
     }
 
+    public void MapTest() {
+        StartCoroutine(SceneryManager.Instance.AsyncLoad(2));
+    }
+
     public void Continue() {
         Debug.Log("Continue");
     }
