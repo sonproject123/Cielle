@@ -17,14 +17,16 @@ public class PlayerCamera : MonoBehaviour {
 
     public static Action<bool> OnIsCameraMovable;
     public static Action<bool> OnCameraZoomIn;
+    public static Action<float> OnDive;
 
     private void Start() {
         OnIsCameraMovable = (bool state) => { IsCameraMovable(state); };
         OnCameraZoomIn = (bool state) => { CameraZoomIn(state); };
+        OnDive = (float power) => {  Dive(power); };
 
         cameraOriginalSpeed = 120;
         cameraSpeed = cameraOriginalSpeed;
-        cameraOriginalY = 5;
+        cameraOriginalY = 4;
         cameraY = cameraOriginalY;
         cameraOriginalZ = -15;
         cameraZ = cameraOriginalZ;
@@ -60,5 +62,29 @@ public class PlayerCamera : MonoBehaviour {
             cameraY = cameraOriginalY;
             cameraZ = cameraOriginalZ;
         }
+    }
+
+    private void CameraZoomOut(bool state) {
+    }
+
+    private void Dive(float power) {
+        StartCoroutine(DiveMove(power));
+    }
+
+    IEnumerator DiveMove(float power) {
+        float time = 0;
+        float speed = 0.1f;
+        WaitForFixedUpdate wffu = GeneralStats.Instance.WFFU;
+
+        cameraY -= power;
+        cameraSpeed *= speed;
+
+        while (time < 0.1f) {
+            time += Time.deltaTime;
+            yield return wffu;
+        }
+
+        cameraY += power;
+        cameraSpeed /= speed;
     }
 }

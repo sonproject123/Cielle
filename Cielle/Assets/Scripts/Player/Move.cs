@@ -11,6 +11,7 @@ public class Move : MonoBehaviour {
     [SerializeField] Rigidbody rigidBody;
     [SerializeField] Transform playerCenter;
     [SerializeField] Transform playerFoot;
+    [SerializeField] Transform playerHead;
     [SerializeField] LayerMask ground;
 
     [SerializeField] GameObject gun;
@@ -35,7 +36,7 @@ public class Move : MonoBehaviour {
 
     private void Start() {
         isMovable = true;
-        isOnGround = true;
+        isOnGround = false;
         isOnFlying = false;
         isDashable = true;
         isFireable = true;
@@ -118,22 +119,36 @@ public class Move : MonoBehaviour {
         verticalDash = 0;
 
         if (Input.GetKeyDown(KeyCode.LeftShift) && isDashable) {
-            if (Input.GetKey(KeyCode.A))
-                verticalDash = -1;
-            else if (Input.GetKey(KeyCode.D)) 
-                verticalDash = 1;
-            else {
-                if (Stats.Instance.IsLeft)
+            if (isOnFlying) {
+                if (Input.GetKey(KeyCode.A))
                     verticalDash = -1;
-                else
+                else if (Input.GetKey(KeyCode.D))
                     verticalDash = 1;
+
+                if (Input.GetKey(KeyCode.W))
+                    horizontalDash = 1;
+                else if (Input.GetKey(KeyCode.S))
+                    horizontalDash = -1;
+
+                if(verticalDash == 0 && horizontalDash == 0) {
+                    if (Stats.Instance.IsLeft)
+                        verticalDash = -1;
+                    else
+                        verticalDash = 1;
+                }
             }
-
-            if (Input.GetKey(KeyCode.W) && isOnFlying)
-                horizontalDash = 1;
-            else if (Input.GetKey(KeyCode.S) && isOnFlying)
-                horizontalDash = -1;
-
+            else {
+                if (Input.GetKey(KeyCode.A))
+                    verticalDash = -1;
+                else if (Input.GetKey(KeyCode.D))
+                    verticalDash = 1;
+                else {
+                    if (Stats.Instance.IsLeft)
+                        verticalDash = -1;
+                    else
+                        verticalDash = 1;
+                }
+            }
             StartCoroutine(Dash());
         }
 
@@ -172,7 +187,11 @@ public class Move : MonoBehaviour {
     }
 
     private void RigidMove(Vector3 dir, float speed, float wallSensor) {
-        if (!Physics.Raycast(playerFoot.position, dir, wallSensor, LayerMask.GetMask("Wall")))
+        bool head = Physics.Raycast(playerHead.position, dir, wallSensor, LayerMask.GetMask("Wall"));
+        bool center = Physics.Raycast(playerCenter.position, dir, wallSensor, LayerMask.GetMask("Wall"));
+        bool foot = Physics.Raycast(playerFoot.position, dir, wallSensor, LayerMask.GetMask("Wall"));
+
+        if (!head && !center && !foot)
             rigidBody.MovePosition(rigidBody.position + dir * speed * Time.deltaTime);
         else
             rigidBody.linearVelocity = Vector3.zero;
@@ -222,6 +241,7 @@ public class Move : MonoBehaviour {
     }
 
     IEnumerator FlyEnd() {
+        float startY = rigidBody.position.y;
         isOnFlying = false;
         rigidBody.useGravity = true;
         isMovable = false;
@@ -229,13 +249,19 @@ public class Move : MonoBehaviour {
         rigidBody.linearVelocity = Vector3.zero;
 
         WaitForFixedUpdate wffu = GeneralStats.Instance.WFFU;
+        RaycastHit floor;
         float mass = Stats.Instance.Mass;
-        rigidBody.AddForce(Vector3.down * 200, ForceMode.Impulse);
+        if (!Physics.Raycast(rigidBody.position, Vector3.down, out floor, 1.5f, LayerMask.GetMask("Ground")))
+            rigidBody.AddForce(Vector3.down * 200, ForceMode.Impulse);
 
-        while (!isOnGround && !Physics.Raycast(rigidBody.position, Vector3.down, 0.5f, LayerMask.GetMask("Wall"))) {
-            rigidBody.MovePosition(rigidBody.position + Vector3.down * 50 * Time.deltaTime);
+        while (!Physics.Raycast(rigidBody.position, Vector3.down, out floor, 1.5f, LayerMask.GetMask("Ground"))) {
+            rigidBody.MovePosition(rigidBody.position + Vector3.down * 10 * Time.deltaTime);
             yield return wffu;
         }
+
+        float power = Mathf.Max(startY - floor.collider.transform.position.y * 0.1f, 0);
+        PlayerCamera.OnDive(Mathf.Min(0.25f, power));
+        rigidBody.position = new Vector3(rigidBody.position.x, floor.collider.transform.position.y + 0.2f, 0);
         rigidBody.linearVelocity = Vector3.zero;
 
         isMovable = true;
@@ -264,9 +290,8 @@ public class Move : MonoBehaviour {
             dashTime += Time.fixedDeltaTime;
             yield return wffu;
         }
-        isMovable = true;
 
-        //yield return CoroutineCache.WaitForSecond(Stats.Instance.DashCooltime);
+        isMovable = true;
         isDashable = true;
     }
 
