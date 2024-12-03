@@ -16,8 +16,6 @@ public class Move : MonoBehaviour {
 
     [SerializeField] GameObject gun;
 
-    [SerializeField] Collision thinGroundUnderPlayer;
-
     [SerializeField] bool isMovable;
     [SerializeField] bool isOnGround;
     [SerializeField] bool isOnThinGround;
@@ -56,19 +54,19 @@ public class Move : MonoBehaviour {
     }
 
     private void OnCollisionEnter(Collision collision) {
-        if (!isOnFlying && (collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Thin Ground"))) 
+        if (collision.gameObject.CompareTag("Thin Ground")) {
             isOnGround = true;
-        if (!isOnFlying && collision.gameObject.CompareTag("Thin Ground")){
-            thinGroundUnderPlayer = collision;
             isOnThinGround = true;
+        }
+        else if (collision.gameObject.CompareTag("Ground")) {
+            isOnGround = true;
+            isOnThinGround = false;
         }
     }
 
     private void OnCollisionExit(Collision collision) {
-        if (isOnFlying || collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Thin Ground"))
+        if (collision.gameObject.CompareTag("Thin Ground") || collision.gameObject.CompareTag("Ground")) {
             isOnGround = false;
-        if (isOnFlying || collision.gameObject.CompareTag("Thin Ground")) {
-            thinGroundUnderPlayer = null;
             isOnThinGround = false;
         }
     }
@@ -207,8 +205,8 @@ public class Move : MonoBehaviour {
 
         if (!head && !center && !foot)
             rigidBody.MovePosition(rigidBody.position + dir * speed * Time.deltaTime);
-        else
-            rigidBody.linearVelocity = Vector3.zero;
+        //else
+        //    rigidBody.linearVelocity = Vector3.zero;
     }
 
     private void GroundMove() {
@@ -230,15 +228,15 @@ public class Move : MonoBehaviour {
     IEnumerator JumpDown() {
         float time = 0;
         WaitForFixedUpdate wffu = GeneralStats.Instance.WFFU;
-        thinGroundUnderPlayer.collider.enabled = false;
-        rigidBody.AddForce(Vector3.down * Stats.Instance.JumpHeight, ForceMode.Impulse);
+        rigidBody.AddForce(Vector3.down * 50, ForceMode.Impulse);
+        Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Ground"));
 
         while(time < 0.5f) {
             time += Time.deltaTime;
             yield return wffu;
         }
 
-        thinGroundUnderPlayer.collider.enabled = true;
+        Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Ground"), false);
     }
 
     IEnumerator FlyStart() {
