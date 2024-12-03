@@ -16,8 +16,11 @@ public class Move : MonoBehaviour {
 
     [SerializeField] GameObject gun;
 
+    [SerializeField] Collision thinGroundUnderPlayer;
+
     [SerializeField] bool isMovable;
     [SerializeField] bool isOnGround;
+    [SerializeField] bool isOnThinGround;
     [SerializeField] bool isOnFlying;
     [SerializeField] bool isDashable;
     [SerializeField] bool isFireable;
@@ -37,6 +40,7 @@ public class Move : MonoBehaviour {
     private void Start() {
         isMovable = true;
         isOnGround = false;
+        isOnThinGround = false;
         isOnFlying = false;
         isDashable = true;
         isFireable = true;
@@ -52,13 +56,21 @@ public class Move : MonoBehaviour {
     }
 
     private void OnCollisionEnter(Collision collision) {
-        if (collision.gameObject.CompareTag("Ground")) 
+        if (!isOnFlying && (collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Thin Ground"))) 
             isOnGround = true;
+        if (!isOnFlying && collision.gameObject.CompareTag("Thin Ground")){
+            thinGroundUnderPlayer = collision;
+            isOnThinGround = true;
+        }
     }
 
     private void OnCollisionExit(Collision collision) {
-        if (collision.gameObject.CompareTag("Ground"))
+        if (isOnFlying || collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Thin Ground"))
             isOnGround = false;
+        if (isOnFlying || collision.gameObject.CompareTag("Thin Ground")) {
+            thinGroundUnderPlayer = null;
+            isOnThinGround = false;
+        }
     }
 
     private void OnEnable() {
@@ -107,11 +119,13 @@ public class Move : MonoBehaviour {
             if (Input.GetKey(KeyCode.W) && !isOnFlying)
                 StartCoroutine(FlyStart());
             else if (isOnFlying)
-                StartCoroutine(FlyEnd());
+                StartCoroutine(Dive());
+            else if (Input.GetKey(KeyCode.S) && !isOnFlying && !isOnGround)
+                StartCoroutine(Dive());
+            else if(Input.GetKey(KeyCode.S) && !isOnFlying && isOnThinGround)
+                StartCoroutine(JumpDown());
             else if (isOnGround && !isOnFlying)
                 Jump();
-            else if (Input.GetKey(KeyCode.S) && !isOnFlying && !isOnGround)
-                StartCoroutine(FlyEnd());
         }
 
         // Dash
@@ -213,9 +227,25 @@ public class Move : MonoBehaviour {
         rigidBody.AddForce(Vector3.up * Stats.Instance.JumpHeight, ForceMode.Impulse);
     }
 
+    IEnumerator JumpDown() {
+        float time = 0;
+        WaitForFixedUpdate wffu = GeneralStats.Instance.WFFU;
+        thinGroundUnderPlayer.collider.enabled = false;
+        rigidBody.AddForce(Vector3.down * Stats.Instance.JumpHeight, ForceMode.Impulse);
+
+        while(time < 0.5f) {
+            time += Time.deltaTime;
+            yield return wffu;
+        }
+
+        thinGroundUnderPlayer.collider.enabled = true;
+    }
+
     IEnumerator FlyStart() {
         isDashable = false;
         isMovable = false;
+        isOnGround = false;
+        isOnThinGround = false;
         isOnFlying = true;
         rigidBody.linearVelocity = Vector3.zero;
         rigidBody.useGravity = false;
@@ -240,7 +270,7 @@ public class Move : MonoBehaviour {
         isDashable = true;
     }
 
-    IEnumerator FlyEnd() {
+    IEnumerator Dive() {
         float startY = rigidBody.position.y;
         isOnFlying = false;
         rigidBody.useGravity = true;
@@ -254,14 +284,16 @@ public class Move : MonoBehaviour {
         if (!Physics.Raycast(rigidBody.position, Vector3.down, out floor, 1.5f, LayerMask.GetMask("Ground")))
             rigidBody.AddForce(Vector3.down * 200, ForceMode.Impulse);
 
-        while (!Physics.Raycast(rigidBody.position, Vector3.down, out floor, 1.5f, LayerMask.GetMask("Ground"))) {
+        while (!Physics.Raycast(rigidBody.position, Vector3.down, out floor, 1.5f, LayerMask.GetMask("Ground")) && !isOnGround) {
             rigidBody.MovePosition(rigidBody.position + Vector3.down * 10 * Time.deltaTime);
             yield return wffu;
         }
 
-        float power = Mathf.Max(startY - floor.collider.transform.position.y * 0.1f, 0);
-        PlayerCamera.OnDive(Mathf.Min(0.25f, power));
-        rigidBody.position = new Vector3(rigidBody.position.x, floor.collider.transform.position.y + 0.2f, 0);
+        if (floor.collider != null) {
+            float power = Mathf.Max(startY - floor.collider.transform.position.y * 0.1f, 0);
+            PlayerCamera.OnDive(Mathf.Min(0.25f, power));
+            rigidBody.position = new Vector3(rigidBody.position.x, floor.collider.transform.position.y + 0.2f, 0);
+        }
         rigidBody.linearVelocity = Vector3.zero;
 
         isMovable = true;

@@ -64,7 +64,7 @@ public class MetalObject : MonoBehaviour {
     }
 
     private void OnCollisionEnter(Collision collision) {
-        if (collision.collider.CompareTag("Ground"))
+        if (collision.collider.CompareTag("Ground") || collision.gameObject.CompareTag("Thin Ground"))
             isOnGround = true;
     }
 }
