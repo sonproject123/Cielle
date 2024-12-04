@@ -116,7 +116,7 @@ public class Move : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.Space)) {
             if (Input.GetKey(KeyCode.W) && !isOnFlying)
                 StartCoroutine(FlyStart());
-            else if (isOnFlying)
+            else if (isOnFlying && !isOnThinGround)
                 StartCoroutine(Dive());
             else if (Input.GetKey(KeyCode.S) && !isOnFlying && !isOnGround)
                 StartCoroutine(Dive());
@@ -257,10 +257,10 @@ public class Move : MonoBehaviour {
         while (flytime < Stats.Instance.FlyTime) {
             Vector3 direction = (GeneralStats.Instance.MouseLocation - playerCenter.position).normalized;
             playerCenter.rotation = Quaternion.LookRotation(direction);
-            RigidMove(playerCenter.forward, flyDashSpeed, 0.7f);
+            RigidMove(playerCenter.forward, flyDashSpeed, 1.0f);
             flyDashSpeed += Mathf.Max(flySpeed - speed, 0) * Time.fixedDeltaTime * 10;
 
-            flytime += Time.fixedDeltaTime;
+            flytime += Time.deltaTime;
             yield return wffu;
         }
 
@@ -316,7 +316,7 @@ public class Move : MonoBehaviour {
         WaitForFixedUpdate wffu = GeneralStats.Instance.WFFU;
 
         while (dashTime < dashEndTime) {
-            RigidMove(dashDirection, dashSpeed, 0.8f);
+            RigidMove(dashDirection, dashSpeed, 1.0f);
             dashTime += Time.fixedDeltaTime;
             yield return wffu;
         }
