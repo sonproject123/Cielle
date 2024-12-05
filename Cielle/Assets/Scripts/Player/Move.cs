@@ -231,7 +231,7 @@ public class Move : MonoBehaviour {
         rigidBody.AddForce(Vector3.down * 50, ForceMode.Impulse);
         Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Ground"));
 
-        while(time < 0.5f) {
+        while(time < 0.2f) {
             time += Time.deltaTime;
             yield return wffu;
         }
@@ -278,11 +278,14 @@ public class Move : MonoBehaviour {
 
         WaitForFixedUpdate wffu = GeneralStats.Instance.WFFU;
         RaycastHit floor;
-        float mass = Stats.Instance.Mass;
         if (!Physics.Raycast(rigidBody.position, Vector3.down, out floor, 1.5f, LayerMask.GetMask("Ground")))
             rigidBody.AddForce(Vector3.down * 200, ForceMode.Impulse);
 
         while (!Physics.Raycast(rigidBody.position, Vector3.down, out floor, 1.5f, LayerMask.GetMask("Ground")) && !isOnGround) {
+            if (isOnFlying) {
+                rigidBody.linearVelocity = Vector3.zero;
+                yield break;
+            }
             rigidBody.MovePosition(rigidBody.position + Vector3.down * 10 * Time.deltaTime);
             yield return wffu;
         }
@@ -296,7 +299,6 @@ public class Move : MonoBehaviour {
 
         isMovable = true;
         isDashable = true;
-        rigidBody.mass = mass;
     }
 
     IEnumerator Dash() {
