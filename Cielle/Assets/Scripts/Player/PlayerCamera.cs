@@ -73,7 +73,7 @@ public class PlayerCamera : MonoBehaviour {
 
     IEnumerator DiveMove(float power) {
         float time = 0;
-        float speed = 0.1f;
+        float speed = 0.05f;
         WaitForFixedUpdate wffu = GeneralStats.Instance.WFFU;
 
         cameraY -= power;

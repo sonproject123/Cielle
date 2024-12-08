@@ -19,7 +19,7 @@ public class BreakObject : MonoBehaviour {
     }
 
     private void OnTriggerEnter(Collider other) {
-        if (other.CompareTag("Wall") || other.CompareTag("Ground") || other.CompareTag("Thin Ground")) {
+        if (other.CompareTag("Wall") || other.CompareTag("Thin Ground")) {
             ObjectManager.Instance.ReturnObject(gameObject, "BREAKOBJECT");
         }
     }

@@ -53,19 +53,19 @@ public class Move : MonoBehaviour {
         verticalDash = 0;
     }
 
-    private void OnCollisionEnter(Collision collision) {
+    private void OnCollisionStay(Collision collision) {
         if (collision.gameObject.CompareTag("Thin Ground")) {
             isOnGround = true;
             isOnThinGround = true;
         }
-        else if (collision.gameObject.CompareTag("Ground")) {
+        else if (collision.gameObject.CompareTag("Wall")) {
             isOnGround = true;
             isOnThinGround = false;
         }
     }
 
     private void OnCollisionExit(Collision collision) {
-        if (collision.gameObject.CompareTag("Thin Ground") || collision.gameObject.CompareTag("Ground")) {
+        if (collision.gameObject.CompareTag("Thin Ground") || collision.gameObject.CompareTag("Wall")) {
             isOnGround = false;
             isOnThinGround = false;
         }
@@ -198,27 +198,34 @@ public class Move : MonoBehaviour {
         }
     }
 
-    private void RigidMove(Vector3 dir, float speed, float wallSensor) {
+    private bool RaycastCheck(Vector3 dir, float wallSensor) {
         bool head = Physics.Raycast(playerHead.position, dir, wallSensor, LayerMask.GetMask("Wall"));
         bool center = Physics.Raycast(playerCenter.position, dir, wallSensor, LayerMask.GetMask("Wall"));
         bool foot = Physics.Raycast(playerFoot.position, dir, wallSensor, LayerMask.GetMask("Wall"));
 
-        if (!head && !center && !foot)
-            rigidBody.MovePosition(rigidBody.position + dir * speed * Time.deltaTime);
-        //else
-        //    rigidBody.linearVelocity = Vector3.zero;
+        return !head && !center && !foot;
+    }
+
+    private void RigidMove(Vector3 dir, float speed) {
+        rigidBody.MovePosition(rigidBody.position + dir * speed * Time.deltaTime);
     }
 
     private void GroundMove() {
         animator.SetBool("Run", true);
 
         Vector3 dir = new Vector3(verticalInput, 0, 0);
-        RigidMove(dir, Stats.Instance.Speed, 0.5f);
+        if (RaycastCheck(dir, 0.5f))
+            RigidMove(dir, Stats.Instance.Speed);
     }
 
     private void FlyMove() {
+        if(!RaycastCheck(new Vector3(verticalInput, 0, 0), 0.5f))
+            verticalInput = 0;
+        if (!RaycastCheck(new Vector3(0, horizontalInput, 0), 0.5f))
+            horizontalInput = 0;
+
         Vector3 dir = new Vector3(verticalInput, horizontalInput, 0).normalized;
-        RigidMove(dir, Stats.Instance.FlySpeed, 0.5f);
+        RigidMove(dir, Stats.Instance.FlySpeed);
     }
 
     private void Jump() {
@@ -257,7 +264,8 @@ public class Move : MonoBehaviour {
         while (flytime < Stats.Instance.FlyTime) {
             Vector3 direction = (GeneralStats.Instance.MouseLocation - playerCenter.position).normalized;
             playerCenter.rotation = Quaternion.LookRotation(direction);
-            RigidMove(playerCenter.forward, flyDashSpeed, 1.0f);
+            if (RaycastCheck(playerCenter.forward, 1.0f))
+                RigidMove(playerCenter.forward, flyDashSpeed);
             flyDashSpeed += Mathf.Max(flySpeed - speed, 0) * Time.fixedDeltaTime * 10;
 
             flytime += Time.deltaTime;
@@ -278,10 +286,10 @@ public class Move : MonoBehaviour {
 
         WaitForFixedUpdate wffu = GeneralStats.Instance.WFFU;
         RaycastHit floor;
-        if (!Physics.Raycast(rigidBody.position, Vector3.down, out floor, 1.5f, LayerMask.GetMask("Ground")))
+        if (!Physics.Raycast(rigidBody.position, Vector3.down, out floor, 1.5f, LayerMask.GetMask("Wall")))
             rigidBody.AddForce(Vector3.down * 200, ForceMode.Impulse);
 
-        while (!Physics.Raycast(rigidBody.position, Vector3.down, out floor, 1.5f, LayerMask.GetMask("Ground")) && !isOnGround) {
+        while (!Physics.Raycast(rigidBody.position, Vector3.down, out floor, 1.5f, LayerMask.GetMask("Wall")) && !isOnGround) {
             if (isOnFlying) {
                 rigidBody.linearVelocity = Vector3.zero;
                 yield break;
@@ -291,10 +299,10 @@ public class Move : MonoBehaviour {
         }
 
         if (floor.collider != null) {
-            float power = Mathf.Max(startY - floor.collider.transform.position.y * 0.1f, 0);
-            PlayerCamera.OnDive(Mathf.Min(0.25f, power));
-            rigidBody.position = new Vector3(rigidBody.position.x, floor.collider.transform.position.y + 0.2f, 0);
+            float power = Mathf.Max(startY - floor.collider.transform.position.y, 0);
+            PlayerCamera.OnDive(Mathf.Min(0.75f, power));
         }
+        
         rigidBody.linearVelocity = Vector3.zero;
 
         isMovable = true;
@@ -318,7 +326,8 @@ public class Move : MonoBehaviour {
         WaitForFixedUpdate wffu = GeneralStats.Instance.WFFU;
 
         while (dashTime < dashEndTime) {
-            RigidMove(dashDirection, dashSpeed, 1.0f);
+            if (RaycastCheck(dashDirection, 1.0f))
+                RigidMove(dashDirection, dashSpeed);
             dashTime += Time.fixedDeltaTime;
             yield return wffu;
         }

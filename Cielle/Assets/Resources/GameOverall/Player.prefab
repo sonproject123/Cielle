@@ -1033,7 +1033,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8970324635969137706}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 611a1b444be9e114eafbd29ef6ff90b1, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -1123,7 +1123,6 @@ MonoBehaviour:
   isOnGround: 0
   isOnThinGround: 0
   isOnFlying: 0
-  isOnDiving: 0
   isDashable: 0
   isFireable: 0
   isReloading: 0
