@@ -57,6 +57,10 @@ public class Move : MonoBehaviour {
         if (collision.gameObject.CompareTag("Thin Ground")) {
             isOnGround = true;
             isOnThinGround = true;
+            if(collision.transform.position.y < playerFoot.transform.position.y)
+                Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Ground"), false);
+            else
+                Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Ground"));
         }
         else if (collision.gameObject.CompareTag("Wall")) {
             isOnGround = true;
@@ -68,6 +72,7 @@ public class Move : MonoBehaviour {
         if (collision.gameObject.CompareTag("Thin Ground") || collision.gameObject.CompareTag("Wall")) {
             isOnGround = false;
             isOnThinGround = false;
+            Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("Ground"), false);
         }
     }
 

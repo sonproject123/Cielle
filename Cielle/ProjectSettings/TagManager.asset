@@ -6,7 +6,6 @@ TagManager:
   tags:
   - Enemy
   - Wall
-  - Ground
   - Metal
   - Thin Ground
   layers:
