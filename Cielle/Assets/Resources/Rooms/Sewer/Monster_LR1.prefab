@@ -86,7 +86,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6652168699904082103}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Monster_LR1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
