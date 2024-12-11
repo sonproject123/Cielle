@@ -5,6 +5,10 @@ using UnityEngine.UI;
 
 public class TitleManager : MonoBehaviour {
 
+    public void SceneLoad(int num) {
+        StartCoroutine(SceneryManager.Instance.AsyncLoad(num));
+    }
+
     public void GameStart() {
         StartCoroutine(SceneryManager.Instance.AsyncLoad(1));
     }

@@ -5,18 +5,75 @@ public class RoomTemplate : ScriptableObject {
     public GameObject room;
     public Vector3 size;
     public string type;
+    public bool [] direction = new bool[4];
+    public Transform[] doors = new Transform[4];
 
-    public void RoomSize() {
-        if(room != null) {
-            Transform sizeObject = room.transform.Find("Element_Empty");
-            if (sizeObject != null) 
-                size = new Vector3(sizeObject.localScale.x, sizeObject.localScale.y, sizeObject.localScale.z);
+    public void Initialize() {
+        if (room != null) {
+            RoomSize();
+            RoomType();
+            RoomDirection();
+            Doors();
         }
     }
 
-    public void RoomType() {
-        int index = room.name.IndexOf("_");
+    private void RoomSize() {
+        Transform sizeObject = room.transform.Find("Element_Size");
+        if (sizeObject != null)
+            size = new Vector3(sizeObject.localScale.x, sizeObject.localScale.y, sizeObject.localScale.z);
+    }
+
+    private void RoomType() {
+        string roomName = room.name;
+        int index = roomName.IndexOf("_");
         if (index > 0)
-            room.name = room.name.Substring(0, index);
+            type = roomName.Substring(0, index);
+    }
+
+    private void RoomDirection() {
+        for (int i = 0; i < 4; i++)
+            direction[i] = false;
+
+        string roomDir = room.name;
+        int index = roomDir.IndexOf("_");
+        roomDir = roomDir.Substring(index + 1);
+
+        if (index > 0 && roomDir.Length > 0) {
+            foreach (char letter in roomDir) {
+                if (letter == 'U')
+                    direction[0] = true;
+                else if (letter == 'R')
+                    direction[1] = true;
+                else if (letter == 'D')
+                    direction[2] = true;
+                else if (letter == 'L')
+                    direction[3] = true;
+                else
+                    break;
+            }
+        }
+    }
+
+    private void Doors() {
+        for(int i = 0; i < 4; i++) {
+            doors[i] = null;
+
+            if (direction[i]) {
+                switch (i) {
+                    case 0:
+                        doors[i] = room.transform.Find("Element_Door_U");
+                        break;
+                    case 1:
+                        doors[i] = room.transform.Find("Element_Door_R");
+                        break;
+                    case 2:
+                        doors[i] = room.transform.Find("Element_Door_D");
+                        break;
+                    case 3:
+                        doors[i] = room.transform.Find("Element_Door_L");
+                        break;
+                }
+            }
+        }
     }
 }
