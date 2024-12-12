@@ -7,13 +7,34 @@ using UnityEngine;
 public class Map_Generator_Generic : MonoBehaviour {
     [SerializeField] protected string stage;
     [SerializeField] RoomTemplate start = null;
-    [SerializeField] List<RoomTemplate> rooms = new List<RoomTemplate>();
-    [SerializeField] List<RoomTemplate> monsters = new List<RoomTemplate>();
-    [SerializeField] List<RoomTemplate> corridors = new List<RoomTemplate>();
-    [SerializeField] List<RoomTemplate> goals = new List<RoomTemplate>();
-    [SerializeField] List<RoomTemplate> deadends = new List<RoomTemplate>();
+    [SerializeField] List<MapGraphSO> graphs = new List<MapGraphSO>();
+    [SerializeField] Dictionary<string, List<RoomTemplate>> roomTemplates = new Dictionary<string, List<RoomTemplate>>();
 
     protected virtual void Awake() {
+        LoadMapGraphs();
+        LoadRoomTemplates();
+    }
+
+    private void LoadMapGraphs() {
+        string folderPath = "Assets/Resources/Rooms/" + stage;
+        folderPath = Path.Combine(folderPath, "MapGraphs");
+        if (!AssetDatabase.IsValidFolder(folderPath)) {
+            Debug.LogError($"Map_Generator에서 폴더 경로를 찾지 못함: {folderPath}");
+            return;
+        }
+
+        string[] templateGUIDs = AssetDatabase.FindAssets("t:MapGraphSO", new[] { folderPath });
+
+        foreach (string guid in templateGUIDs) {
+            string templatePath = AssetDatabase.GUIDToAssetPath(guid);
+            MapGraphSO mapGraph = AssetDatabase.LoadAssetAtPath<MapGraphSO>(templatePath);
+
+            if (mapGraph != null)
+                graphs.Add(mapGraph);
+        }
+    }
+
+    private void LoadRoomTemplates() {
         string folderPath = "Assets/Resources/Rooms/" + stage;
         folderPath = Path.Combine(folderPath, "ScriptableObjects");
         if (!AssetDatabase.IsValidFolder(folderPath)) {
@@ -23,30 +44,24 @@ public class Map_Generator_Generic : MonoBehaviour {
 
         string[] templateGUIDs = AssetDatabase.FindAssets("t:RoomTemplate", new[] { folderPath });
 
-        foreach(string guid in templateGUIDs) {
+        foreach (string guid in templateGUIDs) {
             string templatePath = AssetDatabase.GUIDToAssetPath(guid);
             RoomTemplate roomTemplate = AssetDatabase.LoadAssetAtPath<RoomTemplate>(templatePath);
 
             if (roomTemplate != null) {
-                switch (roomTemplate.type) {
-                    case "Start":
-                        start = roomTemplate;
-                        break;
-                    case "Room":
-                        rooms.Add(roomTemplate);
-                        break;
-                    case "Corridor":
-                        corridors.Add(roomTemplate);
-                        break;
-                    case "Monster":
-                        monsters.Add(roomTemplate);
-                        break;
-                    case "DeadEnd":
-                        deadends.Add(roomTemplate);
-                        break;
-                    case "Goal":
-                        rooms.Add(roomTemplate);
-                        break;
+                if(roomTemplate.type == "Start") {
+                    start = roomTemplate;
+                    continue;
+                }
+
+                List<RoomTemplate> temp;
+                if(roomTemplates.TryGetValue(roomTemplate.type, out temp)) {
+                    temp.Add(roomTemplate);
+                }
+                else {
+                    temp = new List<RoomTemplate>();
+                    temp.Add(roomTemplate);
+                    roomTemplates.Add(roomTemplate.type, temp);
                 }
             }
         }

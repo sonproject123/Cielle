@@ -16,6 +16,10 @@ public class MapGraphEditor : EditorWindow {
         if (graph == null) {
             if (GUILayout.Button("Create New Graph"))
                 graph = new MapGraph();
+            if (GUILayout.Button("Create New Graph SO"))
+                CreateSO();
+            if (GUILayout.Button("Load Graph"))
+                LoadGraph();
             return;
         }
 
@@ -25,8 +29,51 @@ public class MapGraphEditor : EditorWindow {
             graph.AddChild(currentNode, newNode);
         }
 
+        if (GUILayout.Button("Save Graph"))
+            SaveGraph();
+        if (GUILayout.Button("Load Graph"))
+            LoadGraph();
+
         DrawNodes();
         DrawConnections();
+    }
+
+    private void CreateSO() {
+        MapGraphSO SO = ScriptableObject.CreateInstance<MapGraphSO>();
+        SO.CreateNewGraph();
+
+        string path = EditorUtility.SaveFilePanel("Save Graph Asset", "", "NewMapGraph.asset", "asset");
+        if (!string.IsNullOrEmpty(path)) {
+            path = FileUtil.GetProjectRelativePath(path);
+            AssetDatabase.CreateAsset(SO, path);
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
+            Debug.Log("다음 경로에 ScriptableObject 생성: " + path);
+        }
+    }
+
+    private void SaveGraph() {
+        string path = EditorUtility.SaveFilePanel("Save Graph", "", "NewMapGraph.asset", "asset");
+        if (!string.IsNullOrEmpty(path)) {
+            MapGraphSO SO = ScriptableObject.CreateInstance<MapGraphSO>();
+            SO.graph = graph;
+            AssetDatabase.CreateAsset(SO, path);
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
+            Debug.Log("다음 경로에 ScriptableObject 저장: " + path);
+        }
+    }
+
+    private void LoadGraph() {
+        string path = EditorUtility.OpenFilePanel("Load Graph", "", "asset");
+        if (!string.IsNullOrEmpty(path)) {
+            path = FileUtil.GetProjectRelativePath(path);
+            MapGraphSO loadedSO = AssetDatabase.LoadAssetAtPath<MapGraphSO>(path);
+            if (loadedSO != null) {
+                graph = loadedSO.graph;
+                Debug.Log("다음 경로에서 ScriptableObject 불러옴: " + path);
+            }
+        }
     }
 
     private void DrawNodes() {
@@ -84,11 +131,6 @@ public class MapGraphEditor : EditorWindow {
 
         GUI.Box(node.size, node.type);
 
-        if (Event.current.type == EventType.MouseDown && node.size.Contains(Event.current.mousePosition) && Event.current.clickCount == 2) {
-            string newName = EditorGUI.TextField(new Rect(node.size.x, node.size.y, node.size.width, 20), node.type);
-            node.type = newName;
-        }
-
         GUI.color = origianlColor;
 
         if (Event.current.type == EventType.MouseDown && node.size.Contains(Event.current.mousePosition))
@@ -133,3 +175,8 @@ public class MapGraphEditor : EditorWindow {
         Handles.DrawLine(end, arrowRight);
     }
 }
+
+// 저장, 불러오기
+// 저장시 덮어쓰기
+// 말단 노드 삭제
+// 이름 변경

@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
 public class MapGraphNode {
     public string type;
     public List<MapGraphNode> child;
@@ -10,6 +9,6 @@ public class MapGraphNode {
     public MapGraphNode(string type) {
         this.type = type;
         child = new List<MapGraphNode>();
-        size = new Rect(60, 50, 150, 50);
+        size = new Rect(60, 50, 125, 50);
     }
 }
