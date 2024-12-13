@@ -1,48 +1,88 @@
 using UnityEngine;
 using UnityEditor;
+using System.Collections.Generic;
 
 public class MapGraphEditor : EditorWindow {
     private MapGraph graph;
     private MapGraphNode currentNode;
     private Vector2 offset;
     private bool isOnDrag;
+    private string roomPath = Application.dataPath + "/Resources/Rooms";
+    private List<string> roomTypes = new List<string>();
 
     [MenuItem("Tools/Map Graph Editor")]
     public static void ShowWindow() {
         GetWindow<MapGraphEditor>("Map Graph Editor");
     }
 
+    private void OnEnable() {
+        roomTypes.Add("Room");
+        roomTypes.Add("Crossroad");
+        roomTypes.Add("Corridor");
+        roomTypes.Add("Monster");
+        roomTypes.Add("DeadEnd");
+        roomTypes.Add("Goal");
+    }
+
     private void OnGUI() {
         if (graph == null) {
-            if (GUILayout.Button("Create New Graph"))
+            GUILayout.BeginVertical();
+            GUILayout.FlexibleSpace();
+
+            if (GUILayout.Button("Create New Graph", GUILayout.Width(150), GUILayout.Height(30)))
                 graph = new MapGraph();
-            if (GUILayout.Button("Create New Graph SO"))
+            if (GUILayout.Button("Create New Graph SO", GUILayout.Width(150), GUILayout.Height(30)))
                 CreateSO();
-            if (GUILayout.Button("Load Graph"))
+            if (GUILayout.Button("Load Graph", GUILayout.Width(150), GUILayout.Height(30)))
                 LoadGraph();
+
+            GUILayout.EndHorizontal();
             return;
         }
 
-        if (GUILayout.Button("Create Child") && currentNode != null) {
-            MapGraphNode newNode = new MapGraphNode("New");
-            newNode.size.position = new Vector2(currentNode.size.x + 10, currentNode.size.y + 60);
-            graph.AddChild(currentNode, newNode);
+        GUILayout.BeginVertical();
+        GUILayout.FlexibleSpace();
+
+        if (GUILayout.Button("Create Child", GUILayout.Width(150), GUILayout.Height(30)) && currentNode != null)
+            CreateChildNode();
+
+        foreach (var type in roomTypes) {
+            if (GUILayout.Button("Rename To " + type, GUILayout.Width(150), GUILayout.Height(30)) && currentNode != null && currentNode != graph.root)
+                currentNode.type = type;
         }
 
-        if (GUILayout.Button("Save Graph"))
+        if (GUILayout.Button("Save Graph", GUILayout.Width(150), GUILayout.Height(30)))
             SaveGraph();
-        if (GUILayout.Button("Load Graph"))
+        if (GUILayout.Button("Load Graph", GUILayout.Width(150), GUILayout.Height(30)))
             LoadGraph();
+
+        GUILayout.EndVertical();
 
         DrawNodes();
         DrawConnections();
+
+        if (currentNode != null && Event.current.type == EventType.KeyDown && Event.current.keyCode == KeyCode.Delete)
+            DeleteNode();
+    }
+
+    private void CreateChildNode() {
+        MapGraphNode newNode = new MapGraphNode("Room", currentNode);
+        newNode.size.position = new Vector2(currentNode.size.x + 10, currentNode.size.y + 60);
+        graph.AddChild(currentNode, newNode);
+    }
+
+    private void DeleteNode() {
+        graph.RemoveNodes(currentNode);
+        currentNode = null;
+        Repaint();
+        Event.current.Use();
     }
 
     private void CreateSO() {
         MapGraphSO SO = ScriptableObject.CreateInstance<MapGraphSO>();
         SO.CreateNewGraph();
 
-        string path = EditorUtility.SaveFilePanel("Save Graph Asset", "", "NewMapGraph.asset", "asset");
+        string path = EditorUtility.SaveFilePanel("Save Graph", roomPath, "NewMapGraph.asset", "asset");
         if (!string.IsNullOrEmpty(path)) {
             path = FileUtil.GetProjectRelativePath(path);
             AssetDatabase.CreateAsset(SO, path);
@@ -53,19 +93,33 @@ public class MapGraphEditor : EditorWindow {
     }
 
     private void SaveGraph() {
-        string path = EditorUtility.SaveFilePanel("Save Graph", "", "NewMapGraph.asset", "asset");
+        if (graph == null)
+            return;
+
+        string path = EditorUtility.SaveFilePanel("Save Graph", roomPath, "NewMapGraph.asset", "asset");
         if (!string.IsNullOrEmpty(path)) {
-            MapGraphSO SO = ScriptableObject.CreateInstance<MapGraphSO>();
-            SO.graph = graph;
-            AssetDatabase.CreateAsset(SO, path);
-            AssetDatabase.SaveAssets();
-            AssetDatabase.Refresh();
-            Debug.Log("다음 경로에 ScriptableObject 저장: " + path);
+            path = FileUtil.GetProjectRelativePath(path);
+            MapGraphSO loadedSO = AssetDatabase.LoadAssetAtPath<MapGraphSO>(path);
+
+            if (loadedSO != null) {
+                loadedSO.graph = graph;
+                EditorUtility.SetDirty(loadedSO);
+                AssetDatabase.SaveAssets();
+                Debug.Log("저장됨: " + path);
+            }
+            else {
+                MapGraphSO SO = ScriptableObject.CreateInstance<MapGraphSO>();
+                SO.graph = graph;
+                AssetDatabase.CreateAsset(SO, path);
+                AssetDatabase.SaveAssets();
+                AssetDatabase.Refresh();
+                Debug.Log("다음 경로에 ScriptableObject 생성: " + path);
+            }
         }
     }
 
     private void LoadGraph() {
-        string path = EditorUtility.OpenFilePanel("Load Graph", "", "asset");
+        string path = EditorUtility.OpenFilePanel("Load Graph", roomPath, "asset");
         if (!string.IsNullOrEmpty(path)) {
             path = FileUtil.GetProjectRelativePath(path);
             MapGraphSO loadedSO = AssetDatabase.LoadAssetAtPath<MapGraphSO>(path);

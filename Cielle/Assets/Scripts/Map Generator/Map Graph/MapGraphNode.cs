@@ -3,12 +3,14 @@ using UnityEngine;
 
 public class MapGraphNode {
     public string type;
+    public MapGraphNode parent;
     public List<MapGraphNode> child;
     public Rect size;
 
-    public MapGraphNode(string type) {
+    public MapGraphNode(string type, MapGraphNode parent) {
         this.type = type;
+        this.parent = parent;
         child = new List<MapGraphNode>();
-        size = new Rect(60, 50, 125, 50);
+        size = new Rect(100, 100, 125, 50);
     }
 }

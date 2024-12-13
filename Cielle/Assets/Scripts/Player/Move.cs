@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.ShaderGraph.Internal;
@@ -7,6 +8,9 @@ using UnityEngine.UIElements;
 using static UnityEngine.GraphicsBuffer;
 
 public class Move : MonoBehaviour {
+    [SerializeField] Dictionary<KeyCode, Action> actions = new Dictionary<KeyCode, Action>();
+    // if문 도배를 dictionary로 관리하기
+
     [SerializeField] Animator animator;
     [SerializeField] Rigidbody rigidBody;
     [SerializeField] Transform playerCenter;
@@ -187,9 +191,7 @@ public class Move : MonoBehaviour {
 
         // Weapon Change
         if(Input.GetAxis("Mouse ScrollWheel") != 0 && isWeaponChangeable) {
-            if (GunFire.Instance.IsShootable == false)
-                return;
-            if (Stats.Instance.SubGunData.id == 0)
+            if (GunFire.Instance.IsShootable == false || Stats.Instance.SubGunData.id == 0)
                 return;
 
             isWeaponChangeable = false;
