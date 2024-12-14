@@ -12,3 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f09ee82bc39acf04092498e82886c5db, type: 3}
   m_Name: SewerGraph1
   m_EditorClassIdentifier: 
+  rootType: Start

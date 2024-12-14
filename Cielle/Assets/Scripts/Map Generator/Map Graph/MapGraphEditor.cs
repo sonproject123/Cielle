@@ -31,8 +31,6 @@ public class MapGraphEditor : EditorWindow {
 
             if (GUILayout.Button("Create New Graph", GUILayout.Width(150), GUILayout.Height(30)))
                 graph = new MapGraph();
-            if (GUILayout.Button("Create New Graph SO", GUILayout.Width(150), GUILayout.Height(30)))
-                CreateSO();
             if (GUILayout.Button("Load Graph", GUILayout.Width(150), GUILayout.Height(30)))
                 LoadGraph();
 
@@ -56,6 +54,9 @@ public class MapGraphEditor : EditorWindow {
         if (GUILayout.Button("Load Graph", GUILayout.Width(150), GUILayout.Height(30)))
             LoadGraph();
 
+        if (GUILayout.Button("Delete Node", GUILayout.Width(150), GUILayout.Height(30)) && currentNode != null)
+            DeleteNode();
+
         GUILayout.EndVertical();
 
         DrawNodes();
@@ -78,20 +79,6 @@ public class MapGraphEditor : EditorWindow {
         Event.current.Use();
     }
 
-    private void CreateSO() {
-        MapGraphSO SO = ScriptableObject.CreateInstance<MapGraphSO>();
-        SO.CreateNewGraph();
-
-        string path = EditorUtility.SaveFilePanel("Save Graph", roomPath, "NewMapGraph.asset", "asset");
-        if (!string.IsNullOrEmpty(path)) {
-            path = FileUtil.GetProjectRelativePath(path);
-            AssetDatabase.CreateAsset(SO, path);
-            AssetDatabase.SaveAssets();
-            AssetDatabase.Refresh();
-            Debug.Log("다음 경로에 ScriptableObject 생성: " + path);
-        }
-    }
-
     private void SaveGraph() {
         if (graph == null)
             return;
@@ -104,21 +91,23 @@ public class MapGraphEditor : EditorWindow {
             if (loadedSO != null) {
                 loadedSO.graph = graph;
                 EditorUtility.SetDirty(loadedSO);
-                AssetDatabase.SaveAssets();
                 Debug.Log("저장됨: " + path);
             }
             else {
                 MapGraphSO SO = ScriptableObject.CreateInstance<MapGraphSO>();
                 SO.graph = graph;
                 AssetDatabase.CreateAsset(SO, path);
-                AssetDatabase.SaveAssets();
-                AssetDatabase.Refresh();
                 Debug.Log("다음 경로에 ScriptableObject 생성: " + path);
             }
+
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
         }
     }
 
     private void LoadGraph() {
+        AssetDatabase.Refresh();
+
         string path = EditorUtility.OpenFilePanel("Load Graph", roomPath, "asset");
         if (!string.IsNullOrEmpty(path)) {
             path = FileUtil.GetProjectRelativePath(path);
@@ -229,8 +218,3 @@ public class MapGraphEditor : EditorWindow {
         Handles.DrawLine(end, arrowRight);
     }
 }
-
-// 저장, 불러오기
-// 저장시 덮어쓰기
-// 말단 노드 삭제
-// 이름 변경

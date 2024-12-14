@@ -13,6 +13,7 @@ public class Map_Generator_Generic : MonoBehaviour {
     protected virtual void Awake() {
         LoadMapGraphs();
         LoadRoomTemplates();
+        ShowGraph();
     }
 
     private void LoadMapGraphs() {
@@ -64,6 +65,25 @@ public class Map_Generator_Generic : MonoBehaviour {
                     roomTemplates.Add(roomTemplate.type, temp);
                 }
             }
+        }
+    }
+
+    private void ShowGraph() {
+        MapGraph temp = graphs[0].graph;
+        MapGraphNode root = temp.root;
+
+        Debug.Log("root" + root.depth + root.type);
+        foreach(var node in root.child)
+        {
+            ShowChildGraph(root, node);
+        }
+    }
+
+    private void ShowChildGraph(MapGraphNode parent, MapGraphNode node) {
+        Debug.Log(parent.type + " of " + node.depth + node.type);
+        foreach (var child in node.child)
+        {
+            ShowChildGraph(node, child);
         }
     }
 }
