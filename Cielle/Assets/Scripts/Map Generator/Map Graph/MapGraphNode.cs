@@ -1,16 +1,17 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class MapGraphNode {
+    public string id;
     public string type;
     public int depth;
-    public MapGraphNode parent;
     public List<MapGraphNode> child;
     public Rect size;
 
-    public MapGraphNode(string type, MapGraphNode parent) {
+    public MapGraphNode(string type, MapGraphNode parent = null) {
         this.type = type;
-        this.parent = parent;
         if (parent != null)
             this.depth = parent.depth + 1;
         else

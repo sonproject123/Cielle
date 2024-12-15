@@ -12,4 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f09ee82bc39acf04092498e82886c5db, type: 3}
   m_Name: SewerGraph1
   m_EditorClassIdentifier: 
-  rootType: Start
+  graph:
+    root:
+      type: Start
+      depth: 1
+      size:
+        serializedVersion: 2
+        x: 209.60002
+        y: 95.2
+        width: 125
+        height: 50
+  MaxDepth: 0

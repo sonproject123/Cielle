@@ -73,10 +73,28 @@ public class MapGraphEditor : EditorWindow {
     }
 
     private void DeleteNode() {
-        graph.RemoveNodes(currentNode);
+        graph.RemoveNodes(currentNode, FindParent(graph.root, currentNode));
         currentNode = null;
         Repaint();
         Event.current.Use();
+    }
+
+    private MapGraphNode FindParent(MapGraphNode prevNode, MapGraphNode child) {
+        if (child == graph.root)
+            return null;
+
+        MapGraphNode temp = null;
+        foreach(var node in prevNode.child) {
+            if (node == child)
+                return prevNode;
+            else {
+                temp = FindParent(node, child);
+                if (temp != null)
+                    return temp;
+            }
+        }
+
+        return null;
     }
 
     private void SaveGraph() {
@@ -89,13 +107,13 @@ public class MapGraphEditor : EditorWindow {
             MapGraphSO loadedSO = AssetDatabase.LoadAssetAtPath<MapGraphSO>(path);
 
             if (loadedSO != null) {
-                loadedSO.graph = graph;
+                loadedSO.CopyGraph(graph);
                 EditorUtility.SetDirty(loadedSO);
                 Debug.Log("저장됨: " + path);
             }
             else {
                 MapGraphSO SO = ScriptableObject.CreateInstance<MapGraphSO>();
-                SO.graph = graph;
+                SO.CopyGraph(graph);
                 AssetDatabase.CreateAsset(SO, path);
                 Debug.Log("다음 경로에 ScriptableObject 생성: " + path);
             }

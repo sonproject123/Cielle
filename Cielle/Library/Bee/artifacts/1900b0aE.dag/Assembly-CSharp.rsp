@@ -129,7 +129,6 @@
 -define:TEXTCORE_TEXT_ENGINE_1_5_OR_NEWER
 -define:CSHARP_7_OR_LATER
 -define:CSHARP_7_3_OR_NEWER
--r:"Assets/Downloaded Assets/Edgar/Libraries/EdgarSingleFile.dll"
 -r:"D:/Unity_Project/6000.0.25f1/Editor/Data/Managed/UnityEngine/UnityEditor.AccessibilityModule.dll"
 -r:"D:/Unity_Project/6000.0.25f1/Editor/Data/Managed/UnityEngine/UnityEditor.AdaptivePerformanceModule.dll"
 -r:"D:/Unity_Project/6000.0.25f1/Editor/Data/Managed/UnityEngine/UnityEditor.BuildProfileModule.dll"
@@ -374,10 +373,6 @@
 -r:"Library/PackageCache/com.unity.ext.nunit/net40/unity-custom/nunit.framework.dll"
 -r:"Library/PackageCache/com.unity.nuget.mono-cecil/Mono.Cecil.dll"
 -r:"Library/PackageCache/com.unity.visualscripting/Runtime/VisualScripting.Flow/Dependencies/NCalc/Unity.VisualScripting.Antlr3.Runtime.dll"
--r:"Library/Bee/artifacts/1900b0aE.dag/Edgar.Unity.Editor.ref.dll"
--r:"Library/Bee/artifacts/1900b0aE.dag/Edgar.Unity.Examples.ref.dll"
--r:"Library/Bee/artifacts/1900b0aE.dag/Edgar.Unity.FogOfWar.URP.ref.dll"
--r:"Library/Bee/artifacts/1900b0aE.dag/Edgar.Unity.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/MeshBakerCore.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/MeshBakerEditor.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/PPv2URPConverters.ref.dll"
