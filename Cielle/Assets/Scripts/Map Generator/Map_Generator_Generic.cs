@@ -5,15 +5,21 @@ using UnityEditor;
 using UnityEngine;
 
 public class Map_Generator_Generic : MonoBehaviour {
+    [SerializeField] protected Transform player;
     [SerializeField] protected string stage;
-    [SerializeField] RoomTemplate start = null;
+    [SerializeField] protected RoomTemplate start = null;
+    [SerializeField] protected Dictionary<string, List<RoomTemplate>> roomTemplates = new Dictionary<string, List<RoomTemplate>>();
+    [SerializeField] protected MapGraph graph = null;
     [SerializeField] List<MapGraphSO> graphs = new List<MapGraphSO>();
-    [SerializeField] Dictionary<string, List<RoomTemplate>> roomTemplates = new Dictionary<string, List<RoomTemplate>>();
 
     protected virtual void Awake() {
         LoadMapGraphs();
         LoadRoomTemplates();
-        ShowGraph();
+        SelectGraph();
+    }
+
+    protected void ReGenerate() {
+        SelectGraph();
     }
 
     private void LoadMapGraphs() {
@@ -68,22 +74,43 @@ public class Map_Generator_Generic : MonoBehaviour {
         }
     }
 
-    private void ShowGraph() {
-        MapGraph temp = graphs[0].graph;
-        MapGraphNode root = temp.root;
-
-        Debug.Log("root" + root.depth + root.type);
-        foreach(var node in root.child)
-        {
-            ShowChildGraph(root, node);
-        }
+    private void SelectGraph() {
+        System.Random random = new System.Random();
+        graph =  graphs[random.Next(0, graphs.Count)].graph;
     }
 
-    private void ShowChildGraph(MapGraphNode parent, MapGraphNode node) {
-        Debug.Log(parent.type + " of " + node.depth + node.type);
-        foreach (var child in node.child)
-        {
-            ShowChildGraph(node, child);
+    protected GameObject RoomInstantiate(GameObject room) {
+        GameObject clone = Object.Instantiate(room, transform);
+
+        int index = clone.name.IndexOf("(Clone)");
+        if (index > 0)
+            clone.name = clone.name.Substring(0, index);
+
+        return clone;
+    }
+
+    protected virtual void GenerateMap() {
+        RoomTemplate startTemplate = start;
+        GameObject startRoom = RoomInstantiate(startTemplate.room);
+        startRoom.transform.position = Vector3.zero;
+        Transform playerSpawnPoint = startRoom.transform.Find("Spawn Point").transform;
+        player.position = playerSpawnPoint.position;
+    }
+
+    protected void GenerateRoom(RoomTemplate template, Transform parentTransform, int parentDoorDir) {
+        GameObject room = RoomInstantiate(template.room);
+
+        switch (parentDoorDir) {
+            case 0:
+
+                break;
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
         }
+        room.transform.position = Vector3.zero;
     }
 }

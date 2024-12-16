@@ -7,16 +7,22 @@ public class MapGraphNode {
     public string id;
     public string type;
     public int depth;
-    public List<MapGraphNode> child;
+    public List<string> child;
     public Rect size;
 
-    public MapGraphNode(string type, MapGraphNode parent = null) {
+    public MapGraphNode(string type) {
+        this.id = System.Guid.NewGuid().ToString();
         this.type = type;
-        if (parent != null)
-            this.depth = parent.depth + 1;
-        else
-            this.depth = 1;
-        child = new List<MapGraphNode>();
+        child = new List<string>();
         size = new Rect(100, 100, 125, 50);
+    }
+
+    public void AddChild(MapGraphNode childNode) {
+        child.Add(childNode.id);
+    }
+
+    public void RemoveChild(string childNodeID) {
+        if (child.Contains(childNodeID)) 
+            child.Remove(childNodeID);
     }
 }

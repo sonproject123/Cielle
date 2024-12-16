@@ -2,6 +2,7 @@ using UnityEngine;
 
 [CreateAssetMenu(fileName ="NewRoomTemplate",menuName ="Create Room Template")]
 public class RoomTemplate : ScriptableObject {
+    public string id;
     public GameObject room;
     public Vector3 size;
     public string type;
@@ -10,6 +11,7 @@ public class RoomTemplate : ScriptableObject {
 
     public void Initialize() {
         if (room != null) {
+            id = System.Guid.NewGuid().ToString();
             RoomSize();
             RoomType();
             RoomDirection();

@@ -465,6 +465,7 @@
 "Assets/Scripts/Map Generator/Map Graph/MapGraphSO.cs"
 "Assets/Scripts/Map Generator/Map_Generator_Generic.cs"
 "Assets/Scripts/Map Generator/Map_Generator_Sewer.cs"
+"Assets/Scripts/Map Generator/Map_Size_Collide.cs"
 "Assets/Scripts/Map Generator/Room Templates/RoomTemplate.cs"
 "Assets/Scripts/Map Generator/Room Templates/RoomTemplateAutoCreator.cs"
 "Assets/Scripts/Module/CoroutineCache.cs"

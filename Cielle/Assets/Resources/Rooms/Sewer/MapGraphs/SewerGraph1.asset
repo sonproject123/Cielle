@@ -14,12 +14,146 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   graph:
     root:
+      id: 8a31053c-51d7-4b71-9f85-db4067b70191
       type: Start
       depth: 1
+      child:
+      - ced80a04-be50-4c9b-ba99-980ebd1993b0
       size:
         serializedVersion: 2
-        x: 209.60002
-        y: 95.2
+        x: 264.8
+        y: 7.999983
         width: 125
         height: 50
-  MaxDepth: 0
+    allNodes:
+    - id: 8a31053c-51d7-4b71-9f85-db4067b70191
+      type: Start
+      depth: 1
+      child:
+      - ced80a04-be50-4c9b-ba99-980ebd1993b0
+      size:
+        serializedVersion: 2
+        x: 280.8
+        y: 51.999985
+        width: 125
+        height: 50
+    - id: ced80a04-be50-4c9b-ba99-980ebd1993b0
+      type: Monster
+      depth: 2
+      child:
+      - 541deddb-3884-4f1e-bfc6-e748b054f9f9
+      size:
+        serializedVersion: 2
+        x: 263.6
+        y: 80.79998
+        width: 125
+        height: 50
+    - id: 541deddb-3884-4f1e-bfc6-e748b054f9f9
+      type: Crossroad
+      depth: 3
+      child:
+      - 23197f77-fe98-4f95-b294-9fdd531cfd06
+      - 3d047266-f718-48d3-9335-190a09cefb6d
+      size:
+        serializedVersion: 2
+        x: 263.19998
+        y: 150.39998
+        width: 125
+        height: 50
+    - id: 23197f77-fe98-4f95-b294-9fdd531cfd06
+      type: Monster
+      depth: 4
+      child:
+      - 45ad4c0b-78ec-4a55-887f-9b195b689946
+      size:
+        serializedVersion: 2
+        x: 423.6
+        y: 219.20001
+        width: 125
+        height: 50
+    - id: 45ad4c0b-78ec-4a55-887f-9b195b689946
+      type: DeadEnd
+      depth: 5
+      child: []
+      size:
+        serializedVersion: 2
+        x: 422.4
+        y: 300.00003
+        width: 125
+        height: 50
+    - id: 3d047266-f718-48d3-9335-190a09cefb6d
+      type: Monster
+      depth: 4
+      child:
+      - 36a3088b-fc0f-4bd4-8912-dfd9c618a835
+      size:
+        serializedVersion: 2
+        x: 263.59998
+        y: 220.79996
+        width: 125
+        height: 50
+    - id: 36a3088b-fc0f-4bd4-8912-dfd9c618a835
+      type: Monster
+      depth: 5
+      child:
+      - 5daaf356-3f23-4677-85f7-d2ffd039f34d
+      size:
+        serializedVersion: 2
+        x: 261.59998
+        y: 300.8
+        width: 125
+        height: 50
+    - id: 5daaf356-3f23-4677-85f7-d2ffd039f34d
+      type: Crossroad
+      depth: 6
+      child:
+      - f648170d-1cbe-4980-a365-0c8fabdad728
+      - 192a56f7-2f10-4ae0-b8c3-727b8a2a0817
+      size:
+        serializedVersion: 2
+        x: 262.79993
+        y: 368.8
+        width: 125
+        height: 50
+    - id: f648170d-1cbe-4980-a365-0c8fabdad728
+      type: Monster
+      depth: 7
+      child:
+      - 1187e3ad-7838-4993-a636-39f568364eb5
+      size:
+        serializedVersion: 2
+        x: 262.39993
+        y: 439.19998
+        width: 125
+        height: 50
+    - id: 1187e3ad-7838-4993-a636-39f568364eb5
+      type: Goal
+      depth: 8
+      child: []
+      size:
+        serializedVersion: 2
+        x: 261.99994
+        y: 514.4
+        width: 125
+        height: 50
+    - id: 192a56f7-2f10-4ae0-b8c3-727b8a2a0817
+      type: Monster
+      depth: 7
+      child:
+      - fc04bc6d-a67b-464b-abd1-49cf5f71e9e3
+      size:
+        serializedVersion: 2
+        x: 423.19998
+        y: 433.6
+        width: 125
+        height: 50
+    - id: fc04bc6d-a67b-464b-abd1-49cf5f71e9e3
+      type: DeadEnd
+      depth: 8
+      child: []
+      size:
+        serializedVersion: 2
+        x: 428.4
+        y: 514.4
+        width: 125
+        height: 50

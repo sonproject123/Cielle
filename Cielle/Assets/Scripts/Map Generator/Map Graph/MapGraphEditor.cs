@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEditor;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 
 public class MapGraphEditor : EditorWindow {
     private MapGraph graph;
@@ -67,9 +68,10 @@ public class MapGraphEditor : EditorWindow {
     }
 
     private void CreateChildNode() {
-        MapGraphNode newNode = new MapGraphNode("Room", currentNode);
+        MapGraphNode newNode = new MapGraphNode("Room");
+        newNode.depth = currentNode.depth + 1;
         newNode.size.position = new Vector2(currentNode.size.x + 10, currentNode.size.y + 60);
-        graph.AddChild(currentNode, newNode);
+        graph.AddChild(newNode, currentNode);
     }
 
     private void DeleteNode() {
@@ -84,11 +86,11 @@ public class MapGraphEditor : EditorWindow {
             return null;
 
         MapGraphNode temp = null;
-        foreach(var node in prevNode.child) {
-            if (node == child)
+        foreach(var nodeID in prevNode.child) {
+            if (nodeID == child.id)
                 return prevNode;
             else {
-                temp = FindParent(node, child);
+                temp = FindParent(graph.FindNode(nodeID), child);
                 if (temp != null)
                     return temp;
             }
@@ -107,13 +109,13 @@ public class MapGraphEditor : EditorWindow {
             MapGraphSO loadedSO = AssetDatabase.LoadAssetAtPath<MapGraphSO>(path);
 
             if (loadedSO != null) {
-                loadedSO.CopyGraph(graph);
+                loadedSO.graph = graph;
                 EditorUtility.SetDirty(loadedSO);
                 Debug.Log("저장됨: " + path);
             }
             else {
                 MapGraphSO SO = ScriptableObject.CreateInstance<MapGraphSO>();
-                SO.CopyGraph(graph);
+                SO.graph = graph;
                 AssetDatabase.CreateAsset(SO, path);
                 Debug.Log("다음 경로에 ScriptableObject 생성: " + path);
             }
@@ -162,7 +164,8 @@ public class MapGraphEditor : EditorWindow {
     }
 
     private void CurrentNodeChildSet(MapGraphNode parent) {
-        foreach (var node in parent.child) {
+        foreach (var nodeID in parent.child) {
+            MapGraphNode node = graph.FindNode(nodeID);
             if (node.size.Contains(Event.current.mousePosition)) {
                 CurrentNodeSet(node);
                 break;
@@ -179,7 +182,8 @@ public class MapGraphEditor : EditorWindow {
     }
 
     private void DrawChildNodes(MapGraphNode parent) {
-        foreach (var node in parent.child) {
+        foreach (var nodeID in parent.child) {
+            MapGraphNode node = graph.FindNode(nodeID);
             DrawNode(node);
             DrawChildNodes(node);
         }
@@ -202,16 +206,18 @@ public class MapGraphEditor : EditorWindow {
         if (graph.root == null)
             return;
 
-        foreach(var node in graph.root.child) {
+        foreach(var nodeID in graph.root.child) {
+            MapGraphNode node = graph.FindNode(nodeID);
             DrawNodeLine(graph.root.size, node.size);
             DrawChildConnections(node);
         }
     }
 
     private void DrawChildConnections(MapGraphNode parent) {
-        foreach(var child in parent.child) {
-            DrawNodeLine(parent.size, child.size);
-            DrawChildConnections(child);
+        foreach(var nodeID in parent.child) {
+            MapGraphNode node = graph.FindNode(nodeID);
+            DrawNodeLine(parent.size, node.size);
+            DrawChildConnections(node);
         }
     }
 

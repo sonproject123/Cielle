@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2e40897f265050489e7e3f2769f1150, type: 3}
+  m_Name: DeadEnd_U1_RT
+  m_EditorClassIdentifier: 
+  id: 97926f28-79b0-4125-b876-712dce023efc
+  room: {fileID: 7145303037205622994, guid: 84f868b6bff8bba4e9937646c676f187, type: 3}
+  size: {x: 60, y: 50, z: 1}
+  type: DeadEnd
+  direction: 01000000
+  doors:
+  - {fileID: 5297354835213227830, guid: 84f868b6bff8bba4e9937646c676f187, type: 3}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
