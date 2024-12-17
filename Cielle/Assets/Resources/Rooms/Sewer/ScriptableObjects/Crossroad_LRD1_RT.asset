@@ -12,15 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2e40897f265050489e7e3f2769f1150, type: 3}
   m_Name: Crossroad_LRD1_RT
   m_EditorClassIdentifier: 
-  id: 9a8fde35-7ea1-466f-bcda-6663f9a18952
   room: {fileID: 7145303037205622994, guid: abe2a107416eb8a4d8f78abc213f17b9, type: 3}
   sizeObject: {fileID: 7576027149968703771, guid: abe2a107416eb8a4d8f78abc213f17b9, type: 3}
   size: {x: 80, y: 80, z: 1}
-  location: {x: 0, y: 0, z: 0}
   type: Crossroad
   direction: 00010101
-  doors:
-  - {fileID: 0}
-  - {fileID: 5008512781453551196, guid: abe2a107416eb8a4d8f78abc213f17b9, type: 3}
-  - {fileID: 5297354835213227830, guid: abe2a107416eb8a4d8f78abc213f17b9, type: 3}
-  - {fileID: 2501461477145269059, guid: abe2a107416eb8a4d8f78abc213f17b9, type: 3}

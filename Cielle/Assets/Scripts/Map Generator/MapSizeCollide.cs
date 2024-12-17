@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MapSizeCollide : MonoBehaviour {
     [SerializeField] public string id;
-    [SerializeField] List<string> collidingRooms = new List<string>();
+    [SerializeField] public List<string> collidingRooms = new List<string>();
 
     private void OnTriggerEnter2D(Collider2D collision) {
         if (collision.CompareTag("Room")) {

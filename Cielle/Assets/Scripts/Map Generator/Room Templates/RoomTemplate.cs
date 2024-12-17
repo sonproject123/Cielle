@@ -7,7 +7,6 @@ public class RoomTemplate : ScriptableObject {
     public Vector3 size;
     public string type;
     public bool [] direction = new bool[4];
-    public Transform[] doors = new Transform[4];
 
     public void Initialize() {
         if (room != null) {
@@ -15,7 +14,6 @@ public class RoomTemplate : ScriptableObject {
             RoomSize();
             RoomType();
             RoomDirection();
-            Doors();
         }
     }
 
@@ -53,29 +51,6 @@ public class RoomTemplate : ScriptableObject {
                     direction[3] = true;
                 else
                     break;
-            }
-        }
-    }
-
-    private void Doors() {
-        for(int i = 0; i < 4; i++) {
-            doors[i] = null;
-
-            if (direction[i]) {
-                switch (i) {
-                    case 0:
-                        doors[i] = room.transform.Find("Element_Door_U");
-                        break;
-                    case 1:
-                        doors[i] = room.transform.Find("Element_Door_R");
-                        break;
-                    case 2:
-                        doors[i] = room.transform.Find("Element_Door_D");
-                        break;
-                    case 3:
-                        doors[i] = room.transform.Find("Element_Door_L");
-                        break;
-                }
             }
         }
     }
