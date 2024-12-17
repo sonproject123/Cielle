@@ -41,6 +41,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8623456982122221351}
+  - component: {fileID: 8634506743035253717}
   m_Layer: 12
   m_Name: Corridor_UD
   m_TagString: Untagged
@@ -68,6 +69,26 @@ Transform:
   - {fileID: 5938458545356741731}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8634506743035253717
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2047205721890831042}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d999349887e4864db4e162316e78436, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: 
+  room: {fileID: 0}
+  sizeObject: {fileID: 0}
+  doors:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!1 &9145561403048595345
 GameObject:
   m_ObjectHideFlags: 0

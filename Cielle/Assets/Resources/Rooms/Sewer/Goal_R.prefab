@@ -119,6 +119,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1458778413980281859}
+  - component: {fileID: 4831661308658762705}
   m_Layer: 12
   m_Name: Goal_R
   m_TagString: Untagged
@@ -146,6 +147,26 @@ Transform:
   - {fileID: 7893660416772444639}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4831661308658762705
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4394890979682373147}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d999349887e4864db4e162316e78436, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: 
+  room: {fileID: 0}
+  sizeObject: {fileID: 0}
+  doors:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!1 &4733971329195644524
 GameObject:
   m_ObjectHideFlags: 0

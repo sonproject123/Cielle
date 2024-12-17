@@ -12,9 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2e40897f265050489e7e3f2769f1150, type: 3}
   m_Name: Start_R_RT
   m_EditorClassIdentifier: 
-  id: 3c7f6a69-13b2-44c0-a222-d603138f31c8
+  id: 9d1e8280-0d5c-4aac-8fc0-3a8a5373ea0f
   room: {fileID: 4394890979682373147, guid: 3982041e2bc6f9f4da9ff2d6b0b53212, type: 3}
+  sizeObject: {fileID: 3185912609329354467, guid: 3982041e2bc6f9f4da9ff2d6b0b53212, type: 3}
   size: {x: 60, y: 60, z: 1}
+  location: {x: 0, y: 0, z: 0}
   type: Start
   direction: 00010000
   doors:

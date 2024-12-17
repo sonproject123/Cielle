@@ -12,9 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2e40897f265050489e7e3f2769f1150, type: 3}
   m_Name: DeadEnd_D1_RT
   m_EditorClassIdentifier: 
-  id: 2a29d561-d363-4cd2-adfb-1570e1c9a6bc
+  id: 87677e19-a5e6-4dca-bd2f-715396a74f60
   room: {fileID: 7145303037205622994, guid: 4c9987e619d7b4f41b1c06bfbd3a2b9a, type: 3}
+  sizeObject: {fileID: 6652631265958626107, guid: 4c9987e619d7b4f41b1c06bfbd3a2b9a, type: 3}
   size: {x: 80, y: 60, z: 1}
+  location: {x: 0, y: 0, z: 0}
   type: DeadEnd
   direction: 00000100
   doors:

@@ -2,8 +2,8 @@ using UnityEngine;
 
 [CreateAssetMenu(fileName ="NewRoomTemplate",menuName ="Create Room Template")]
 public class RoomTemplate : ScriptableObject {
-    public string id;
     public GameObject room;
+    public GameObject sizeObject;
     public Vector3 size;
     public string type;
     public bool [] direction = new bool[4];
@@ -11,7 +11,7 @@ public class RoomTemplate : ScriptableObject {
 
     public void Initialize() {
         if (room != null) {
-            id = System.Guid.NewGuid().ToString();
+            sizeObject = room.transform.Find("Element_Size").gameObject;
             RoomSize();
             RoomType();
             RoomDirection();
@@ -20,9 +20,10 @@ public class RoomTemplate : ScriptableObject {
     }
 
     private void RoomSize() {
-        Transform sizeObject = room.transform.Find("Element_Size");
-        if (sizeObject != null)
-            size = new Vector3(sizeObject.localScale.x, sizeObject.localScale.y, sizeObject.localScale.z);
+        if (sizeObject != null) {
+            Transform sizeTransform = sizeObject.transform;
+            size = new Vector3(sizeTransform.localScale.x, sizeTransform.localScale.y, sizeTransform.localScale.z);
+        }
     }
 
     private void RoomType() {
