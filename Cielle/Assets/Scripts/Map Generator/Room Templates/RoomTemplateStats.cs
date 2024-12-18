@@ -15,10 +15,8 @@ public class RoomTemplateStats : MonoBehaviour {
 
     private void RoomID() {
         id = System.Guid.NewGuid().ToString();
-        if (sizeObject != null) {
-            MapSizeCollide msc = sizeObject.GetComponent<MapSizeCollide>();
-            msc.id = id;
-        }
+        MapSizeObject mso = sizeObject.GetComponent<MapSizeObject>();
+        mso.id = id;
     }
 
     private void Doors(RoomTemplate template) {

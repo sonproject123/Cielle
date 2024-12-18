@@ -4,7 +4,7 @@ using UnityEngine;
 public class RoomTemplate : ScriptableObject {
     public GameObject room;
     public GameObject sizeObject;
-    public Vector3 size;
+    public Vector2 size;
     public string type;
     public bool [] direction = new bool[4];
 
@@ -20,7 +20,7 @@ public class RoomTemplate : ScriptableObject {
     private void RoomSize() {
         if (sizeObject != null) {
             Transform sizeTransform = sizeObject.transform;
-            size = new Vector3(sizeTransform.localScale.x, sizeTransform.localScale.y, sizeTransform.localScale.z);
+            size = new Vector2(sizeTransform.localScale.x, sizeTransform.localScale.y);
         }
     }
 

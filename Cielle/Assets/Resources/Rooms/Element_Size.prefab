@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3090036133834529797}
   - component: {fileID: 7114035714962902970}
-  - component: {fileID: 7875376159710185562}
+  - component: {fileID: -1851388313309604483}
   m_Layer: 0
   m_Name: Element_Size
   m_TagString: Room
@@ -79,7 +79,7 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &7875376159710185562
+--- !u!114 &-1851388313309604483
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -88,6 +88,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3480210179148420900}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd2396f23bd32aa4994d13dbdf0a2cf4, type: 3}
+  m_Script: {fileID: 11500000, guid: ee0cb4e3e9b9a774c90fa4f947f6bd82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  id: 

@@ -188,6 +188,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 944574913913263775, guid: 484579bc49518f94a92c7eef6893804a, type: 3}
+      propertyPath: m_Text
+      value: ReGenerate
+      objectReference: {fileID: 0}
     - target: {fileID: 1395609260031106539, guid: 484579bc49518f94a92c7eef6893804a, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -206,6 +210,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1605391149922423903, guid: 484579bc49518f94a92c7eef6893804a, type: 3}
       propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1605391149922423903, guid: 484579bc49518f94a92c7eef6893804a, type: 3}
+      propertyPath: m_AnchoredPosition.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3698059858030144065, guid: 484579bc49518f94a92c7eef6893804a, type: 3}
@@ -231,6 +239,10 @@ PrefabInstance:
     - target: {fileID: 3868181349102772553, guid: 484579bc49518f94a92c7eef6893804a, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4404145723295290153, guid: 484579bc49518f94a92c7eef6893804a, type: 3}
+      propertyPath: m_Name
+      value: ReGenerate
       objectReference: {fileID: 0}
     - target: {fileID: 4574738384548548242, guid: 484579bc49518f94a92c7eef6893804a, type: 3}
       propertyPath: m_AnchorMax.y
@@ -356,6 +368,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player Canvas
       objectReference: {fileID: 0}
+    - target: {fileID: 7230129019335318069, guid: 484579bc49518f94a92c7eef6893804a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7230129019335318069, guid: 484579bc49518f94a92c7eef6893804a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1789355102}
+    - target: {fileID: 7230129019335318069, guid: 484579bc49518f94a92c7eef6893804a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ReGenerate
+      objectReference: {fileID: 0}
+    - target: {fileID: 7230129019335318069, guid: 484579bc49518f94a92c7eef6893804a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: MapGenerator_Generic, Assembly-CSharp
+      objectReference: {fileID: 0}
     - target: {fileID: 7306411292349870222, guid: 484579bc49518f94a92c7eef6893804a, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -417,7 +445,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 548687371862554090, guid: 484579bc49518f94a92c7eef6893804a, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 484579bc49518f94a92c7eef6893804a, type: 3}
@@ -547,6 +576,7 @@ MonoBehaviour:
         width: 125
         height: 50
   graphs: []
+  generatedRooms: []
 --- !u!4 &1789355103
 Transform:
   m_ObjectHideFlags: 0

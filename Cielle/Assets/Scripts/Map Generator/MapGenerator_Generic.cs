@@ -23,8 +23,19 @@ public class MapGenerator_Generic : MonoBehaviour {
         GenerateMap();
     }
 
-    protected void ReGenerate() {
+    public void ReGenerate() {
+        DestrotMap();
         SelectGraph();
+        GenerateMap();
+    }
+
+    protected void DestrotMap() {
+        foreach(var room in generatedRooms) {
+            if (room != null)
+                Destroy(room);
+        }
+
+        generatedRooms.Clear();
     }
 
     private void LoadMapGraphs() {
@@ -107,10 +118,12 @@ public class MapGenerator_Generic : MonoBehaviour {
 
         if (isStart)
             room.transform.position = Vector3.zero;
-        else {
+        else 
             RoomPosition(room, genRoomRTS, genRoomRT, parentPosition, parentSize, parentDoorPosition, parentDoorDir);
-            if (!CollideJudge(genRoomRTS, parentID))
-                return false;
+
+        if (!CollideJudge(genRoomRTS, genRoomRT, parentID)) {
+            //Destroy(room);
+            //return false;
         }
 
         generatedRooms.Add(room);
@@ -118,7 +131,7 @@ public class MapGenerator_Generic : MonoBehaviour {
             return true;
 
         bool isChildPlaced = GenerateNextRoom(node, genRoomRT, genRoomRTS, roomDoorIndex);
-        if (!isChildPlaced) {
+        if (!isStart && !isChildPlaced) {
             generatedRooms.Remove(room);
             Destroy(room);
             return false;
@@ -161,14 +174,16 @@ public class MapGenerator_Generic : MonoBehaviour {
         room.transform.position = new Vector3(offsetX, offsetY, 0);
     }
 
-    private bool CollideJudge(RoomTemplateStats genRoomRTS, string parentID) {
-        foreach(var generatedRoom in generatedRooms) {
-            RoomTemplateStats rts = generatedRoom.GetComponent<RoomTemplateStats>();
-            MapSizeCollide msc = rts.sizeObject.GetComponent<MapSizeCollide>();
-            if(rts.id == parentID) 
-                continue;
+    private bool CollideJudge(RoomTemplateStats genRoomRTS, RoomTemplate genRoomRT, string parentID) {
+        Collider2D[] colliders = Physics2D.OverlapBoxAll(genRoomRTS.room.transform.position, genRoomRT.size, 0);
 
-            if (msc.collidingRooms.Contains(genRoomRTS.id))
+        foreach(var collider in colliders) {
+            MapSizeObject mso = collider.gameObject.GetComponent<MapSizeObject>();
+            if (mso == null)
+                continue;
+            else if (mso.id == parentID)
+                continue;
+            else
                 return false;
         }
 
