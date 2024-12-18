@@ -42,7 +42,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8623456982122221351}
   - component: {fileID: 8634506743035253717}
-  m_Layer: 12
+  m_Layer: 0
   m_Name: Corridor_UD
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -132,7 +132,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1925575566893611887, guid: ff155c185fce16140812d06c1664ea28, type: 3}
       propertyPath: m_LocalScale.x
-      value: 10
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 1925575566893611887, guid: ff155c185fce16140812d06c1664ea28, type: 3}
       propertyPath: m_LocalScale.y

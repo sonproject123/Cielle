@@ -7,7 +7,10 @@ public class MapGraphEditor : EditorWindow {
     private MapGraph graph;
     private MapGraphNode currentNode;
     private Vector2 offset;
+    private Vector2 dragOffset;
+    private Vector2 dragPosition;
     private bool isOnDrag;
+    private bool isOnWhellDrag;
     private string roomPath = Application.dataPath + "/Resources/Rooms";
     private List<string> roomTypes = new List<string>();
 
@@ -39,6 +42,8 @@ public class MapGraphEditor : EditorWindow {
             return;
         }
 
+        ZoomDrag();
+
         GUILayout.BeginVertical();
         GUILayout.FlexibleSpace();
 
@@ -65,6 +70,26 @@ public class MapGraphEditor : EditorWindow {
 
         if (currentNode != null && Event.current.type == EventType.KeyDown && Event.current.keyCode == KeyCode.Delete)
             DeleteNode();
+    }
+
+    private void ZoomDrag() {
+        Event ev = Event.current;
+        if (ev.type == EventType.MouseDown && ev.button == 2) {
+            isOnWhellDrag = true;
+            dragPosition = ev.mousePosition;
+        }
+
+        if (isOnWhellDrag) {
+            if (ev.type == EventType.MouseDrag) {
+                Vector2 delta = ev.mousePosition - dragPosition;
+                dragOffset += delta;
+                dragPosition = ev.mousePosition;
+                Repaint();
+            }
+
+            if (ev.type == EventType.MouseUp && ev.button == 2)
+                isOnWhellDrag = false;
+        }
     }
 
     private void CreateChildNode() {
@@ -159,8 +184,12 @@ public class MapGraphEditor : EditorWindow {
                 CurrentNodeChildSet(graph.root);
         }
 
-        if (ev.type == EventType.MouseUp && ev.button == 0)
+        if (ev.type == EventType.MouseUp && ev.button == 0) {
             isOnDrag = false;
+            foreach (var node in graph.allNodes)
+                node.size.position = new Vector2(node.size.x + dragOffset.x, node.size.y + dragOffset.y);
+            dragOffset = Vector2.zero;
+        }
     }
 
     private void CurrentNodeChildSet(MapGraphNode parent) {
@@ -194,7 +223,8 @@ public class MapGraphEditor : EditorWindow {
         if (node == currentNode)
             GUI.color = Color.blue;
 
-        GUI.Box(node.size, node.type);
+        
+        GUI.Box(new Rect(node.size.position.x + dragOffset.x, node.size.position.y + dragOffset.y, node.size.width, node.size.height), node.type);
 
         GUI.color = origianlColor;
 
@@ -222,8 +252,8 @@ public class MapGraphEditor : EditorWindow {
     }
 
     private void DrawNodeLine(Rect from, Rect to) {
-        Vector3 start = new Vector3(from.x + from.width / 2, from.y + from.height, 0);
-        Vector3 end = new Vector3(to.x + to.width / 2, to.y, 0);
+        Vector3 start = new Vector3(from.x + from.width / 2 + dragOffset.x, from.y + from.height + dragOffset.y, 0);
+        Vector3 end = new Vector3(to.x + to.width / 2 + dragOffset.x, to.y + dragOffset.y, 0);
         Handles.DrawLine(start, end);
         DrawArrowHead(start, end);
     }

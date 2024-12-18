@@ -82,7 +82,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7798746619891648373}
   - component: {fileID: 4018420756829052268}
-  m_Layer: 12
+  m_Layer: 0
   m_Name: Monster_UD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}

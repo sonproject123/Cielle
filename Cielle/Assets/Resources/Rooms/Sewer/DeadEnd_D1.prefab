@@ -79,7 +79,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6652168699904082103}
   - component: {fileID: 5944536602854636815}
-  m_Layer: 12
+  m_Layer: 0
   m_Name: DeadEnd_D1
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class MapGenerator_Generic : MonoBehaviour {
     [SerializeField] protected Transform player;
@@ -106,7 +108,9 @@ public class MapGenerator_Generic : MonoBehaviour {
     }
 
     protected void GenerateMap() {
-        bool temp = GenerateRoom(graph.root, start, Vector3.zero, Vector3.zero, Vector3.zero, 1, " ", true);
+        bool isGeneratedAll = GenerateRoom(graph.root, start, Vector3.zero, Vector3.zero, Vector3.zero, 1, " ", true);
+        while (!isGeneratedAll)
+            ReGenerate();
     }
 
     protected bool GenerateRoom(MapGraphNode node, RoomTemplate genRoomRT, Vector3 parentPosition, Vector3 parentSize, Vector3 parentDoorPosition, int parentDoorDir, string parentID, bool isStart) {
@@ -122,16 +126,14 @@ public class MapGenerator_Generic : MonoBehaviour {
             RoomPosition(room, genRoomRTS, genRoomRT, parentPosition, parentSize, parentDoorPosition, parentDoorDir);
 
         if (!CollideJudge(genRoomRTS, genRoomRT, parentID)) {
-            //Destroy(room);
-            //return false;
+            Destroy(room);
+            return false;
         }
 
         generatedRooms.Add(room);
-        if (node.child.Count <= 0)
-            return true;
 
         bool isChildPlaced = GenerateNextRoom(node, genRoomRT, genRoomRTS, roomDoorIndex);
-        if (!isStart && !isChildPlaced) {
+        if (!isChildPlaced) {
             generatedRooms.Remove(room);
             Destroy(room);
             return false;
@@ -175,13 +177,19 @@ public class MapGenerator_Generic : MonoBehaviour {
     }
 
     private bool CollideJudge(RoomTemplateStats genRoomRTS, RoomTemplate genRoomRT, string parentID) {
-        Collider2D[] colliders = Physics2D.OverlapBoxAll(genRoomRTS.room.transform.position, genRoomRT.size, 0);
+        Vector2 point = new Vector2(genRoomRTS.sizeObject.transform.position.x, genRoomRTS.sizeObject.transform.position.y);
+        Collider2D[] colliders = Physics2D.OverlapBoxAll(point, genRoomRT.size, 0, LayerMask.GetMask("Room"));
+        Collider2D[] zerocolliders = Physics2D.OverlapBoxAll(point, new Vector2(1, 1), 0, LayerMask.GetMask("Room"));
+        Collider2D[] maxcolliders = Physics2D.OverlapBoxAll(point, genRoomRT.size*5f, 0, LayerMask.GetMask("Room"));
+        Debug.Log(genRoomRT.type + " " + point + " " + genRoomRT.size + " " + colliders.Length + " " + zerocolliders.Length + " " + maxcolliders.Length);
 
-        foreach(var collider in colliders) {
+        foreach (var collider in colliders) {
             MapSizeObject mso = collider.gameObject.GetComponent<MapSizeObject>();
             if (mso == null)
                 continue;
             else if (mso.id == parentID)
+                continue;
+            else if (mso.id == genRoomRTS.id)
                 continue;
             else
                 return false;

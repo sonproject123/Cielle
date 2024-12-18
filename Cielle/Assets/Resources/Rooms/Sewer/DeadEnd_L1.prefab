@@ -78,7 +78,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6652168699904082103}
   - component: {fileID: 4472537414692901350}
-  m_Layer: 12
+  m_Layer: 0
   m_Name: DeadEnd_L1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
