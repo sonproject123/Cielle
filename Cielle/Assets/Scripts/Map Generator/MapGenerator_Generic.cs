@@ -15,6 +15,8 @@ public class MapGenerator_Generic : MonoBehaviour {
     [SerializeField] protected Dictionary<string, List<RoomTemplate>> roomTemplates = new Dictionary<string, List<RoomTemplate>>();
     [SerializeField] protected MapGraph graph = null;
     [SerializeField] List<MapGraphSO> graphs = new List<MapGraphSO>();
+    [SerializeField] bool isNotCollide;
+    [SerializeField] Collider2D[] colliders;
 
     [SerializeField] protected List<GameObject> generatedRooms = new List<GameObject>();
 
@@ -119,13 +121,14 @@ public class MapGenerator_Generic : MonoBehaviour {
         genRoomRTS.Initialize(genRoomRT);
         int roomDoorIndex = (parentDoorDir + 2) % 4;
         Transform roomDoor = genRoomRTS.doors[roomDoorIndex];
+        isNotCollide = true;
 
         if (isStart)
             room.transform.position = Vector3.zero;
-        else 
-            RoomPosition(room, genRoomRTS, genRoomRT, parentPosition, parentSize, parentDoorPosition, parentDoorDir);
+        else
+            RoomPosition(room, genRoomRTS, genRoomRT, parentPosition, parentSize, parentDoorPosition, parentDoorDir, parentID);
 
-        if (!CollideJudge(genRoomRTS, genRoomRT, parentID)) {
+        if (!isNotCollide) {
             Destroy(room);
             return false;
         }
@@ -147,7 +150,7 @@ public class MapGenerator_Generic : MonoBehaviour {
         return true;
     }
 
-    private void RoomPosition(GameObject room, RoomTemplateStats genRoomRTS, RoomTemplate genRoomRT, Vector3 parentPosition, Vector3 parentSize, Vector3 parentDoorPosition, int parentDoorDir) {
+    private void RoomPosition(GameObject room, RoomTemplateStats genRoomRTS, RoomTemplate genRoomRT, Vector3 parentPosition, Vector3 parentSize, Vector3 parentDoorPosition, int parentDoorDir, string parentID) {
         float offsetX = 0;
         float offsetY = 0;
         room.transform.position = new Vector3(parentPosition.x, parentPosition.y, 0);
@@ -172,24 +175,20 @@ public class MapGenerator_Generic : MonoBehaviour {
                 offsetX = parentPosition.x - (parentSize.x / 2 + genRoomRT.size.x / 2);
                 break;
         }
-        
+
+        colliders = Physics2D.OverlapBoxAll(new Vector2(offsetX, offsetY), genRoomRT.size, 0);
         room.transform.position = new Vector3(offsetX, offsetY, 0);
+        isNotCollide = CollideJudge(room.transform, genRoomRT, parentID, genRoomRTS.id);
     }
 
-    private bool CollideJudge(RoomTemplateStats genRoomRTS, RoomTemplate genRoomRT, string parentID) {
-        Vector2 point = new Vector2(genRoomRTS.sizeObject.transform.position.x, genRoomRTS.sizeObject.transform.position.y);
-        Collider2D[] colliders = Physics2D.OverlapBoxAll(point, genRoomRT.size, 0, LayerMask.GetMask("Room"));
-        Collider2D[] zerocolliders = Physics2D.OverlapBoxAll(point, new Vector2(1, 1), 0, LayerMask.GetMask("Room"));
-        Collider2D[] maxcolliders = Physics2D.OverlapBoxAll(point, genRoomRT.size*5f, 0, LayerMask.GetMask("Room"));
-        Debug.Log(genRoomRT.type + " " + point + " " + genRoomRT.size + " " + colliders.Length + " " + zerocolliders.Length + " " + maxcolliders.Length);
+    private bool CollideJudge(Transform room, RoomTemplate genRoomRT, string parentID, string myID) {
+        Vector2 point = new Vector2(room.position.x, room.position.y);        
+        Debug.Log(room.name + " " + point + " " + genRoomRT.size + " " + colliders.Length);
 
         foreach (var collider in colliders) {
+            Debug.Log(collider.transform.parent.name);
             MapSizeObject mso = collider.gameObject.GetComponent<MapSizeObject>();
-            if (mso == null)
-                continue;
-            else if (mso.id == parentID)
-                continue;
-            else if (mso.id == genRoomRTS.id)
+            if (mso == null || mso.id == parentID || mso.id == myID)
                 continue;
             else
                 return false;

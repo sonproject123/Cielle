@@ -19,8 +19,10 @@ public class RoomTemplate : ScriptableObject {
 
     private void RoomSize() {
         if (sizeObject != null) {
+            Collider2D sizeCollider = sizeObject.GetComponent<Collider2D>();
+            Vector2 originalSize = sizeCollider.bounds.size;
             Transform sizeTransform = sizeObject.transform;
-            size = new Vector2(sizeTransform.localScale.x, sizeTransform.localScale.y);
+            size = new Vector2(originalSize.x * sizeTransform.localScale.x, originalSize.y * sizeTransform.localScale.y);
         }
     }
 
