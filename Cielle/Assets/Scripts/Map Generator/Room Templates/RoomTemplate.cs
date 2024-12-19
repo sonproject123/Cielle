@@ -3,14 +3,12 @@ using UnityEngine;
 [CreateAssetMenu(fileName ="NewRoomTemplate",menuName ="Create Room Template")]
 public class RoomTemplate : ScriptableObject {
     public GameObject room;
-    public GameObject sizeObject;
     public Vector2 size;
     public string type;
     public bool [] direction = new bool[4];
 
     public void Initialize() {
         if (room != null) {
-            sizeObject = room.transform.Find("Element_Size").gameObject;
             RoomSize();
             RoomType();
             RoomDirection();
@@ -18,12 +16,9 @@ public class RoomTemplate : ScriptableObject {
     }
 
     private void RoomSize() {
-        if (sizeObject != null) {
-            Collider2D sizeCollider = sizeObject.GetComponent<Collider2D>();
-            Vector2 originalSize = sizeCollider.bounds.size;
-            Transform sizeTransform = sizeObject.transform;
-            size = new Vector2(originalSize.x * sizeTransform.localScale.x, originalSize.y * sizeTransform.localScale.y);
-        }
+        Collider2D collider2D = room.GetComponent<Collider2D>();
+        if(collider2D is BoxCollider2D box)
+            size = new Vector2(box.size.x, box.size.y);
     }
 
     private void RoomType() {

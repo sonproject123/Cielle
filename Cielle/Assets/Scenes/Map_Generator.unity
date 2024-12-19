@@ -549,6 +549,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b255976a3fe00243903d8b3c54b0ec9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  temp: {fileID: 3189859067071600801, guid: 5060b47ad3f486748a7314bc8721bbd6, type: 3}
   player: {fileID: 1099082556}
   stage: 
   start: {fileID: 0}
@@ -577,6 +578,7 @@ MonoBehaviour:
         height: 50
   graphs: []
   isNotCollide: 0
+  colliders: []
   generatedRooms: []
 --- !u!4 &1789355103
 Transform:

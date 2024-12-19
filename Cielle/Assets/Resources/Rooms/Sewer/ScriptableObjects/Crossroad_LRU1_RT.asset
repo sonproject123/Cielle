@@ -12,8 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2e40897f265050489e7e3f2769f1150, type: 3}
   m_Name: Crossroad_LRU1_RT
   m_EditorClassIdentifier: 
-  room: {fileID: 7145303037205622994, guid: ff6dcbb97aa00d84fb35514633f88d14, type: 3}
-  sizeObject: {fileID: 1808773413279308350, guid: ff6dcbb97aa00d84fb35514633f88d14, type: 3}
-  size: {x: 80, y: 80, z: 1}
+  room: {fileID: 7145303037205622994, guid: 3e9c59f2808558f40be175b756325362, type: 3}
+  size: {x: 80, y: 80}
   type: Crossroad
   direction: 01010001

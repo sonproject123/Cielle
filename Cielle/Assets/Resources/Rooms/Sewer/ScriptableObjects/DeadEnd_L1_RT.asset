@@ -12,8 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2e40897f265050489e7e3f2769f1150, type: 3}
   m_Name: DeadEnd_L1_RT
   m_EditorClassIdentifier: 
-  room: {fileID: 7145303037205622994, guid: cf6f7b3126e7ae442b579558538ce4cf, type: 3}
-  sizeObject: {fileID: 6652631265958626107, guid: cf6f7b3126e7ae442b579558538ce4cf, type: 3}
-  size: {x: 60, y: 60, z: 1}
+  room: {fileID: 7145303037205622994, guid: ca231e92aa7964c4b99435f6df85010e, type: 3}
+  size: {x: 60, y: 60}
   type: DeadEnd
   direction: 00000001

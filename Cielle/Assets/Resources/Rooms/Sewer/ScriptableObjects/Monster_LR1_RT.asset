@@ -12,8 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2e40897f265050489e7e3f2769f1150, type: 3}
   m_Name: Monster_LR1_RT
   m_EditorClassIdentifier: 
-  room: {fileID: 7145303037205622994, guid: 3da15602b8e448a41b3981615322f535, type: 3}
-  sizeObject: {fileID: 3132936200896623297, guid: 3da15602b8e448a41b3981615322f535, type: 3}
-  size: {x: 100, y: 60, z: 1}
+  room: {fileID: 7145303037205622994, guid: e3313a9c66a5f1843846870f14036505, type: 3}
+  size: {x: 100, y: 60}
   type: Monster
   direction: 00010001

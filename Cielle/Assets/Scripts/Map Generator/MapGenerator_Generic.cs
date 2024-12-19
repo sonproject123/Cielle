@@ -9,6 +9,8 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 public class MapGenerator_Generic : MonoBehaviour {
+    [SerializeField] GameObject temp;
+
     [SerializeField] protected Transform player;
     [SerializeField] protected string stage;
     [SerializeField] protected RoomTemplate start = null;
@@ -113,6 +115,20 @@ public class MapGenerator_Generic : MonoBehaviour {
         bool isGeneratedAll = GenerateRoom(graph.root, start, Vector3.zero, Vector3.zero, Vector3.zero, 1, " ", true);
         while (!isGeneratedAll)
             ReGenerate();
+
+        for(int i = 0; i < 20; i++)
+        {
+            GameObject clone = Instantiate(temp);
+            Vector2 point = new Vector2(-100 + 50 * i, -150);
+            Vector2 size = new Vector2(49, 50);
+            clone.transform.position = point;
+            Collider2D collider = clone.GetComponent<Collider2D>();
+            if (collider is BoxCollider2D box)
+                box.size = size;
+        
+            colliders = Physics2D.OverlapBoxAll(point, size, 0);
+            Debug.Log(i + " : " + colliders.Length);
+        }
     }
 
     protected bool GenerateRoom(MapGraphNode node, RoomTemplate genRoomRT, Vector3 parentPosition, Vector3 parentSize, Vector3 parentDoorPosition, int parentDoorDir, string parentID, bool isStart) {
@@ -176,8 +192,8 @@ public class MapGenerator_Generic : MonoBehaviour {
                 break;
         }
 
-        colliders = Physics2D.OverlapBoxAll(new Vector2(offsetX, offsetY), genRoomRT.size, 0);
         room.transform.position = new Vector3(offsetX, offsetY, 0);
+        colliders = Physics2D.OverlapBoxAll(room.transform.position, genRoomRT.size, 0);
         isNotCollide = CollideJudge(room.transform, genRoomRT, parentID, genRoomRTS.id);
     }
 
@@ -186,9 +202,8 @@ public class MapGenerator_Generic : MonoBehaviour {
         Debug.Log(room.name + " " + point + " " + genRoomRT.size + " " + colliders.Length);
 
         foreach (var collider in colliders) {
-            Debug.Log(collider.transform.parent.name);
-            MapSizeObject mso = collider.gameObject.GetComponent<MapSizeObject>();
-            if (mso == null || mso.id == parentID || mso.id == myID)
+            RoomTemplateStats colliderRTS = collider.gameObject.GetComponent<RoomTemplateStats>();
+            if (colliderRTS == null || colliderRTS.id == parentID || colliderRTS.id == myID)
                 continue;
             else
                 return false;
@@ -242,7 +257,7 @@ public class MapGenerator_Generic : MonoBehaviour {
                     continue;
                 }
 
-                isGenerated = GenerateRoom(node, rooms[index], parentRTS.sizeObject.transform.position, parentRT.size, doorTransforms[nextDoor].position, nextDoor, parentRTS.id, false);
+                isGenerated = GenerateRoom(node, rooms[index], parentRTS.room.transform.position, parentRT.size, doorTransforms[nextDoor].position, nextDoor, parentRTS.id, false);
                 if (isGenerated) {
                     doors[nextDoor] = false;
                     break;

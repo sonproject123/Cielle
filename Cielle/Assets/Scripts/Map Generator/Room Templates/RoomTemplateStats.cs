@@ -3,20 +3,16 @@ using UnityEngine;
 public class RoomTemplateStats : MonoBehaviour {
     public string id;
     public GameObject room;
-    public GameObject sizeObject;
     public Transform[] doors = new Transform[4];
 
     public void Initialize(RoomTemplate template) {
         room = gameObject;
-        sizeObject = room.transform.Find("Element_Size").gameObject;
         RoomID();
         Doors(template);
     }
 
     private void RoomID() {
         id = System.Guid.NewGuid().ToString();
-        MapSizeObject mso = sizeObject.GetComponent<MapSizeObject>();
-        mso.id = id;
     }
 
     private void Doors(RoomTemplate template) {

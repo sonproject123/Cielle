@@ -12,8 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2e40897f265050489e7e3f2769f1150, type: 3}
   m_Name: Corridor_UD_RT
   m_EditorClassIdentifier: 
-  room: {fileID: 2047205721890831042, guid: 45670870dee73d94d8e4ada6c11e2243, type: 3}
-  sizeObject: {fileID: 5603045196736586718, guid: 45670870dee73d94d8e4ada6c11e2243, type: 3}
-  size: {x: 30, y: 50, z: 1}
+  room: {fileID: 2047205721890831042, guid: a655538e42d7a4c45963395588617da7, type: 3}
+  size: {x: 30, y: 50}
   type: Corridor
   direction: 01000100

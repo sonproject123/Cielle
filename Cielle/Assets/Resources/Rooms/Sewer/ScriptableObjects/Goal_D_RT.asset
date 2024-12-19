@@ -12,8 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2e40897f265050489e7e3f2769f1150, type: 3}
   m_Name: Goal_D_RT
   m_EditorClassIdentifier: 
-  room: {fileID: 4394890979682373147, guid: a2fd331c647ad0e4eb025e1ba7baa26c, type: 3}
-  sizeObject: {fileID: 2667829172698593721, guid: a2fd331c647ad0e4eb025e1ba7baa26c, type: 3}
-  size: {x: 190, y: 70, z: 1}
+  room: {fileID: 4394890979682373147, guid: 101894d4a702eab4c9a5d73b91715b37, type: 3}
+  size: {x: 190, y: 70}
   type: Goal
   direction: 00000100

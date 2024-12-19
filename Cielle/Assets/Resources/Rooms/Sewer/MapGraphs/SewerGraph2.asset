@@ -1,0 +1,126 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f09ee82bc39acf04092498e82886c5db, type: 3}
+  m_Name: SewerGraph2
+  m_EditorClassIdentifier: 
+  graph:
+    root:
+      id: c34f168c-8938-436f-9072-df3ac3794c9f
+      type: Start
+      depth: 1
+      child:
+      - 6512b6a8-c28d-4fdc-b862-22aec0fa5139
+      size:
+        serializedVersion: 2
+        x: 278.4
+        y: 25.599998
+        width: 125
+        height: 50
+    allNodes:
+    - id: c34f168c-8938-436f-9072-df3ac3794c9f
+      type: Start
+      depth: 1
+      child:
+      - 6512b6a8-c28d-4fdc-b862-22aec0fa5139
+      size:
+        serializedVersion: 2
+        x: 278.4
+        y: 25.599998
+        width: 125
+        height: 50
+    - id: 6512b6a8-c28d-4fdc-b862-22aec0fa5139
+      type: Monster
+      depth: 2
+      child:
+      - 745ffa1e-3470-4507-a05e-d9a65c6845f5
+      size:
+        serializedVersion: 2
+        x: 281.99997
+        y: 90.4
+        width: 125
+        height: 50
+    - id: 745ffa1e-3470-4507-a05e-d9a65c6845f5
+      type: Monster
+      depth: 3
+      child:
+      - 14431b94-34b5-4277-b459-eeac657f1b53
+      size:
+        serializedVersion: 2
+        x: 281.59995
+        y: 154.4
+        width: 125
+        height: 50
+    - id: 14431b94-34b5-4277-b459-eeac657f1b53
+      type: Corridor
+      depth: 4
+      child:
+      - 8096790b-82a6-4b51-bb52-c8bbcde79315
+      size:
+        serializedVersion: 2
+        x: 281.99994
+        y: 217.6
+        width: 125
+        height: 50
+    - id: 8096790b-82a6-4b51-bb52-c8bbcde79315
+      type: Monster
+      depth: 5
+      child:
+      - 0df9c7a3-148e-4004-a1f8-77e604cda6d9
+      size:
+        serializedVersion: 2
+        x: 283.99994
+        y: 281.6
+        width: 125
+        height: 50
+    - id: 0df9c7a3-148e-4004-a1f8-77e604cda6d9
+      type: Monster
+      depth: 6
+      child:
+      - 066d8a11-07d0-444b-a782-4bc48cef21cc
+      size:
+        serializedVersion: 2
+        x: 285.19995
+        y: 351.2
+        width: 125
+        height: 50
+    - id: 066d8a11-07d0-444b-a782-4bc48cef21cc
+      type: Corridor
+      depth: 7
+      child:
+      - 4cef9b81-2e6f-464b-955a-a47f50342446
+      size:
+        serializedVersion: 2
+        x: 287.19995
+        y: 411.2
+        width: 125
+        height: 50
+    - id: 4cef9b81-2e6f-464b-955a-a47f50342446
+      type: Monster
+      depth: 8
+      child:
+      - c51ba18c-198b-443f-b174-4b9a13fce903
+      size:
+        serializedVersion: 2
+        x: 293.99994
+        y: 472
+        width: 125
+        height: 50
+    - id: c51ba18c-198b-443f-b174-4b9a13fce903
+      type: Goal
+      depth: 9
+      child: []
+      size:
+        serializedVersion: 2
+        x: 295.19992
+        y: 532
+        width: 125
+        height: 50
