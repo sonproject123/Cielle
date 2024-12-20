@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Threading.Tasks;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEditor;
@@ -9,15 +10,12 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 public class MapGenerator_Generic : MonoBehaviour {
-    [SerializeField] GameObject temp;
-
     [SerializeField] protected Transform player;
     [SerializeField] protected string stage;
     [SerializeField] protected RoomTemplate start = null;
     [SerializeField] protected Dictionary<string, List<RoomTemplate>> roomTemplates = new Dictionary<string, List<RoomTemplate>>();
     [SerializeField] protected MapGraph graph = null;
     [SerializeField] List<MapGraphSO> graphs = new List<MapGraphSO>();
-    [SerializeField] bool isNotCollide;
     [SerializeField] Collider2D[] colliders;
 
     [SerializeField] protected List<GameObject> generatedRooms = new List<GameObject>();
@@ -111,38 +109,25 @@ public class MapGenerator_Generic : MonoBehaviour {
         return clone;
     }
 
-    protected void GenerateMap() {
-        bool isGeneratedAll = GenerateRoom(graph.root, start, Vector3.zero, Vector3.zero, Vector3.zero, 1, " ", true);
+    protected async void GenerateMap() {
+        bool isGeneratedAll = await GenerateRoom(graph.root, start, Vector3.zero, Vector3.zero, null, 1, " ", true);
         while (!isGeneratedAll)
             ReGenerate();
-
-        for(int i = 0; i < 20; i++)
-        {
-            GameObject clone = Instantiate(temp);
-            Vector2 point = new Vector2(-100 + 50 * i, -150);
-            Vector2 size = new Vector2(49, 50);
-            clone.transform.position = point;
-            Collider2D collider = clone.GetComponent<Collider2D>();
-            if (collider is BoxCollider2D box)
-                box.size = size;
-        
-            colliders = Physics2D.OverlapBoxAll(point, size, 0);
-            Debug.Log(i + " : " + colliders.Length);
-        }
     }
 
-    protected bool GenerateRoom(MapGraphNode node, RoomTemplate genRoomRT, Vector3 parentPosition, Vector3 parentSize, Vector3 parentDoorPosition, int parentDoorDir, string parentID, bool isStart) {
+    private async Task<bool> GenerateRoom(MapGraphNode node, RoomTemplate genRoomRT, Vector3 parentPosition, Vector3 parentSize, Transform parentDoorPosition, int parentDoorDir, string parentID, bool isStart) {
         GameObject room = RoomInstantiate(genRoomRT.room);
         RoomTemplateStats genRoomRTS = room.GetComponent<RoomTemplateStats>();
         genRoomRTS.Initialize(genRoomRT);
         int roomDoorIndex = (parentDoorDir + 2) % 4;
         Transform roomDoor = genRoomRTS.doors[roomDoorIndex];
-        isNotCollide = true;
 
         if (isStart)
             room.transform.position = Vector3.zero;
         else
-            RoomPosition(room, genRoomRTS, genRoomRT, parentPosition, parentSize, parentDoorPosition, parentDoorDir, parentID);
+            RoomPosition(room, roomDoor, genRoomRTS, genRoomRT, parentPosition, parentSize, parentDoorPosition, parentDoorDir, parentID);
+
+        bool isNotCollide = await CollideJudge(room, genRoomRT, genRoomRTS, parentID);
 
         if (!isNotCollide) {
             Destroy(room);
@@ -151,8 +136,9 @@ public class MapGenerator_Generic : MonoBehaviour {
 
         generatedRooms.Add(room);
 
-        bool isChildPlaced = GenerateNextRoom(node, genRoomRT, genRoomRTS, roomDoorIndex);
+        bool isChildPlaced = await GenerateNextRoom(node, genRoomRT, genRoomRTS, roomDoorIndex);
         if (!isChildPlaced) {
+            // 자식들 전부 삭제해야 함
             generatedRooms.Remove(room);
             Destroy(room);
             return false;
@@ -166,53 +152,50 @@ public class MapGenerator_Generic : MonoBehaviour {
         return true;
     }
 
-    private void RoomPosition(GameObject room, RoomTemplateStats genRoomRTS, RoomTemplate genRoomRT, Vector3 parentPosition, Vector3 parentSize, Vector3 parentDoorPosition, int parentDoorDir, string parentID) {
+    private void RoomPosition(GameObject room, Transform roomDoor, RoomTemplateStats genRoomRTS, RoomTemplate genRoomRT, Vector3 parentPosition, Vector3 parentSize, Transform parentDoorPosition, int parentDoorDir, string parentID) {
         float offsetX = 0;
         float offsetY = 0;
-        room.transform.position = new Vector3(parentPosition.x, parentPosition.y, 0);
-        int roomDoorIndex = (parentDoorDir + 2) % 4;
-        Transform roomDoor = genRoomRTS.doors[roomDoorIndex];
 
         switch (parentDoorDir) {
             case 0:
-                offsetX = parentPosition.x + (parentDoorPosition.x - roomDoor.position.x);
+                offsetX = parentPosition.x + (parentDoorPosition.localPosition.x - roomDoor.localPosition.x);
                 offsetY = parentPosition.y + (parentSize.y / 2 + genRoomRT.size.y / 2);
                 break;
             case 1:
-                offsetY = parentPosition.y + (parentDoorPosition.y - roomDoor.position.y);
+                offsetY = parentPosition.y + (parentDoorPosition.localPosition.y - roomDoor.localPosition.y);
                 offsetX = parentPosition.x + (parentSize.x / 2 + genRoomRT.size.x / 2);
                 break;
             case 2:
-                offsetX = parentPosition.x + (parentDoorPosition.x - roomDoor.position.x);
+                offsetX = parentPosition.x + (parentDoorPosition.localPosition.x - roomDoor.localPosition.x);
                 offsetY = parentPosition.y - (parentSize.y / 2 + genRoomRT.size.y / 2);
                 break;
             case 3:
-                offsetY = parentPosition.y + (parentDoorPosition.y - roomDoor.position.y);
+                offsetY = parentPosition.y + (parentDoorPosition.localPosition.y - roomDoor.localPosition.y);
                 offsetX = parentPosition.x - (parentSize.x / 2 + genRoomRT.size.x / 2);
                 break;
         }
 
         room.transform.position = new Vector3(offsetX, offsetY, 0);
-        colliders = Physics2D.OverlapBoxAll(room.transform.position, genRoomRT.size, 0);
-        isNotCollide = CollideJudge(room.transform, genRoomRT, parentID, genRoomRTS.id);
     }
 
-    private bool CollideJudge(Transform room, RoomTemplate genRoomRT, string parentID, string myID) {
-        Vector2 point = new Vector2(room.position.x, room.position.y);        
-        Debug.Log(room.name + " " + point + " " + genRoomRT.size + " " + colliders.Length);
+    private async Task<bool> CollideJudge(GameObject room, RoomTemplate genRoomRT, RoomTemplateStats genRoomRTS, string parentID) {
+        await Task.Delay((int)(Time.fixedDeltaTime * 1000));
+        
+        Vector2 point = new Vector2(room.transform.position.x, room.transform.position.y);
+        colliders = Physics2D.OverlapBoxAll(point, genRoomRT.size, 0);
 
         foreach (var collider in colliders) {
             RoomTemplateStats colliderRTS = collider.gameObject.GetComponent<RoomTemplateStats>();
-            if (colliderRTS == null || colliderRTS.id == parentID || colliderRTS.id == myID)
+            if (colliderRTS == null || colliderRTS.id == parentID || colliderRTS.id == genRoomRTS.id)
                 continue;
-            else
+            else 
                 return false;
         }
 
         return true;
     }
 
-    private bool GenerateNextRoom(MapGraphNode parentNode, RoomTemplate parentRT, RoomTemplateStats parentRTS, int parentDir) {
+    private async Task<bool> GenerateNextRoom(MapGraphNode parentNode, RoomTemplate parentRT, RoomTemplateStats parentRTS, int parentDir) {
         Transform[] doorTransforms = new Transform[4];
         bool[] doors = new bool[4];
         int nextDoor = 0;
@@ -257,7 +240,7 @@ public class MapGenerator_Generic : MonoBehaviour {
                     continue;
                 }
 
-                isGenerated = GenerateRoom(node, rooms[index], parentRTS.room.transform.position, parentRT.size, doorTransforms[nextDoor].position, nextDoor, parentRTS.id, false);
+                isGenerated = await GenerateRoom(node, rooms[index], parentRTS.room.transform.position, parentRT.size, doorTransforms[nextDoor].transform, nextDoor, parentRTS.id, false);
                 if (isGenerated) {
                     doors[nextDoor] = false;
                     break;
