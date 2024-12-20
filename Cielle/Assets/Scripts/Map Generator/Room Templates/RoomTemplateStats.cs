@@ -1,9 +1,11 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class RoomTemplateStats : MonoBehaviour {
     public string id;
     public GameObject room;
     public Transform[] doors = new Transform[4];
+    public List<GameObject> childRooms = new List<GameObject>();
 
     public void Initialize(RoomTemplate template) {
         room = gameObject;

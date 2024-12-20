@@ -110,12 +110,12 @@ public class MapGenerator_Generic : MonoBehaviour {
     }
 
     protected async void GenerateMap() {
-        bool isGeneratedAll = await GenerateRoom(graph.root, start, Vector3.zero, Vector3.zero, null, 1, " ", true);
+        bool isGeneratedAll = await GenerateRoom(graph.root, start, null, Vector3.zero, Vector3.zero, null, 1, " ", true);
         while (!isGeneratedAll)
             ReGenerate();
     }
 
-    private async Task<bool> GenerateRoom(MapGraphNode node, RoomTemplate genRoomRT, Vector3 parentPosition, Vector3 parentSize, Transform parentDoorPosition, int parentDoorDir, string parentID, bool isStart) {
+    private async Task<bool> GenerateRoom(MapGraphNode node, RoomTemplate genRoomRT, RoomTemplateStats parentRTS, Vector3 parentPosition, Vector3 parentSize, Transform parentDoorPosition, int parentDoorDir, string parentID, bool isStart) {
         GameObject room = RoomInstantiate(genRoomRT.room);
         RoomTemplateStats genRoomRTS = room.GetComponent<RoomTemplateStats>();
         genRoomRTS.Initialize(genRoomRT);
@@ -135,10 +135,13 @@ public class MapGenerator_Generic : MonoBehaviour {
         }
 
         generatedRooms.Add(room);
+        if (parentRTS != null)
+            parentRTS.childRooms.Add(room);
 
         bool isChildPlaced = await GenerateNextRoom(node, genRoomRT, genRoomRTS, roomDoorIndex);
-        if (!isChildPlaced) {
-            // 자식들 전부 삭제해야 함
+        if (!isStart && !isChildPlaced) {
+            DestroyChildRooms(genRoomRTS);
+            parentRTS.childRooms.Remove(room);
             generatedRooms.Remove(room);
             Destroy(room);
             return false;
@@ -195,6 +198,17 @@ public class MapGenerator_Generic : MonoBehaviour {
         return true;
     }
 
+    private void DestroyChildRooms(RoomTemplateStats parentRTS) {
+        for (int i = parentRTS.childRooms.Count - 1; i >= 0; i--) {
+            var room = parentRTS.childRooms[i];
+            RoomTemplateStats rts = room.gameObject.GetComponent<RoomTemplateStats>();
+            DestroyChildRooms(rts);
+            generatedRooms.Remove(room);
+            parentRTS.childRooms.RemoveAt(i);
+            Destroy(room);
+        }
+    }
+
     private async Task<bool> GenerateNextRoom(MapGraphNode parentNode, RoomTemplate parentRT, RoomTemplateStats parentRTS, int parentDir) {
         Transform[] doorTransforms = new Transform[4];
         bool[] doors = new bool[4];
@@ -240,7 +254,7 @@ public class MapGenerator_Generic : MonoBehaviour {
                     continue;
                 }
 
-                isGenerated = await GenerateRoom(node, rooms[index], parentRTS.room.transform.position, parentRT.size, doorTransforms[nextDoor].transform, nextDoor, parentRTS.id, false);
+                isGenerated = await GenerateRoom(node, rooms[index], parentRTS, parentRTS.room.transform.position, parentRT.size, doorTransforms[nextDoor].transform, nextDoor, parentRTS.id, false);
                 if (isGenerated) {
                     doors[nextDoor] = false;
                     break;
