@@ -378,15 +378,15 @@ public class Move : MonoBehaviour {
         while(time < reloadTime) {
             yield return wffu;
             time += Time.deltaTime;
-            PlayerUI.OnReloadingTime.Invoke(time, reloadTime);
+            PlayerUI.OnReloadingTime?.Invoke(time, reloadTime);
         }
 
         Stats.Instance.BulletRemain = Stats.Instance.BulletMax;
         isFireable = true;
         isWeaponChangeable = true;
         isReloading = false;
-        PlayerUI.OnReloading.Invoke(false);
-        UIManager.OnBulletUse.Invoke();
+        PlayerUI.OnReloading?.Invoke(false);
+        UIManager.OnBulletUse?.Invoke();
     }
 
     private void OnDisable() {

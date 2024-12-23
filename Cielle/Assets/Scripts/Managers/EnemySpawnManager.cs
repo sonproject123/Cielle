@@ -12,7 +12,7 @@ public class EnemySpawnManager : MonoBehaviour {
 
     public void Spawn() {
         int enemyId = enemyList[Random.Range(0, enemyList.Capacity)];
-        GameObject enemy = EnemyManager.Instance.UseEnemy(enemyId);
+        GameObject enemy = EnemyManager.OnUseEnemy(enemyId);
         float positionX = Random.Range(10.0f, 20.0f);
         enemy.transform.localPosition = new Vector3(positionX, 0, 0);
     }

@@ -4,19 +4,19 @@ using UnityEngine;
 
 public class AttackRange : MonoBehaviour {
     [SerializeField] GameObject master;
-    private IInRange iMaster;
+    private EnemyStats es;
 
     private void Start() {
-        iMaster = master.GetComponent<IInRange>();
+        es = master.GetComponent<EnemyStats>();
     }
 
     private void OnTriggerEnter(Collider other) {
         if (other.CompareTag("Player"))
-            iMaster.InRange(true);
+            es.AttackRange(true);
     }
 
     private void OnTriggerExit(Collider other) {
         if (other.CompareTag("Player"))
-            iMaster.InRange(false);
+            es.AttackRange(false);
     }
 }

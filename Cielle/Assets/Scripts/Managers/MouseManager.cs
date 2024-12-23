@@ -14,7 +14,7 @@ public class MouseManager : Singleton<MouseManager> {
 
     private void Start() {
         cursorNormal = ResourcesManager.Instance.Load<Texture2D>("CursorNormal");
-        cursorCross = ResourcesManager.Instance.Load<Texture2D>("CursorCross");
+        cursorCross = ResourcesManager.Instance.Load<Texture2D>("GameOverall/CursorCross");
     }
 
     public void State(int state) {
@@ -23,10 +23,23 @@ public class MouseManager : Singleton<MouseManager> {
                 Cursor.SetCursor(cursorNormal, Vector2.zero, CursorMode.ForceSoftware);
                 break;
             case 1:
-                center = new Vector2(cursorCross.width / 2, cursorCross.height / 2);
-                Cursor.SetCursor(cursorCross, center, CursorMode.ForceSoftware);
+                CrossCursor();
+                break;
+            case 2:
+                CrossCursor();
+                break;
+            case 3:
+                CrossCursor();
+                break;
+            case 4:
+                CrossCursor();
                 break;
         }
+    }
+
+    private void CrossCursor() {
+        center = new Vector2(cursorCross.width / 2, cursorCross.height / 2);
+        Cursor.SetCursor(cursorCross, center, CursorMode.ForceSoftware);
     }
 
     void OnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode) {

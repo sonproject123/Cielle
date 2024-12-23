@@ -6,7 +6,7 @@ public class LesserFlyingGunDrone : EnemyStats {
     private void Update() {
         Muzzle();
 
-        if (inRange && !isAttack) {
+        if (isInAttackRange && !isAttack) {
             isAttack = true;
             StartCoroutine(Attack());
         }

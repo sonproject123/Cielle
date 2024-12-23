@@ -1,19 +1,31 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Resources;
 using UnityEngine;
 
-public class EnemyManager : Singleton<EnemyManager> {
+public class EnemyManager : MonoBehaviour {
+    [SerializeField] List<int> EnemyIDList = new List<int>();
     [SerializeField] Dictionary<int, Queue<GameObject>> enemyList = new Dictionary<int, Queue<GameObject>>();
 
+    public static Func<int, GameObject> OnUseEnemy; 
+    public static Action<GameObject, int> OnReturnEnemy; 
+
     private void Start() {
-        foreach (var dict in JsonManager.Instance.EnemyDict) {
-            enemyList.Add(dict.Key, new Queue<GameObject>());
+        OnUseEnemy = UseEnemy;
+        OnReturnEnemy = (GameObject obj, int id) => { ReturnEnemy(obj, id); };
+
+        foreach (var id in EnemyIDList) {
+            EnemyData enemyData;
+            if (!JsonManager.Instance.EnemyDict.TryGetValue(id, out enemyData))
+                continue;
+
+            enemyList.Add(id, new Queue<GameObject>());
 
             Queue<GameObject> queue = null;
-            if (enemyList.TryGetValue(dict.Key, out queue)) {
-                for (int i = 0; i < 30; i++) {
-                    GameObject temp = CreateEnemy(queue, dict.Key, "Enemies/" + dict.Value.code);
+            if (enemyList.TryGetValue(id, out queue)) {
+                for (int i = 0; i < 20; i++) {
+                    GameObject temp = CreateEnemy(queue, id, "Enemies/" + enemyData.code);
                 }
             }
         }

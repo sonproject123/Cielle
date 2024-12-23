@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyStats : MonoBehaviour, IHitable, IInRange {
+public class EnemyStats : MonoBehaviour, IHitable {
     [SerializeField] protected int id = 0;
     [SerializeField] protected EnemyData enemyData;
     [SerializeField] protected Transform player;
@@ -11,7 +11,8 @@ public class EnemyStats : MonoBehaviour, IHitable, IInRange {
     [SerializeField] protected Transform muzzle;
     [SerializeField] protected GameObject ui;
     [SerializeField] protected EnemyUI enemyUI;
-    [SerializeField] protected bool inRange;
+    [SerializeField] protected bool isInAttackRange;
+    [SerializeField] protected bool isInChaseRange;
 
     [SerializeField] protected float hp;
     [SerializeField] protected float maxHp;
@@ -56,7 +57,8 @@ public class EnemyStats : MonoBehaviour, IHitable, IInRange {
         stoppingResistance = enemyData.stoppingResistance;
         price = enemyData.price;
 
-        inRange = false;
+        isInAttackRange = false;
+        isInChaseRange = false;
         isDead = false;
         isAttack = false;
         player = Stats.Instance.PlayerCenter;
@@ -120,7 +122,7 @@ public class EnemyStats : MonoBehaviour, IHitable, IInRange {
             for (int i = 0; i < 10; i++)
                 MetalObject();
 
-            EnemyManager.Instance.ReturnEnemy(gameObject, id);
+            EnemyManager.OnReturnEnemy?.Invoke(gameObject, id);
         }
         else if (hp > 0.0) {
             Vector3 dir = Vector3.right;
@@ -129,12 +131,6 @@ public class EnemyStats : MonoBehaviour, IHitable, IInRange {
             StartCoroutine(Stopping(dir, stoppingPower - stoppingResistance, stoppingTime));
         }
     }
-
-    private void TransformMove(Vector3 dir, float speed, float wallSensor) {
-        if (!Physics.Raycast(transform.position, dir, wallSensor, LayerMask.GetMask("Wall")))
-            transform.position += dir * speed * Time.deltaTime;
-    }
-
     IEnumerator Stopping(Vector3 dir, float stoppingPower, float stoppingTime) {
         if (stoppingPower < 0)
             yield break;
@@ -148,11 +144,31 @@ public class EnemyStats : MonoBehaviour, IHitable, IInRange {
             yield return wffu;
         }
     }
-
-    public void InRange(bool value) {
-        inRange = value;
+    private void TransformMove(Vector3 dir, float speed, float wallSensor) {
+        if (!Physics.Raycast(transform.position, dir, wallSensor, LayerMask.GetMask("Wall")))
+            transform.position += dir * speed * Time.deltaTime;
     }
 
+    public void AttackRange(bool value) {
+        isInAttackRange = value;
+    }
+
+    public void ChaseRange(bool value) {
+        isInChaseRange = value;
+    }
+
+    protected void RigidMove() {
+
+    }
+
+
+    protected void LinearBulletSpawn() {
+        GameObject bullet = ObjectManager.Instance.UseObject("ENEMYBULLET");
+        bullet.transform.position = muzzle.transform.position;
+        bullet.transform.rotation = muzzle.transform.rotation;
+
+        BulletStats(bullet);
+    }
     protected void BulletStats(GameObject bullet) {
         BulletEnemy bulletEnemy = bullet.GetComponent<BulletEnemy>();
         if (bulletEnemy != null) {
@@ -163,14 +179,6 @@ public class EnemyStats : MonoBehaviour, IHitable, IInRange {
             bulletEnemy.StoppingTime = stoppingTime;
             bulletEnemy.Target = player.position;
         }
-    }
-
-    protected void LinearBulletSpawn() {
-        GameObject bullet = ObjectManager.Instance.UseObject("ENEMYBULLET");
-        bullet.transform.position = muzzle.transform.position;
-        bullet.transform.rotation = muzzle.transform.rotation;
-
-        BulletStats(bullet);
     }
 
     protected void BreakObject(Vector3 hitPosition) {
