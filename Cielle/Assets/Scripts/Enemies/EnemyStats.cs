@@ -161,7 +161,6 @@ public class EnemyStats : MonoBehaviour, IHitable {
 
     }
 
-
     protected void LinearBulletSpawn() {
         GameObject bullet = ObjectManager.Instance.UseObject("ENEMYBULLET");
         bullet.transform.position = muzzle.transform.position;

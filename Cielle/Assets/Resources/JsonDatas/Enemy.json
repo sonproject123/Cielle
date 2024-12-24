@@ -2,7 +2,7 @@
   "enemysData": [
     {
       "id": 1,
-      "name": "¾ç»êÇü ¼Ğ·¹ µå·Ğ",
+      "name": "ì–‘ì‚°í˜• ì…¸ë ˆ ê±´ ë“œë¡ ",
       "hp": 100,
       "shield": 0,
       "attack": 30,
@@ -16,6 +16,23 @@
       "bulletSpeed": 7,
       "price": 1,
       "code": "Lesser_Gun_Drone"
+    },
+    {
+      "id": 2,
+      "name": "ì–‘ì‚°í˜• ì…¸ë ˆ ë ˆì´ì € ë“œë¡ ",
+      "hp": 200,
+      "shield": 0,
+      "attack": 50,
+      "attackShield": 0,
+      "defense": 5,
+      "speed": 5,
+      "stoppingPower": 1,
+      "stoppingTime": 0.1,
+      "stoppingResistance": 5,
+      "cooltime": 5,
+      "bulletSpeed": 999,
+      "price": 2,
+      "code": "Lesster_Laser_Drone"
     }
   ]
 }

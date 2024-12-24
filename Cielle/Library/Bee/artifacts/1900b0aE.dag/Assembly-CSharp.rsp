@@ -440,6 +440,7 @@
 "Assets/Scripts/Data/ObjectData.cs"
 "Assets/Scripts/Enemies/AttackRange.cs"
 "Assets/Scripts/Enemies/ChaseRange.cs"
+"Assets/Scripts/Enemies/EnemyFSM.cs"
 "Assets/Scripts/Enemies/EnemyStats.cs"
 "Assets/Scripts/Enemies/EnemyUI.cs"
 "Assets/Scripts/Enemies/LesserFlyingGunDrone.cs"
