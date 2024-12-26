@@ -3,17 +3,35 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class LesserFlyingGunDrone : EnemyStats {
-    private void Update() {
-        Muzzle();
+    protected override GeneralFSM<EnemyStats> InitialState() {
+        return new EnemyState_InPatrol<EnemyStats>(this);
+    }
 
-        if (isInAttackRange && !isAttack) {
+    public override void Patrol() {
+
+    }
+
+    public override void Chase() {
+    }
+
+    public override void Attack() {
+        if (!isAttack) {
             isAttack = true;
-            StartCoroutine(Attack());
+            StartCoroutine(AttackCoolTime());
         }
     }
 
-    IEnumerator Attack() {
-        yield return CoroutineCache.WaitForSecond(cooltime);
+    IEnumerator AttackCoolTime() {
+        float time = 0;
+        WaitForFixedUpdate wffu = GeneralStats.Instance.WFFU;
+
+        while(time < cooltime) {
+            Muzzle();
+            yield return wffu;
+
+            time += Time.deltaTime;
+        }
+
         LinearBulletSpawn();
         isAttack = false;
     }

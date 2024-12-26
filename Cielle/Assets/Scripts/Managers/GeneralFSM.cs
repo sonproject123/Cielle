@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class EnemyFSM {
-    protected EnemyStats enemy;
+public abstract class GeneralFSM<T> {
+    protected T npc;
 
-    public EnemyFSM(EnemyStats enemy) {
-        this.enemy = enemy;
+    public GeneralFSM(T npc) {
+        this.npc = npc;
     }
 
     public abstract void OnStateEnter();

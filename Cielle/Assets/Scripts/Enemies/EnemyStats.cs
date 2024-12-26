@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyStats : MonoBehaviour, IHitable {
+public abstract class EnemyStats : MonoBehaviour, IHitable {
     [SerializeField] protected int id = 0;
     [SerializeField] protected EnemyData enemyData;
     [SerializeField] protected Transform player;
@@ -11,8 +11,6 @@ public class EnemyStats : MonoBehaviour, IHitable {
     [SerializeField] protected Transform muzzle;
     [SerializeField] protected GameObject ui;
     [SerializeField] protected EnemyUI enemyUI;
-    [SerializeField] protected bool isInAttackRange;
-    [SerializeField] protected bool isInChaseRange;
 
     [SerializeField] protected float hp;
     [SerializeField] protected float maxHp;
@@ -32,8 +30,19 @@ public class EnemyStats : MonoBehaviour, IHitable {
     [SerializeField] protected bool isDead;
     [SerializeField] protected bool isAttack;
 
+    [SerializeField] protected GeneralFSM<EnemyStats> currentState;
+    [SerializeField] public bool isInAttackRange;
+    [SerializeField] public bool isInChaseRange;
+
+    protected abstract GeneralFSM<EnemyStats> InitialState();
+    public abstract void Patrol();
+    public abstract void Chase();
+    public abstract void Attack();
+
     private void Awake() {
         enemyUI = ui.GetComponent<EnemyUI>();
+        currentState = InitialState();
+        currentState.OnStateEnter();
     }
 
     private void OnEnable() {
@@ -41,6 +50,16 @@ public class EnemyStats : MonoBehaviour, IHitable {
             JsonManager.Instance.EnemyDict.TryGetValue(id, out enemyData);
             Initialize();
         }
+    }
+
+    private void Update() {
+        currentState.OnStateStay();
+    }
+
+    public void ChangeState(GeneralFSM<EnemyStats> newState) {
+        currentState.OnStateExit();
+        currentState = newState;
+        currentState.OnStateEnter();
     }
 
     private void Initialize() {
