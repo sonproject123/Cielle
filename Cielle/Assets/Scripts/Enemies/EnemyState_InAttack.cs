@@ -4,6 +4,7 @@ public class EnemyState_InAttack<T> : GeneralFSM<T> where T : EnemyStats {
     public EnemyState_InAttack(T enemy) : base(enemy) { }
 
     public override void OnStateEnter() {
+        // show !
         return;
     }
 

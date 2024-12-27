@@ -12,6 +12,10 @@ public abstract class EnemyStats : MonoBehaviour, IHitable {
     [SerializeField] protected GameObject ui;
     [SerializeField] protected EnemyUI enemyUI;
 
+    [SerializeField] protected Collider thisCollider;
+    [SerializeField] protected Vector3 colliderSize;
+    [SerializeField] protected Vector3 originalScale;
+
     [SerializeField] protected float hp;
     [SerializeField] protected float maxHp;
     [SerializeField] protected float shield;
@@ -38,9 +42,14 @@ public abstract class EnemyStats : MonoBehaviour, IHitable {
     public abstract void Patrol();
     public abstract void Chase();
     public abstract void Attack();
+    public abstract void OnHit(float damage, float damageShield, float stoppingPower, float stoppingTime, Vector3 hitPosition);
+
 
     private void Awake() {
         enemyUI = ui.GetComponent<EnemyUI>();
+        thisCollider = GetComponent<Collider>();
+        colliderSize = thisCollider.bounds.size;
+        originalScale = transform.localScale;
         currentState = InitialState();
         currentState.OnStateEnter();
     }
@@ -82,6 +91,8 @@ public abstract class EnemyStats : MonoBehaviour, IHitable {
         isAttack = false;
         player = Stats.Instance.PlayerCenter;
     }
+
+    #region Property
 
     public int Id {
         get { return id; }
@@ -127,8 +138,32 @@ public abstract class EnemyStats : MonoBehaviour, IHitable {
         get { return cooltime; }
         set { cooltime = value; }
     }
+    #endregion
 
     public void Hit(float damage, float damageShield, float stoppingPower, float stoppingTime, Vector3 hitPosition) {
+        currentState.OnStateExit();
+        currentState = new EnemyState_InHit<EnemyStats>(this, damage, damageShield, stoppingPower, stoppingTime, hitPosition);
+        currentState.OnStateEnter();
+    }
+    IEnumerator Stopping(Vector3 dir, float stoppingPower, float stoppingTime) {
+        if (stoppingPower < 0)
+            yield break;
+
+        float time = 0;
+        WaitForFixedUpdate wffu = GeneralStats.Instance.WFFU;
+
+        while(time < stoppingTime) {
+            time += Time.deltaTime;
+            TransformMove(dir, stoppingPower, 1);
+            yield return wffu;
+        }
+    }
+    private void TransformMove(Vector3 dir, float speed, float wallSensor) {
+        if (!Physics.Raycast(transform.position, dir, wallSensor, LayerMask.GetMask("Wall")))
+            transform.position += dir * speed * Time.deltaTime;
+    }
+
+    protected void CommonHit(float damage, float damageShield, float stoppingPower, float stoppingTime, Vector3 hitPosition) {
         hp -= Mathf.Max(1, damage - defense);
         enemyUI.HpBar();
 
@@ -150,22 +185,10 @@ public abstract class EnemyStats : MonoBehaviour, IHitable {
             StartCoroutine(Stopping(dir, stoppingPower - stoppingResistance, stoppingTime));
         }
     }
-    IEnumerator Stopping(Vector3 dir, float stoppingPower, float stoppingTime) {
-        if (stoppingPower < 0)
-            yield break;
 
-        float time = 0;
-        WaitForFixedUpdate wffu = GeneralStats.Instance.WFFU;
-
-        while(time < stoppingTime) {
-            time += Time.deltaTime;
-            TransformMove(dir, stoppingPower, 1);
-            yield return wffu;
-        }
-    }
-    private void TransformMove(Vector3 dir, float speed, float wallSensor) {
-        if (!Physics.Raycast(transform.position, dir, wallSensor, LayerMask.GetMask("Wall")))
-            transform.position += dir * speed * Time.deltaTime;
+    protected void CommonPatrol() {
+        Vector3 frontPosition = transform.localPosition + new Vector3(-colliderSize.x / 2 * originalScale.x, 0, 0);
+        
     }
 
     public void AttackRange(bool value) {

@@ -8,6 +8,14 @@
     "C:\\Users\\Administrator\\Desktop\\Cielle\\Cielle\\Packages\\packages-lock.json"
   ],
   "outputs": {
+    "com.cysharp.unitask@https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask": {
+      "name": "com.cysharp.unitask",
+      "resolvedPath": "C:\\Users\\Administrator\\Desktop\\Cielle\\Cielle\\Library\\PackageCache\\com.cysharp.unitask",
+      "fingerprint": "8e35566084c7753100966e52af58af631954ca14",
+      "editorCompatibility": "2018.4.0a1",
+      "version": "2.5.10",
+      "source": "git"
+    },
     "com.unity.2d.sprite@1.0.0": {
       "name": "com.unity.2d.sprite",
       "resolvedPath": "C:\\Users\\Administrator\\Desktop\\Cielle\\Cielle\\Library\\PackageCache\\com.unity.2d.sprite",

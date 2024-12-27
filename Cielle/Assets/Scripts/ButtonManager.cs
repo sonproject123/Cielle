@@ -19,6 +19,7 @@ public class ButtonManager : Singleton<ButtonManager> {
 
     public void EnemyTransformSpawn(int id) {
         GameObject enemy = EnemyManager.OnUseEnemy?.Invoke(id);
-        enemy.transform.position = spawnPoint.position;
+        float positionX = Random.Range(-10.0f, 10.0f);
+        enemy.transform.position = new Vector3(spawnPoint.position.x + positionX, spawnPoint.position.y, 0);
     }
 }

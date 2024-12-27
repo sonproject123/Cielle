@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
@@ -115,7 +116,7 @@ public class MapGenerator_Generic : MonoBehaviour {
             ReGenerate();
     }
 
-    private async Task<bool> GenerateRoom(MapGraphNode node, RoomTemplate genRoomRT, RoomTemplateStats parentRTS, Vector3 parentPosition, Vector3 parentSize, Transform parentDoorPosition, int parentDoorDir, string parentID, bool isStart) {
+    private async UniTask<bool> GenerateRoom(MapGraphNode node, RoomTemplate genRoomRT, RoomTemplateStats parentRTS, Vector3 parentPosition, Vector3 parentSize, Transform parentDoorPosition, int parentDoorDir, string parentID, bool isStart) {
         GameObject room = RoomInstantiate(genRoomRT.room);
         RoomTemplateStats genRoomRTS = room.GetComponent<RoomTemplateStats>();
         genRoomRTS.Initialize(genRoomRT);
@@ -181,8 +182,8 @@ public class MapGenerator_Generic : MonoBehaviour {
         room.transform.position = new Vector3(offsetX, offsetY, 0);
     }
 
-    private async Task<bool> CollideJudge(GameObject room, RoomTemplate genRoomRT, RoomTemplateStats genRoomRTS, string parentID) {
-        await Task.Delay((int)(Time.fixedDeltaTime * 1000));
+    private async UniTask<bool> CollideJudge(GameObject room, RoomTemplate genRoomRT, RoomTemplateStats genRoomRTS, string parentID) {
+        await UniTask.Delay((int)(Time.fixedDeltaTime * 1000));
         
         Vector2 point = new Vector2(room.transform.position.x, room.transform.position.y);
         colliders = Physics2D.OverlapBoxAll(point, genRoomRT.size, 0);
@@ -209,7 +210,7 @@ public class MapGenerator_Generic : MonoBehaviour {
         }
     }
 
-    private async Task<bool> GenerateNextRoom(MapGraphNode parentNode, RoomTemplate parentRT, RoomTemplateStats parentRTS, int parentDir) {
+    private async UniTask<bool> GenerateNextRoom(MapGraphNode parentNode, RoomTemplate parentRT, RoomTemplateStats parentRTS, int parentDir) {
         Transform[] doorTransforms = new Transform[4];
         bool[] doors = new bool[4];
         int nextDoor = 0;

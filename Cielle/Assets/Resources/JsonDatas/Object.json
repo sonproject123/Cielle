@@ -2,17 +2,17 @@
   "objectsData": [
     {
       "name": "PLAYERBULLET",
-      "count": 200,
+      "count": 100,
       "path": "Bullets/Player_Normal"
     },
     {
       "name": "PLAYERSHOTGUNBULLET",
-      "count": 50,
+      "count": 20,
       "path": "Bullets/Player_Shotgun"
     },
     {
       "name": "PLAYERROCKETBULLET",
-      "count": 10,
+      "count": 3,
       "path": "Bullets/Player_Rocket"
     },
     {
@@ -22,17 +22,17 @@
     },
     {
       "name": "ENEMYBULLET",
-      "count": 200,
+      "count": 50,
       "path": "Bullets/Enemy_Normal"
     },
     {
       "name": "BREAKOBJECT",
-      "count": 500,
+      "count": 100,
       "path": "Objects/Break_Object"
     },
     {
       "name": "METALOBJECT",
-      "count": 500,
+      "count": 100,
       "path": "Objects/Metal"
     }
   ]
