@@ -16,6 +16,8 @@ public class Move : MonoBehaviour {
     [SerializeField] Transform playerCenter;
     [SerializeField] Transform playerFoot;
     [SerializeField] Transform playerHead;
+    [SerializeField] Canvas playerCanvas;
+    [SerializeField] PlayerUI playerUI;
     [SerializeField] LayerMask ground;
 
     [SerializeField] GameObject gun;
@@ -37,6 +39,7 @@ public class Move : MonoBehaviour {
     void Awake() {
         animator = GetComponent<Animator>();
         rigidBody = GetComponent<Rigidbody>();
+        playerUI = playerCanvas.GetComponent<PlayerUI>();
     }
 
     private void Start() {
@@ -364,7 +367,7 @@ public class Move : MonoBehaviour {
         isReloading = true;
         isFireable = false;
         isWeaponChangeable = false;
-        PlayerUI.OnReloading?.Invoke(true);
+        playerUI.Reload(true);
         
         // Sound reloading
         StartCoroutine(WeaponReload());
@@ -378,14 +381,14 @@ public class Move : MonoBehaviour {
         while(time < reloadTime) {
             yield return wffu;
             time += Time.deltaTime;
-            PlayerUI.OnReloadingTime?.Invoke(time, reloadTime);
+            playerUI.Reloading(time, reloadTime);
         }
 
         Stats.Instance.BulletRemain = Stats.Instance.BulletMax;
         isFireable = true;
         isWeaponChangeable = true;
         isReloading = false;
-        PlayerUI.OnReloading?.Invoke(false);
+        playerUI.Reload(false);
         UIManager.OnBulletUse?.Invoke();
     }
 

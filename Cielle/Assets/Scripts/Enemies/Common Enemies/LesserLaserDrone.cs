@@ -18,5 +18,6 @@ public class LesserLaserDrone : EnemyStats {
     }
 
     public override void Patrol() {
+        CommonPatrol();
     }
 }

@@ -12,9 +12,13 @@ public abstract class EnemyStats : MonoBehaviour, IHitable {
     [SerializeField] protected GameObject ui;
     [SerializeField] protected EnemyUI enemyUI;
 
-    [SerializeField] protected Collider thisCollider;
-    [SerializeField] protected Vector3 colliderSize;
+    [SerializeField] protected Rigidbody rigidBody;
+    [SerializeField] protected Transform centerChecker;
+    [SerializeField] protected Transform frontChecker;
+    [SerializeField] protected Transform bottomChecker;
+
     [SerializeField] protected Vector3 originalScale;
+    [SerializeField] protected Vector3 moveDirection;
 
     [SerializeField] protected float hp;
     [SerializeField] protected float maxHp;
@@ -47,11 +51,16 @@ public abstract class EnemyStats : MonoBehaviour, IHitable {
 
     private void Awake() {
         enemyUI = ui.GetComponent<EnemyUI>();
-        thisCollider = GetComponent<Collider>();
-        colliderSize = thisCollider.bounds.size;
+        rigidBody = GetComponent<Rigidbody>();
         originalScale = transform.localScale;
         currentState = InitialState();
         currentState.OnStateEnter();
+
+        centerChecker = transform.Find("Checkers/Center Checker");
+        frontChecker = transform.Find("Checkers/Front Checker");
+        bottomChecker = transform.Find("Checkers/Bottom Checker");
+
+        moveDirection = new Vector3(-1, 0, 0);
     }
 
     private void OnEnable() {
@@ -187,8 +196,23 @@ public abstract class EnemyStats : MonoBehaviour, IHitable {
     }
 
     protected void CommonPatrol() {
-        Vector3 frontPosition = transform.localPosition + new Vector3(-colliderSize.x / 2 * originalScale.x, 0, 0);
-        
+        bool isAtEdge = false;
+        rigidBody.MovePosition(rigidBody.position + moveDirection * speed * Time.deltaTime);
+
+        Vector3 rayDir = (centerChecker.position - frontChecker.position).normalized;
+        float rayDistance = Mathf.Abs(centerChecker.position.x - frontChecker.position.x);
+        if (Physics.Raycast(centerChecker.position, -rayDir, rayDistance, LayerMask.GetMask("Wall")))
+            isAtEdge = true;
+
+        rayDir = (frontChecker.position - bottomChecker.position).normalized;
+        rayDistance = Mathf.Abs(frontChecker.position.y - bottomChecker.position.y);
+        if (!Physics.Raycast(centerChecker.position, -rayDir, rayDistance, LayerMask.GetMask("Wall")))
+            isAtEdge = true;
+
+        if (isAtEdge) {
+            transform.rotation = Quaternion.Euler(0, (transform.rotation.y + 180) % 360, 0);
+            moveDirection *= -1;
+        }
     }
 
     public void AttackRange(bool value) {

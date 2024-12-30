@@ -9,14 +9,8 @@ public class PlayerUI : MonoBehaviour {
 
     [SerializeField] Slider reloadBar;
 
-    public static Action<bool> OnReloading;
-    public static Action<float, float> OnReloadingTime;
-
     private void Awake() {
         fixRotation = transform.rotation;
-
-        OnReloading = (bool state) => { Reload(state); };
-        OnReloadingTime = (float time, float maxTime) => { Reloading(time, maxTime); };
 
         reloadBar.gameObject.SetActive(false);
     }
@@ -25,13 +19,13 @@ public class PlayerUI : MonoBehaviour {
         transform.rotation = fixRotation;
     }
 
-    private void Reload(bool state) {
+    public void Reload(bool state) {
         reloadBar.gameObject.SetActive(state);
         reloadBar.maxValue = 1;
         reloadBar.value = 0;
     }
 
-    private void Reloading(float time, float maxTime) {
+    public void Reloading(float time, float maxTime) {
         reloadBar.maxValue = maxTime;
         reloadBar.value = time;
     }

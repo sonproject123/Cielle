@@ -5,6 +5,7 @@ public class ChaseRange : MonoBehaviour {
     private EnemyStats es;
 
     private void Start() {
+        master = transform.parent.gameObject;
         es = master.GetComponent<EnemyStats>();
     }
 

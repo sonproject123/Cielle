@@ -70,11 +70,11 @@ public class Player : MonoBehaviour, IHitable {
     private void LookAtCursor() {
         if (GeneralStats.Instance.MouseLocation.x > transform.position.x) {
             Stats.Instance.IsLeft = false;
-            transform.rotation = Quaternion.Euler(0, 90, 0);
+            transform.localScale = new Vector3(1, 1, 1);
         }
         else {
             Stats.Instance.IsLeft = true;
-            transform.rotation = Quaternion.Euler(0, 270, 0);
+            transform.localScale = new Vector3(1, 1, -1);
         }
     }
 

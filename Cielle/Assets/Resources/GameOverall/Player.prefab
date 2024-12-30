@@ -1115,6 +1115,7 @@ MonoBehaviour:
   playerCenter: {fileID: 9027441374142676770}
   playerFoot: {fileID: 1639969809532182082}
   playerHead: {fileID: 4965391739010160238}
+  playerCanvas: {fileID: 6431098640154419036}
   ground:
     serializedVersion: 2
     m_Bits: 0
