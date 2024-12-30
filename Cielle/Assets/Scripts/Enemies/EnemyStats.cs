@@ -61,6 +61,7 @@ public abstract class EnemyStats : MonoBehaviour, IHitable {
         bottomChecker = transform.Find("Checkers/Bottom Checker");
 
         moveDirection = new Vector3(-1, 0, 0);
+        transform.rotation = Quaternion.Euler(0, 0, 0);
     }
 
     private void OnEnable() {
@@ -70,7 +71,7 @@ public abstract class EnemyStats : MonoBehaviour, IHitable {
         }
     }
 
-    private void Update() {
+    private void FixedUpdate() {
         currentState.OnStateStay();
     }
 
@@ -197,22 +198,26 @@ public abstract class EnemyStats : MonoBehaviour, IHitable {
 
     protected void CommonPatrol() {
         bool isAtEdge = false;
-        rigidBody.MovePosition(rigidBody.position + moveDirection * speed * Time.deltaTime);
 
-        Vector3 rayDir = (centerChecker.position - frontChecker.position).normalized;
+        Vector3 rayDir = (frontChecker.position - centerChecker.position).normalized;
         float rayDistance = Mathf.Abs(centerChecker.position.x - frontChecker.position.x);
-        if (Physics.Raycast(centerChecker.position, -rayDir, rayDistance, LayerMask.GetMask("Wall")))
+        if (Physics.Raycast(centerChecker.position, rayDir, rayDistance, LayerMask.GetMask("Wall")))
             isAtEdge = true;
 
-        rayDir = (frontChecker.position - bottomChecker.position).normalized;
+        rayDir = (bottomChecker.position - frontChecker.position).normalized;
         rayDistance = Mathf.Abs(frontChecker.position.y - bottomChecker.position.y);
-        if (!Physics.Raycast(centerChecker.position, -rayDir, rayDistance, LayerMask.GetMask("Wall")))
+        if (!Physics.Raycast(centerChecker.position, rayDir, rayDistance, LayerMask.GetMask("Wall")))
+        {
+        Debug.DrawRay(frontChecker.position, rayDir, Color.red, 5f);
             isAtEdge = true;
+        }
 
         if (isAtEdge) {
-            transform.rotation = Quaternion.Euler(0, (transform.rotation.y + 180) % 360, 0);
+            transform.rotation = Quaternion.Euler(0, (transform.eulerAngles.y + 180) % 360, 0);
             moveDirection *= -1;
         }
+
+        rigidBody.MovePosition(rigidBody.position + moveDirection * speed * Time.deltaTime);
     }
 
     public void AttackRange(bool value) {
