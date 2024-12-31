@@ -151,12 +151,12 @@ MonoBehaviour:
   muzzle: {fileID: 1246761094580756180}
   ui: {fileID: 536756508788778337}
   enemyUI: {fileID: 0}
+  rigidBody: {fileID: 0}
   centerChecker: {fileID: 0}
   frontChecker: {fileID: 0}
   bottomChecker: {fileID: 0}
-  thisCollider: {fileID: 0}
-  colliderSize: {x: 0, y: 0, z: 0}
   originalScale: {x: 0, y: 0, z: 0}
+  moveDirection: {x: 0, y: 0, z: 0}
   hp: 0
   maxHp: 0
   shield: 0
@@ -1013,6 +1013,14 @@ PrefabInstance:
     - target: {fileID: 2319992326235466678, guid: d627cf60c3cc77c49a0f6e84bf7942af, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3378650444146134289, guid: d627cf60c3cc77c49a0f6e84bf7942af, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8087296317792506317, guid: d627cf60c3cc77c49a0f6e84bf7942af, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.6
       objectReference: {fileID: 0}
     - target: {fileID: 8207901147941434012, guid: d627cf60c3cc77c49a0f6e84bf7942af, type: 3}
       propertyPath: m_Name

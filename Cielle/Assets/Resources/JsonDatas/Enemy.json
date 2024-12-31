@@ -8,13 +8,13 @@
       "attack": 30,
       "attackShield": 0,
       "defense": 0,
-      "speed": 5,
+      "speed": 0,
       "stoppingPower": 1,
       "stoppingTime": 0.1,
       "stoppingResistance": 0,
-      "cooltime": 2,
-      "bulletSpeed": 7,
-      "price": 1,
+      "cooltime": 1.25,
+      "bulletSpeed": 9,
+      "price": 10,
       "code": "Lesser_Gun_Drone"
     },
     {
@@ -25,13 +25,13 @@
       "attack": 50,
       "attackShield": 0,
       "defense": 5,
-      "speed": 5,
+      "speed": 10,
       "stoppingPower": 1,
       "stoppingTime": 0.1,
       "stoppingResistance": 5,
       "cooltime": 5,
       "bulletSpeed": 999,
-      "price": 2,
+      "price": 15,
       "code": "Lesser_Laser_Drone"
     }
   ]

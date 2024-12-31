@@ -15,7 +15,9 @@ public abstract class EnemyStats : MonoBehaviour, IHitable {
     [SerializeField] protected Rigidbody rigidBody;
     [SerializeField] protected Transform centerChecker;
     [SerializeField] protected Transform frontChecker;
+    [SerializeField] protected Transform backChecker;
     [SerializeField] protected Transform bottomChecker;
+    [SerializeField] protected Transform backBottomChecker;
 
     [SerializeField] protected Vector3 originalScale;
     [SerializeField] protected Vector3 moveDirection;
@@ -58,7 +60,9 @@ public abstract class EnemyStats : MonoBehaviour, IHitable {
 
         centerChecker = transform.Find("Checkers/Center Checker");
         frontChecker = transform.Find("Checkers/Front Checker");
+        backChecker = transform.Find("Checkers/Back Checker");
         bottomChecker = transform.Find("Checkers/Bottom Checker");
+        backBottomChecker = transform.Find("Checkers/Back Bottom Checker");
 
         moveDirection = new Vector3(-1, 0, 0);
         transform.rotation = Quaternion.Euler(0, 0, 0);
@@ -183,7 +187,7 @@ public abstract class EnemyStats : MonoBehaviour, IHitable {
             for (int i = 0; i < 10; i++)
                 BreakObject(hitPosition);
 
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < price; i++)
                 MetalObject();
 
             EnemyManager.OnReturnEnemy?.Invoke(gameObject, id);
@@ -196,21 +200,22 @@ public abstract class EnemyStats : MonoBehaviour, IHitable {
         }
     }
 
-    protected void CommonPatrol() {
-        bool isAtEdge = false;
-
+    protected bool EdgeCheck() {
         Vector3 rayDir = (frontChecker.position - centerChecker.position).normalized;
         float rayDistance = Mathf.Abs(centerChecker.position.x - frontChecker.position.x);
         if (Physics.Raycast(centerChecker.position, rayDir, rayDistance, LayerMask.GetMask("Wall")))
-            isAtEdge = true;
+            return true;
 
         rayDir = (bottomChecker.position - frontChecker.position).normalized;
         rayDistance = Mathf.Abs(frontChecker.position.y - bottomChecker.position.y);
         if (!Physics.Raycast(centerChecker.position, rayDir, rayDistance, LayerMask.GetMask("Wall")))
-        {
-        Debug.DrawRay(frontChecker.position, rayDir, Color.red, 5f);
-            isAtEdge = true;
-        }
+            return true;
+
+        return false;
+    }
+
+    protected void CommonPatrol() {
+        bool isAtEdge = EdgeCheck();
 
         if (isAtEdge) {
             transform.rotation = Quaternion.Euler(0, (transform.eulerAngles.y + 180) % 360, 0);
@@ -218,6 +223,24 @@ public abstract class EnemyStats : MonoBehaviour, IHitable {
         }
 
         rigidBody.MovePosition(rigidBody.position + moveDirection * speed * Time.deltaTime);
+    }
+
+    protected void CommonChase() {
+        if (player.position.x < transform.position.x) {
+            transform.rotation = Quaternion.Euler(0, 0, 0);
+            moveDirection = Vector3.left;
+        }
+        else {
+            transform.rotation = Quaternion.Euler(0, 180, 0);
+            moveDirection = Vector3.right;
+        }
+
+        bool isAtEdge = EdgeCheck();
+        if (isAtEdge) {
+            //idle Animation
+        }
+        else
+            rigidBody.MovePosition(rigidBody.position + moveDirection * speed * Time.deltaTime);
     }
 
     public void AttackRange(bool value) {
@@ -228,18 +251,15 @@ public abstract class EnemyStats : MonoBehaviour, IHitable {
         isInChaseRange = value;
     }
 
-    protected void RigidMove() {
-
-    }
-
-    protected void LinearBulletSpawn() {
+    protected void LinearBulletSpawn(Vector3 target) {
         GameObject bullet = ObjectManager.Instance.UseObject("ENEMYBULLET");
         bullet.transform.position = muzzle.transform.position;
         bullet.transform.rotation = muzzle.transform.rotation;
 
-        BulletStats(bullet);
+        BulletStats(bullet, target);
     }
-    protected void BulletStats(GameObject bullet) {
+
+    protected void BulletStats(GameObject bullet, Vector3 target) {
         BulletEnemy bulletEnemy = bullet.GetComponent<BulletEnemy>();
         if (bulletEnemy != null) {
             bulletEnemy.Atk = attack;
@@ -247,7 +267,7 @@ public abstract class EnemyStats : MonoBehaviour, IHitable {
             bulletEnemy.Speed = bulletSpeed;
             bulletEnemy.StoppingPower = stoppingPower;
             bulletEnemy.StoppingTime = stoppingTime;
-            bulletEnemy.Target = player.position;
+            bulletEnemy.Target = target;
         }
     }
 
@@ -272,6 +292,6 @@ public abstract class EnemyStats : MonoBehaviour, IHitable {
 
         MetalObject mo = obj.GetComponent<MetalObject>();
         if (mo != null) 
-            mo.OnDrop(price);
+            mo.OnDrop(1);
     }
 }
