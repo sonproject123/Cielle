@@ -40,10 +40,18 @@ public class LesserFlyingGunDrone : EnemyStats {
 
         int count = 0;
         while (count < 3) {
+            Vector3 originalPosition = transform.position;
+            Vector3 originalMuzzlePosition = muzzle.localPosition;
+            Vector3 direction = MathCalculator.Instance.Normalizer(playerPosition, muzzle.position);
+            
             LinearBulletSpawn(playerPosition);
+            muzzle.localPosition += direction * -10f * Time.deltaTime;
+            transform.position += direction * -10f * Time.deltaTime;
+            yield return CoroutineCache.WaitForSecond(0.1f);
 
-            yield return CoroutineCache.WaitForSecond(0.2f);
-
+            muzzle.localPosition = originalMuzzlePosition;
+            transform.position = originalPosition;
+            yield return CoroutineCache.WaitForSecond(0.1f);
             count++;
         }
 

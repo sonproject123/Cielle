@@ -23,14 +23,14 @@
       "hp": 200,
       "shield": 0,
       "attack": 50,
-      "attackShield": 0,
+      "attackShield": 15,
       "defense": 5,
       "speed": 10,
       "stoppingPower": 1,
       "stoppingTime": 0.1,
       "stoppingResistance": 5,
       "cooltime": 5,
-      "bulletSpeed": 999,
+      "bulletSpeed": 20,
       "price": 15,
       "code": "Lesser_Laser_Drone"
     }

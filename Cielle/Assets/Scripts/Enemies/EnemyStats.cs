@@ -39,8 +39,8 @@ public abstract class EnemyStats : MonoBehaviour, IHitable {
 
     [SerializeField] protected bool isDead;
     [SerializeField] protected bool isAttack;
+    [SerializeField] protected bool isChaseCooltime;
     [SerializeField] protected bool isThisLeft;
-    [SerializeField] protected bool isMoveCooltime;
 
     [SerializeField] protected GeneralFSM<EnemyStats> currentState;
     [SerializeField] public bool isInAttackRange;
@@ -103,8 +103,8 @@ public abstract class EnemyStats : MonoBehaviour, IHitable {
 
         isInAttackRange = false;
         isInChaseRange = false;
+        isChaseCooltime = false;
         isThisLeft = true;
-        isMoveCooltime = false;
         isDead = false;
         isAttack = false;
         player = Stats.Instance.PlayerCenter;
@@ -205,69 +205,45 @@ public abstract class EnemyStats : MonoBehaviour, IHitable {
     }
 
     protected bool EdgeCheck() {
-        if (isMoveCooltime)
-            return false;
-
         Vector3 rayDir = (frontChecker.position - centerChecker.position).normalized;
-        float rayDistance = Mathf.Abs(centerChecker.position.x - frontChecker.position.x);
-        if (Physics.Raycast(centerChecker.position, rayDir, rayDistance, LayerMask.GetMask("Wall"))) {
+        float rayDistance = Mathf.Abs(frontChecker.position.x - centerChecker.position.x);
+        if (Physics.Raycast(centerChecker.position, rayDir, rayDistance, LayerMask.GetMask("Wall")))
             return true;
-        }
 
         rayDir = (bottomChecker.position - frontChecker.position).normalized;
-        rayDistance = Mathf.Abs(frontChecker.position.y - bottomChecker.position.y);
-        if (!Physics.Raycast(centerChecker.position, rayDir, rayDistance, LayerMask.GetMask("Wall"))) {
+        rayDistance = Mathf.Abs(bottomChecker.position.y - frontChecker.position.y);
+        if (!Physics.Raycast(frontChecker.position, rayDir, rayDistance, LayerMask.GetMask("Wall")))
             return true;
-        }
-
+        
         return false;
     }
 
-    IEnumerator MoveCooltime() {
-        if (isMoveCooltime)
-            yield break;
-
-        float time = 0;
-        WaitForFixedUpdate wffu = GeneralStats.Instance.WFFU;
-        isMoveCooltime = true;
-
-        while (time < 0.2) {
-            time += Time.deltaTime;
-            yield return wffu;
-        }
-
-        isMoveCooltime = false;
-    }
-
     protected void CommonPatrol() {
-        if (!isMoveCooltime) {
-            bool isAtEdge = EdgeCheck();
+        bool isAtEdge = EdgeCheck();
 
-            if (isAtEdge) {
-                transform.rotation = Quaternion.Euler(0, (transform.eulerAngles.y + 180) % 360, 0);
-                moveDirection *= -1;
-                isThisLeft = !isThisLeft;
-                StartCoroutine(MoveCooltime());
-            }
+        if (isAtEdge) {
+            transform.rotation = Quaternion.Euler(0, (transform.eulerAngles.y + 180) % 360, 0);
+            moveDirection *= -1;
+            isThisLeft = !isThisLeft;
         }
 
         rigidBody.MovePosition(rigidBody.position + moveDirection * speed * Time.deltaTime);
     }
 
     protected void CommonChase() {
-        if (!isMoveCooltime) {
+        if (!isChaseCooltime) {
             if (player.position.x < transform.position.x && isThisLeft == false) {
                 transform.rotation = Quaternion.Euler(0, 0, 0);
                 moveDirection = Vector3.left;
                 isThisLeft = true;
+                StartCoroutine(ChaseCooltime());
             }
             else if (player.position.x > transform.position.x && isThisLeft == true) {
                 transform.rotation = Quaternion.Euler(0, 180, 0);
                 moveDirection = Vector3.right;
                 isThisLeft = false;
+                StartCoroutine(ChaseCooltime());
             }
-
-            StartCoroutine(MoveCooltime());
         }
 
         bool isAtEdge = EdgeCheck();
@@ -276,6 +252,19 @@ public abstract class EnemyStats : MonoBehaviour, IHitable {
         }
         else
             rigidBody.MovePosition(rigidBody.position + moveDirection * speed * 1.2f * Time.deltaTime);
+    }
+
+    IEnumerator ChaseCooltime() {
+        float time = 0;
+        WaitForFixedUpdate wffu = GeneralStats.Instance.WFFU;
+        isChaseCooltime = true;
+
+        while (time < 0.5) {
+            time += Time.deltaTime;
+            yield return wffu;
+        }
+
+        isChaseCooltime = false;
     }
 
     public void AttackRange(bool value) {
