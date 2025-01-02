@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LesserFlyingGunDrone : EnemyStats {
-    protected override GeneralFSM<EnemyStats> InitialState() {
-        return new EnemyState_InPatrol<EnemyStats>(this);
+public class LesserFlyingGunDrone : Enemy {
+    protected override GeneralFSM<Enemy> InitialState() {
+        return new EnemyState_InPatrol<Enemy>(this);
     }
     public override void OnHit(float damage, float damageShield, float stoppingPower, float stoppingTime, Vector3 hitPosition) {
         CommonHit(damage, damageShield, stoppingPower, stoppingTime, hitPosition);

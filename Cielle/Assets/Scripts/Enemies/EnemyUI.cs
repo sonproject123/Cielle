@@ -8,13 +8,13 @@ public class EnemyUI : MonoBehaviour {
     [SerializeField] Quaternion fixRotation;
 
     [SerializeField] GameObject mainObject;
-    [SerializeField] EnemyStats stats;
+    [SerializeField] Enemy stats;
     [SerializeField] Slider hpBar;
 
     private void Awake() {
         fixRotation = transform.rotation;
 
-        stats = mainObject.GetComponent<EnemyStats>();
+        stats = mainObject.GetComponent<Enemy>();
     }
 
     private void OnEnable() {

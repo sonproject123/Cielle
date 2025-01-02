@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class EnemyState_InHit<T> : GeneralFSM<T> where T : EnemyStats {
+public class EnemyState_InHit<T> : GeneralFSM<T> where T : Enemy {
     float damage;
     float damageShield;
     float stoppingPower;
@@ -19,11 +19,11 @@ public class EnemyState_InHit<T> : GeneralFSM<T> where T : EnemyStats {
         npc.OnHit(damage, damageShield, stoppingPower, stoppingTime, hitPosition);
 
         if (npc.isInAttackRange)
-            npc.ChangeState(new EnemyState_InAttack<EnemyStats>(npc));
+            npc.ChangeState(new EnemyState_InAttack<Enemy>(npc));
         else if (npc.isInChaseRange)
-            npc.ChangeState(new EnemyState_InChase<EnemyStats>(npc));
+            npc.ChangeState(new EnemyState_InChase<Enemy>(npc));
         else
-            npc.ChangeState(new EnemyState_InPatrol<EnemyStats>(npc));
+            npc.ChangeState(new EnemyState_InPatrol<Enemy>(npc));
     }
     public override void OnStateStay() {
         return;

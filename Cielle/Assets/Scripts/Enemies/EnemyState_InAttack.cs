@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class EnemyState_InAttack<T> : GeneralFSM<T> where T : EnemyStats {
+public class EnemyState_InAttack<T> : GeneralFSM<T> where T : Enemy {
     public EnemyState_InAttack(T enemy) : base(enemy) { }
 
     public override void OnStateEnter() {
@@ -12,7 +12,7 @@ public class EnemyState_InAttack<T> : GeneralFSM<T> where T : EnemyStats {
         npc.Attack();
 
         if(!npc.isInAttackRange)
-            npc.ChangeState(new EnemyState_InChase<EnemyStats>(npc));
+            npc.ChangeState(new EnemyState_InChase<Enemy>(npc));
     }
 
     public override void OnStateExit() {

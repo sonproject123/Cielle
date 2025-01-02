@@ -33,7 +33,7 @@ public class EnemyManager : MonoBehaviour {
 
     private GameObject CreateEnemy(Queue<GameObject> queue, int id, string path) {
         GameObject obj = ResourcesManager.Instance.Instantiate(path, transform);
-        EnemyStats enemyStats = obj.GetComponent<EnemyStats>();
+        Enemy enemyStats = obj.GetComponent<Enemy>();
         enemyStats.Id = id;
 
         obj.SetActive(false);

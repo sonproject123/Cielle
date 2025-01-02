@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class AttackRange : MonoBehaviour {
     [SerializeField] GameObject master;
-    private EnemyStats es;
+    private Enemy es;
 
     private void Start() {
-        es = master.GetComponent<EnemyStats>();
+        es = master.GetComponent<Enemy>();
     }
 
     private void OnTriggerEnter(Collider other) {
