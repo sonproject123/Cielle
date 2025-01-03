@@ -124,6 +124,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  childRooms: []
 --- !u!61 &37854912578085696
 BoxCollider2D:
   m_ObjectHideFlags: 0
