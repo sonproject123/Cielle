@@ -238,7 +238,9 @@ MonoBehaviour:
   rigidBody: {fileID: 0}
   centerChecker: {fileID: 0}
   frontChecker: {fileID: 0}
+  backChecker: {fileID: 0}
   bottomChecker: {fileID: 0}
+  backBottomChecker: {fileID: 0}
   originalScale: {x: 0, y: 0, z: 0}
   moveDirection: {x: 0, y: 0, z: 0}
   hp: 0
@@ -257,6 +259,8 @@ MonoBehaviour:
   price: 0
   isDead: 0
   isAttack: 0
+  isChaseCooltime: 0
+  isThisLeft: 0
   isInAttackRange: 0
   isInChaseRange: 0
 --- !u!54 &1874212414110305468
@@ -458,7 +462,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 999
   m_TargetDisplay: 0
 --- !u!114 &6379626562530935657
 MonoBehaviour:

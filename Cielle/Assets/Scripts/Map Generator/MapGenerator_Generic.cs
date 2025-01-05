@@ -15,32 +15,51 @@ public class MapGenerator_Generic : MonoBehaviour {
     [SerializeField] protected string stage;
     [SerializeField] protected RoomTemplate start = null;
     [SerializeField] protected Dictionary<string, List<RoomTemplate>> roomTemplates = new Dictionary<string, List<RoomTemplate>>();
+    
     [SerializeField] protected MapGraph graph = null;
     [SerializeField] List<MapGraphSO> graphs = new List<MapGraphSO>();
+
     [SerializeField] Collider2D[] colliders;
 
     [SerializeField] protected List<GameObject> generatedRooms = new List<GameObject>();
+    [SerializeField] protected List<int> enemies = new List<int>();
+    [SerializeField] protected List<(int id, GameObject enemy)> generatedEnemies = new List<(int, GameObject)>();
 
     protected virtual void Awake() {
+        LoadThings();
+        Generate();
+    }
+
+    private void LoadThings() {
         LoadMapGraphs();
         LoadRoomTemplates();
+    }
+
+    private void Generate() {
         SelectGraph();
         GenerateMap();
     }
 
     public void ReGenerate() {
-        DestrotMap();
-        SelectGraph();
-        GenerateMap();
+        DestroyMap();
+        DestroyEnemies();
+        Generate();
     }
 
-    protected void DestrotMap() {
+    private void DestroyMap() {
         foreach(var room in generatedRooms) {
             if (room != null)
                 Destroy(room);
         }
 
         generatedRooms.Clear();
+    }
+
+    private void DestroyEnemies() {
+        foreach(var enemyObject in generatedEnemies)
+            EnemyManager.OnReturnEnemy?.Invoke(enemyObject.enemy, enemyObject.id);
+        
+        generatedEnemies.Clear();
     }
 
     private void LoadMapGraphs() {
@@ -114,6 +133,7 @@ public class MapGenerator_Generic : MonoBehaviour {
         bool isGeneratedAll = await GenerateRoom(graph.root, start, null, Vector3.zero, Vector3.zero, null, 1, " ", true);
         while (!isGeneratedAll)
             ReGenerate();
+        EnemySpawn();
     }
 
     private async UniTask<bool> GenerateRoom(MapGraphNode node, RoomTemplate genRoomRT, RoomTemplateStats parentRTS, Vector3 parentPosition, Vector3 parentSize, Transform parentDoorPosition, int parentDoorDir, string parentID, bool isStart) {
@@ -269,5 +289,18 @@ public class MapGenerator_Generic : MonoBehaviour {
         }
 
         return true;
+    }
+
+    private void EnemySpawn() {
+        foreach(var room in generatedRooms) {
+            RoomTemplateStats rts = room.GetComponent<RoomTemplateStats>();
+
+            foreach (var spawnPoint in rts.spawnPoints) {
+                int id = Random.Range(0, enemies.Count);
+                GameObject enemy = EnemyManager.OnUseEnemy?.Invoke(enemies[id]);
+                enemy.transform.position = new Vector3(spawnPoint.position.x, spawnPoint.position.y, 0);
+                generatedEnemies.Add((id, enemy));
+            }
+        }
     }
 }

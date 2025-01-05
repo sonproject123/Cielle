@@ -7,10 +7,14 @@ public class RoomTemplateStats : MonoBehaviour {
     public Transform[] doors = new Transform[4];
     public List<GameObject> childRooms = new List<GameObject>();
 
+    public Transform pointsParent;
+    public List<Transform> spawnPoints = new List<Transform>();
+
     public void Initialize(RoomTemplate template) {
         room = gameObject;
         RoomID();
         Doors(template);
+        SpawnPoints();
     }
 
     private void RoomID() {
@@ -28,6 +32,16 @@ public class RoomTemplateStats : MonoBehaviour {
                     case 2: doors[i] = room.transform.Find("Element_Door_D"); break;
                     case 3: doors[i] = room.transform.Find("Element_Door_L"); break;
                 }
+            }
+        }
+    }
+
+    private void SpawnPoints() {
+        pointsParent = transform.Find("Spawn Points");
+        if (pointsParent != null) {
+            foreach (Transform point in pointsParent) {
+                if (point.name.StartsWith("Spawn Point"))
+                    spawnPoints.Add(point);
             }
         }
     }

@@ -2,15 +2,21 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class Player : MonoBehaviour, IHitable {
     [SerializeField] Transform playerCenter;
+    [SerializeField] Volume hitVolume;
     [SerializeField] bool isInvincible;
 
     [SerializeField] float shieldRegenTime;
     [SerializeField] float shieldBreakRegenTime;
     [SerializeField] bool isShieldBreak;
     [SerializeField] bool isShieldRegen;
+
+    private void Awake() {
+        hitVolume = GameObject.Find("Hit Volume").GetComponent<Volume>();
+    }
 
     private void Start() {
         shieldRegenTime = 0;

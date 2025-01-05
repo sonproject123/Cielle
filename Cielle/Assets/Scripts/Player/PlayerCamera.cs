@@ -20,13 +20,15 @@ public class PlayerCamera : MonoBehaviour {
     public static Action<float> OnDive;
 
     private void Start() {
+        player = Stats.Instance.PlayerCenter;
+
         OnIsCameraMovable = (bool state) => { IsCameraMovable(state); };
         OnCameraZoomIn = (bool state) => { CameraZoomIn(state); };
         OnDive = (float power) => {  Dive(power); };
 
         cameraOriginalSpeed = 120;
         cameraSpeed = cameraOriginalSpeed;
-        cameraOriginalY = 4;
+        cameraOriginalY = 0;
         cameraY = cameraOriginalY;
         cameraOriginalZ = -15;
         cameraZ = cameraOriginalZ;
