@@ -56,7 +56,7 @@ public class PlayerCamera : MonoBehaviour {
     private void CameraZoomIn(bool state) {
         if (state) {
             cameraSpeed = 20;
-            cameraY -= 3;
+            cameraY -= 0;
             cameraZ += 10;
         }
         else {

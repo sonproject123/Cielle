@@ -25,6 +25,7 @@ public class LesserLaserDrone : EnemyCommonGround {
             rayDir = Vector3.right;
 
         RaycastHit rayHit;
+        LinearBulletSpawn(new Vector3(player.position.x, transform.position.y, 0));
         if (Physics.Raycast(muzzle.position, rayDir, out rayHit, 9999, LayerMask.GetMask("Player"))) {
             //IHitable hitable = rayHit.collider.gameObject.GetComponent<IHitable>();
             //hitable.Hit(attack, attackShield, stoppingPower, stoppingTime, transform.position);

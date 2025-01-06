@@ -22,7 +22,7 @@
       "name": "양산형 셸레 레이저 드론",
       "hp": 200,
       "shield": 0,
-      "attack": 50,
+      "attack": 75,
       "attackShield": 15,
       "defense": 5,
       "speed": 10,

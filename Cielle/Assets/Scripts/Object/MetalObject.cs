@@ -29,7 +29,7 @@ public class MetalObject : MonoBehaviour {
 
     private void OnEnable() {
         rigidBody.linearVelocity = Vector3.zero;
-        isOnGround = false;
+        isOnGround = true;
         PlayerExit();
     }
 
