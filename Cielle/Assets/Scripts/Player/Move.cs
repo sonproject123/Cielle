@@ -99,7 +99,7 @@ public class Move : MonoBehaviour {
     private void OnkeyUpdate() {
         if (GeneralStats.Instance.Pause == true)
             return;
-        if (Stats.Instance.IsMovable == false)
+        if (Stats.Instance.IsStuned == true)
             return;
         Stats.Instance.IsMove = true;
 
@@ -190,6 +190,10 @@ public class Move : MonoBehaviour {
                 return;
 
             Reload();
+        }
+
+        // Map
+        if (Input.GetKeyDown(KeyCode.Tab)) {
         }
 
         // Weapon Change

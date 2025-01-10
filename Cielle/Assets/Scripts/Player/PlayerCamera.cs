@@ -24,7 +24,7 @@ public class PlayerCamera : MonoBehaviour {
 
         OnIsCameraMovable = (bool state) => { IsCameraMovable(state); };
         OnCameraZoomIn = (bool state) => { CameraZoomIn(state); };
-        OnDive = (float power) => {  Dive(power); };
+        OnDive = (float power) => { Dive(power); };
 
         cameraOriginalSpeed = 120;
         cameraSpeed = cameraOriginalSpeed;

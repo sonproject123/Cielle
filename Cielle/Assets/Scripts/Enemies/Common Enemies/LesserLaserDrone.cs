@@ -4,6 +4,16 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class LesserLaserDrone : EnemyCommonGround {
+    public override void Patrol() {
+        if (!isAttack)
+            base.Patrol();
+    }
+
+    public override void Chase() {
+        if (!isAttack)
+            base.Chase();
+    }
+
     protected override IEnumerator Attacking() {
         float time = 0;
         WaitForFixedUpdate wffu = GeneralStats.Instance.WFFU;
@@ -19,7 +29,7 @@ public class LesserLaserDrone : EnemyCommonGround {
         }
 
         Vector3 rayDir;
-        if (isThisLeft)
+        if (transform.position.x < muzzle.position.x)
             rayDir = Vector3.left;
         else
             rayDir = Vector3.right;

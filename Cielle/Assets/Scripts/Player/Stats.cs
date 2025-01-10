@@ -40,7 +40,7 @@ public class Stats : Singleton<Stats> {
     [SerializeField] float flyDashSpeed;
 
     [SerializeField] bool isMove;
-    [SerializeField] bool isMovable;
+    [SerializeField] bool isStuned;
     [SerializeField] bool isLeft;
 
     [SerializeField] int mainWeaponId;
@@ -113,7 +113,7 @@ public class Stats : Singleton<Stats> {
         flyDashSpeed = 40;
 
         isMove = false;
-        isMovable = true;
+        isStuned = false;
         isLeft = false;
 
         gainRange = 4;
@@ -240,9 +240,9 @@ public class Stats : Singleton<Stats> {
         set { isMove = value; }
     }
 
-    public bool IsMovable {
-        get { return isMovable; }
-        set { isMovable = value; }
+    public bool IsStuned {
+        get { return isStuned; }
+        set { isStuned = value; }
     }
     public bool IsLeft {
         get { return isLeft; }

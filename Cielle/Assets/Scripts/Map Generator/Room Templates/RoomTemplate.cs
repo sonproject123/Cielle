@@ -17,7 +17,7 @@ public class RoomTemplate : ScriptableObject {
 
     private void RoomSize() {
         Collider2D collider2D = room.GetComponent<Collider2D>();
-        if(collider2D is BoxCollider2D box)
+        if (collider2D is BoxCollider2D box)
             size = new Vector2(box.size.x, box.size.y);
     }
 

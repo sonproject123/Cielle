@@ -22,4 +22,8 @@ public class ButtonManager : Singleton<ButtonManager> {
         float positionX = Random.Range(-10.0f, 10.0f);
         enemy.transform.position = new Vector3(spawnPoint.position.x + positionX, spawnPoint.position.y, 0);
     }
+
+    public void BossDoor(bool isClosing) {
+        BossWall.OnDoorMove?.Invoke(isClosing);
+    }
 }

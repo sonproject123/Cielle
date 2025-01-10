@@ -91,7 +91,7 @@ public class Player : MonoBehaviour, IHitable {
     }
 
     private void Stun(float power, Vector3 hitPosition) {
-        Stats.Instance.IsMovable = false;
+        Stats.Instance.IsStuned = true;
         if(transform.position.x < hitPosition.x) {
 
         }

@@ -25,6 +25,11 @@ public class MapGenerator_Generic : MonoBehaviour {
     [SerializeField] protected List<int> enemies = new List<int>();
     [SerializeField] protected List<(int id, GameObject enemy)> generatedEnemies = new List<(int, GameObject)>();
 
+    [SerializeField] protected float mapLeftX;
+    [SerializeField] protected float mapRightX;
+    [SerializeField] protected float mapTopY;
+    [SerializeField] protected float mapBottomY;
+
     protected virtual void Awake() {
         LoadThings();
         Generate();
@@ -134,6 +139,7 @@ public class MapGenerator_Generic : MonoBehaviour {
         while (!isGeneratedAll)
             ReGenerate();
         EnemySpawn();
+        MapSize();
     }
 
     private async UniTask<bool> GenerateRoom(MapGraphNode node, RoomTemplate genRoomRT, RoomTemplateStats parentRTS, Vector3 parentPosition, Vector3 parentSize, Transform parentDoorPosition, int parentDoorDir, string parentID, bool isStart) {
@@ -302,5 +308,49 @@ public class MapGenerator_Generic : MonoBehaviour {
                 generatedEnemies.Add((id, enemy));
             }
         }
+    }
+
+    private void MapSize() {
+        mapLeftX = 0;
+        mapRightX = 0;
+        mapTopY = 0;
+        mapBottomY = 0;
+
+        foreach (var room in generatedRooms) {
+            Collider2D collider2D = room.GetComponent<Collider2D>();
+            Vector2 size = Vector2.zero;
+            if (collider2D is BoxCollider2D box)
+                size = new Vector2(box.size.x, box.size.y);
+
+            if (room.transform.position.x - size.x / 2 < mapLeftX)
+                mapLeftX = room.transform.position.x - size.x / 2;
+            if (room.transform.position.x + size.x / 2 > mapRightX)
+                mapRightX = room.transform.position.x + size.x / 2;
+            if (room.transform.position.y + size.y / 2 > mapTopY)
+                mapTopY = room.transform.position.y + size.y / 2;
+            if (room.transform.position.y - size.y / 2 < mapBottomY)
+                mapBottomY = room.transform.position.y - size.y / 2;
+        }
+
+        Debug.Log("LeftX: " + mapLeftX);
+        Debug.Log("RightX: " + mapRightX);
+        Debug.Log("TopY: " + mapTopY);
+        Debug.Log("BottomY: " + mapBottomY);
+    }
+
+    public float MapLeftX {
+        get { return mapLeftX; }
+    }
+
+    public float MapRightX {
+        get { return mapRightX; }
+    }
+
+    public float MapTopY {
+        get { return mapTopY; }
+    }
+
+    public float MapBottomY {
+        get { return mapBottomY; }
     }
 }
