@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Rendering;
 using UnityEngine.UIElements;
 using static UnityEngine.GraphicsBuffer;
 
@@ -18,7 +19,7 @@ public class Move : MonoBehaviour {
     [SerializeField] Transform playerHead;
     [SerializeField] Canvas playerCanvas;
     [SerializeField] PlayerUI playerUI;
-    [SerializeField] LayerMask ground;
+    [SerializeField] Transform localMapCamera;
 
     [SerializeField] GameObject gun;
 
@@ -40,6 +41,7 @@ public class Move : MonoBehaviour {
         animator = GetComponent<Animator>();
         rigidBody = GetComponent<Rigidbody>();
         playerUI = playerCanvas.GetComponent<PlayerUI>();
+        localMapCamera = GameObject.Find("Main Camera/Localmap Camera").transform;
     }
 
     private void Start() {
@@ -194,6 +196,9 @@ public class Move : MonoBehaviour {
 
         // Map
         if (Input.GetKeyDown(KeyCode.Tab)) {
+            LocalMapInit();
+            InputManager.Instance.action -= OnkeyUpdate;
+            InputManager.Instance.action += LocalMap;
         }
 
         // Weapon Change
@@ -348,6 +353,31 @@ public class Move : MonoBehaviour {
 
         isMovable = true;
         isDashable = true;
+    }
+
+    private void LocalMapInit() {
+        PopUpManager.Instance.ShowPopUp(PopUpTypes.LOCALMAP);
+        localMapCamera.position = new Vector3(transform.position.x, transform.position.y, localMapCamera.position.z);
+    }
+
+    private void LocalMap() {
+        float speed = 500;
+
+        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Tab)) {
+            PopUpManager.Instance.ClosePopUp(PopUpTypes.LOCALMAP);
+            InputManager.Instance.action -= LocalMap;
+            InputManager.Instance.action += OnkeyUpdate;
+            return;
+        }
+
+        if (Input.GetKey(KeyCode.W))
+            localMapCamera.position += Vector3.up * speed * Time.deltaTime;
+        if (Input.GetKey(KeyCode.S))
+            localMapCamera.position += Vector3.down * speed * Time.deltaTime;
+        if (Input.GetKey(KeyCode.A))
+            localMapCamera.position += Vector3.left * speed * Time.deltaTime;
+        if (Input.GetKey(KeyCode.D))
+            localMapCamera.position += Vector3.right * speed * Time.deltaTime;
     }
 
     IEnumerator WeaponChangeCooltime(float cooltime) {

@@ -24,12 +24,15 @@ public class MapGenerator_Generic : MonoBehaviour {
     [SerializeField] protected List<GameObject> generatedRooms = new List<GameObject>();
     [SerializeField] protected List<int> enemies = new List<int>();
     [SerializeField] protected List<(int id, GameObject enemy)> generatedEnemies = new List<(int, GameObject)>();
+    [SerializeField] protected RoomTemplateStats goal = null;
 
     [SerializeField] protected float mapLeftX;
     [SerializeField] protected float mapRightX;
     [SerializeField] protected float mapTopY;
     [SerializeField] protected float mapBottomY;
-
+    [SerializeField] protected float mapCenterX;
+    [SerializeField] protected float mapCenterY;
+    
     protected virtual void Awake() {
         LoadThings();
         Generate();
@@ -178,6 +181,8 @@ public class MapGenerator_Generic : MonoBehaviour {
             Transform playerSpawnPoint = room.transform.Find("Spawn Point").transform;
             player.position = playerSpawnPoint.position;
         }
+        if (node.type == "Goal")
+            goal = genRoomRTS;
 
         return true;
     }
@@ -332,10 +337,8 @@ public class MapGenerator_Generic : MonoBehaviour {
                 mapBottomY = room.transform.position.y - size.y / 2;
         }
 
-        Debug.Log("LeftX: " + mapLeftX);
-        Debug.Log("RightX: " + mapRightX);
-        Debug.Log("TopY: " + mapTopY);
-        Debug.Log("BottomY: " + mapBottomY);
+        mapCenterX = (mapLeftX + mapRightX) / 2;
+        mapCenterY = (mapTopY + mapBottomY) / 2;
     }
 
     public float MapLeftX {
@@ -352,5 +355,17 @@ public class MapGenerator_Generic : MonoBehaviour {
 
     public float MapBottomY {
         get { return mapBottomY; }
+    }
+
+    public float MapCenterX {
+        get { return mapCenterX; }
+    }
+
+    public float MapCenterY {
+        get { return mapCenterY; }
+    }
+
+    public RoomTemplateStats Goal {
+        get { return goal; }
     }
 }

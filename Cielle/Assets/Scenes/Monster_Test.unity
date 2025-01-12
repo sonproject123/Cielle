@@ -2042,6 +2042,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 936373216874240818, guid: a4ad567a93ce65a4a8e3bf0b6f38b06e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -400
+      objectReference: {fileID: 0}
+    - target: {fileID: 4933925971326759732, guid: a4ad567a93ce65a4a8e3bf0b6f38b06e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 400
+      objectReference: {fileID: 0}
     - target: {fileID: 5463647718238205210, guid: a4ad567a93ce65a4a8e3bf0b6f38b06e, type: 3}
       propertyPath: m_Name
       value: Level Borders

@@ -653,7 +653,7 @@ GameObject:
   - component: {fileID: 1789355103}
   - component: {fileID: 1789355102}
   m_Layer: 0
-  m_Name: Map Generator(Sewer)
+  m_Name: Map Generator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -701,6 +701,12 @@ MonoBehaviour:
   colliders: []
   generatedRooms: []
   enemies: 
+  mapLeftX: 0
+  mapRightX: 0
+  mapTopY: 0
+  mapBottomY: 0
+  mapCenterX: 0
+  mapCenterY: 0
 --- !u!4 &1789355103
 Transform:
   m_ObjectHideFlags: 0

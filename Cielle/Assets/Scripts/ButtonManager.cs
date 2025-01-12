@@ -24,6 +24,6 @@ public class ButtonManager : Singleton<ButtonManager> {
     }
 
     public void BossDoor(bool isClosing) {
-        BossWall.OnDoorMove?.Invoke(isClosing);
+        
     }
 }

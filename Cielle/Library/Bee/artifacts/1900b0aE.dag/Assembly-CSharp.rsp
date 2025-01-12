@@ -475,6 +475,7 @@
 "Assets/Scripts/Managers/JsonManager.cs"
 "Assets/Scripts/Managers/MouseManager.cs"
 "Assets/Scripts/Managers/ObjectManager.cs"
+"Assets/Scripts/Managers/PopUpManager.cs"
 "Assets/Scripts/Managers/ResourceManager.cs"
 "Assets/Scripts/Managers/SceneryManager.cs"
 "Assets/Scripts/Managers/TitleManager.cs"

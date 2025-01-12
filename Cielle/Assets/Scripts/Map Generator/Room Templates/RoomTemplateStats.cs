@@ -9,12 +9,15 @@ public class RoomTemplateStats : MonoBehaviour {
 
     public Transform pointsParent;
     public List<Transform> spawnPoints = new List<Transform>();
+    public Transform bossWallsParent;
+    public List<GameObject> bossWalls = new List<GameObject>();
 
     public void Initialize(RoomTemplate template) {
         room = gameObject;
         RoomID();
         Doors(template);
         SpawnPoints();
+        BossWalls();
     }
 
     private void RoomID() {
@@ -39,10 +42,16 @@ public class RoomTemplateStats : MonoBehaviour {
     private void SpawnPoints() {
         pointsParent = transform.Find("Spawn Points");
         if (pointsParent != null) {
-            foreach (Transform point in pointsParent) {
-                if (point.name.StartsWith("Spawn Point"))
-                    spawnPoints.Add(point);
-            }
+            foreach (Transform point in pointsParent)
+                spawnPoints.Add(point);
+        }
+    }
+
+    private void BossWalls() {
+        bossWallsParent = transform.Find("Boss Walls");
+        if (bossWallsParent != null) {
+            foreach (Transform wall in bossWallsParent) 
+                bossWalls.Add(wall.gameObject);
         }
     }
 }

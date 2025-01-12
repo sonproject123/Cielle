@@ -6,10 +6,8 @@ using UnityEngine;
 public class BossWall : MonoBehaviour {
     [SerializeField] float originalPosition;
     [SerializeField] float movedPosition;
-    public static Action<bool> OnDoorMove;
 
     private void Start() {
-        OnDoorMove = (bool isClosing) => { DoorMove(isClosing); };
         originalPosition = transform.position.y;
         movedPosition = originalPosition - 10;
     }
