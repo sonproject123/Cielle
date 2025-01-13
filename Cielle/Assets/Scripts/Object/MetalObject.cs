@@ -10,7 +10,6 @@ public class MetalObject : MonoBehaviour {
     [SerializeField] float speed;
 
     [SerializeField] int price;
-    [SerializeField] bool isOnGround;
 
     public Action<int> OnDrop;
     public Action<Transform> OnPlayerAceessed;
@@ -29,7 +28,6 @@ public class MetalObject : MonoBehaviour {
 
     private void OnEnable() {
         rigidBody.linearVelocity = Vector3.zero;
-        isOnGround = true;
         PlayerExit();
     }
 
@@ -40,9 +38,6 @@ public class MetalObject : MonoBehaviour {
     }
 
     public void GoToPlayer(Transform player) {
-        if (!isOnGround)
-            return;
-
         metalCollider.isTrigger = true;
         rigidBody.useGravity = false;
 
@@ -61,10 +56,5 @@ public class MetalObject : MonoBehaviour {
             UIManager.OnMetalChange();
             ObjectManager.Instance.ReturnObject(gameObject, "METALOBJECT");
         }
-    }
-
-    private void OnCollisionEnter(Collision collision) {
-        if (collision.collider.CompareTag("Wall") || collision.gameObject.CompareTag("Thin Ground"))
-            isOnGround = true;
     }
 }

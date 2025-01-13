@@ -305,10 +305,10 @@ public class MapGenerator_Generic : MonoBehaviour {
     private void EnemySpawn() {
         foreach(var room in generatedRooms) {
             RoomTemplateStats rts = room.GetComponent<RoomTemplateStats>();
-
             foreach (var spawnPoint in rts.spawnPoints) {
-                int id = Random.Range(0, enemies.Count);
-                GameObject enemy = EnemyManager.OnUseEnemy?.Invoke(enemies[id]);
+                int index = Random.Range(0, enemies.Count);
+                int id = enemies[index];
+                GameObject enemy = EnemyManager.OnUseEnemy?.Invoke(id);
                 enemy.transform.position = new Vector3(spawnPoint.position.x, spawnPoint.position.y, 0);
                 generatedEnemies.Add((id, enemy));
             }

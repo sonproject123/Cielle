@@ -37,6 +37,7 @@ public abstract class Enemy : MonoBehaviour, IHitable {
     [SerializeField] protected float bulletSpeed;
     [SerializeField] protected int price;
 
+    [SerializeField] protected bool isSummoned;
     [SerializeField] protected bool isDead;
     [SerializeField] protected bool isAttack;
     [SerializeField] protected bool isChaseCooltime;
@@ -107,6 +108,7 @@ public abstract class Enemy : MonoBehaviour, IHitable {
         isThisLeft = true;
         isDead = false;
         isAttack = false;
+        isSummoned = false;
         player = Stats.Instance.PlayerCenter;
     }
 
@@ -191,8 +193,10 @@ public abstract class Enemy : MonoBehaviour, IHitable {
             for (int i = 0; i < 10; i++)
                 BreakObject(hitPosition);
 
-            for (int i = 0; i < price; i++)
-                MetalObject();
+            if (!isSummoned) {
+                for (int i = 0; i < price; i++)
+                    MetalObject();
+            }
 
             EnemyManager.OnReturnEnemy?.Invoke(gameObject, id);
         }
@@ -317,5 +321,9 @@ public abstract class Enemy : MonoBehaviour, IHitable {
         MetalObject mo = obj.GetComponent<MetalObject>();
         if (mo != null) 
             mo.OnDrop(1);
+    }
+
+    public bool IsSummoned {
+        set { isSummoned = value; }
     }
 }

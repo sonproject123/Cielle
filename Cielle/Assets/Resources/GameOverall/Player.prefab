@@ -838,7 +838,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: c198524414f414e4fbcba05e68ea7c98, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: c198524414f414e4fbcba05e68ea7c98, type: 3}
       propertyPath: m_TagString
@@ -1117,9 +1117,7 @@ MonoBehaviour:
   playerHead: {fileID: 4965391739010160238}
   playerCanvas: {fileID: 6431098640154419036}
   playerUI: {fileID: 0}
-  ground:
-    serializedVersion: 2
-    m_Bits: 0
+  localMapCamera: {fileID: 0}
   gun: {fileID: 0}
   isMovable: 0
   isOnGround: 0

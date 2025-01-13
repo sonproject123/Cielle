@@ -12,8 +12,11 @@ public class BossWall : MonoBehaviour {
         movedPosition = originalPosition - 10;
     }
 
-    private void DoorMove(bool isClosing) {
-        StartCoroutine(DoorMoving(isClosing));
+    public void Entrance() {
+        GeneralStats.Instance.Pause = false;
+        LetterBoxManager.Instance.LetterBox();
+        StartCoroutine(DoorMoving(true));
+
     }
 
     IEnumerator DoorMoving(bool isClosing) {

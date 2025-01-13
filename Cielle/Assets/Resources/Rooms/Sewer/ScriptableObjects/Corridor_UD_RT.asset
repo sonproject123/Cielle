@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Corridor_UD_RT
   m_EditorClassIdentifier: 
   room: {fileID: 2047205721890831042, guid: a655538e42d7a4c45963395588617da7, type: 3}
-  size: {x: 30, y: 50}
+  size: {x: 30, y: 30}
   type: Corridor
   direction: 01000100

@@ -26,4 +26,8 @@ public class ButtonManager : Singleton<ButtonManager> {
     public void BossDoor(bool isClosing) {
         
     }
+
+    public void LetterBoxTest() {
+        LetterBoxManager.Instance.LetterBox();
+    }
 }

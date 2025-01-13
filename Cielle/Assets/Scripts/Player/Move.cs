@@ -233,7 +233,7 @@ public class Move : MonoBehaviour {
         animator.SetBool("Run", true);
 
         Vector3 dir = new Vector3(verticalInput, 0, 0);
-        if (RaycastCheck(dir, 0.5f))
+        if (RaycastCheck(dir, 0.3f))
             RigidMove(dir, Stats.Instance.Speed);
     }
 
@@ -267,7 +267,7 @@ public class Move : MonoBehaviour {
 
     IEnumerator FlyStart() {
         isDashable = false;
-        isMovable = false;
+        //isMovable = false;
         isOnGround = false;
         isOnThinGround = false;
         isOnFlying = true;
@@ -291,15 +291,17 @@ public class Move : MonoBehaviour {
             yield return wffu;
         }
 
-        isMovable = true;
+        //isMovable = true;
         isDashable = true;
     }
 
     IEnumerator Dive() {
+        float originalSpeed = Stats.Instance.Speed;
+        Stats.Instance.Speed *= 0.3f;
         float startY = rigidBody.position.y;
         isOnFlying = false;
         rigidBody.useGravity = true;
-        isMovable = false;
+        //isMovable = false;
         isDashable = false;
         rigidBody.linearVelocity = Vector3.zero;
 
@@ -324,7 +326,8 @@ public class Move : MonoBehaviour {
         
         rigidBody.linearVelocity = Vector3.zero;
 
-        isMovable = true;
+        Stats.Instance.Speed = originalSpeed;
+        //isMovable = true;
         isDashable = true;
     }
 
@@ -424,6 +427,11 @@ public class Move : MonoBehaviour {
         isReloading = false;
         playerUI.Reload(false);
         UIManager.OnBulletUse?.Invoke();
+    }
+
+    public void ForcedMove(float distance) {
+        isOnFlying = false;
+
     }
 
     private void OnDisable() {
