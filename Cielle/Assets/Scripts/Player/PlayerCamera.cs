@@ -14,8 +14,11 @@ public class PlayerCamera : MonoBehaviour {
     [SerializeField] float cameraZ;
 
     [SerializeField] bool isCameraFollowPlayer;
+    [SerializeField] bool isCameraForcedMove;
+    [SerializeField] Vector3 targetPosition;
+    [SerializeField] float forcedMoveSpeed;
 
-    public static Action<Vector3, float> OnCameraMove;
+    public static Action<bool, Vector3, float> OnCameraMove;
     public static Action<bool> OnIsCameraMovable;
     public static Action<bool> OnCameraZoomIn;
     public static Action<float> OnDive;
@@ -23,7 +26,7 @@ public class PlayerCamera : MonoBehaviour {
     private void Start() {
         player = Stats.Instance.PlayerCenter;
 
-        OnCameraMove = (Vector3 targetPosition, float speed) => { CameraMove(targetPosition, speed = 30); };
+        OnCameraMove = (bool isOn, Vector3 targetPosition, float speed) => { CameraForcedMoveInit(isOn, targetPosition, speed); };
         OnIsCameraMovable = (bool state) => { IsCameraFollowPlayer(state); };
         OnCameraZoomIn = (bool state) => { CameraZoomIn(state); };
         OnDive = (float power) => { Dive(power); };
@@ -36,11 +39,14 @@ public class PlayerCamera : MonoBehaviour {
         cameraZ = cameraOriginalZ;
 
         isCameraFollowPlayer = true;
+        isCameraForcedMove = false;
     }
 
     private void Update() {
-        if(isCameraFollowPlayer)
+        if (isCameraFollowPlayer)
             PlayerFollow();
+        else if (isCameraForcedMove)
+            CameraForcedMove();
     }
 
     private void PlayerFollow() {
@@ -51,17 +57,25 @@ public class PlayerCamera : MonoBehaviour {
         );
     }
 
-    private void CameraMove(Vector3 targetPosition, float speed = 30) {
-        isCameraFollowPlayer = false;
-        cameraSpeed = speed;
+    private void CameraForcedMoveInit(bool isOn, Vector3 targetPosition, float speed) {
+        if (isOn) {
+            this.targetPosition = targetPosition;
+            forcedMoveSpeed = speed;
+            isCameraFollowPlayer = false;
+            isCameraForcedMove = true;
+        }
+        else {
+            isCameraFollowPlayer = true;
+            isCameraForcedMove= false;
+        }
+    }
 
+    private void CameraForcedMove() {
         transform.position = Vector3.Lerp(
             transform.position,
             new Vector3(targetPosition.x, targetPosition.y, cameraZ),
-            cameraSpeed * Time.fixedDeltaTime
+            forcedMoveSpeed * Time.fixedDeltaTime
         );
-
-        cameraSpeed = cameraOriginalSpeed;
     }
 
     private void IsCameraFollowPlayer(bool state) {

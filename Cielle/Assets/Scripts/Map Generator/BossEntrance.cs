@@ -34,6 +34,6 @@ public class BossEntrance : MonoBehaviour {
             bw.OnDoorMove(true);
         }
 
-        PlayerCamera.OnCameraMove?.Invoke(bossPosition.position, 30);
+        PlayerCamera.OnCameraMove?.Invoke(true, bossPosition.position, 1f);
     }
 }
