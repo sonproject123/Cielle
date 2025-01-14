@@ -13,8 +13,9 @@ public class PlayerCamera : MonoBehaviour {
     [SerializeField] float cameraOriginalZ;
     [SerializeField] float cameraZ;
 
-    [SerializeField] bool isCameraMovable;
+    [SerializeField] bool isCameraFollowPlayer;
 
+    public static Action<Vector3, float> OnCameraMove;
     public static Action<bool> OnIsCameraMovable;
     public static Action<bool> OnCameraZoomIn;
     public static Action<float> OnDive;
@@ -22,7 +23,8 @@ public class PlayerCamera : MonoBehaviour {
     private void Start() {
         player = Stats.Instance.PlayerCenter;
 
-        OnIsCameraMovable = (bool state) => { IsCameraMovable(state); };
+        OnCameraMove = (Vector3 targetPosition, float speed) => { CameraMove(targetPosition, speed = 30); };
+        OnIsCameraMovable = (bool state) => { IsCameraFollowPlayer(state); };
         OnCameraZoomIn = (bool state) => { CameraZoomIn(state); };
         OnDive = (float power) => { Dive(power); };
 
@@ -33,11 +35,11 @@ public class PlayerCamera : MonoBehaviour {
         cameraOriginalZ = -15;
         cameraZ = cameraOriginalZ;
 
-        isCameraMovable = true;
+        isCameraFollowPlayer = true;
     }
 
     private void Update() {
-        if(isCameraMovable)
+        if(isCameraFollowPlayer)
             PlayerFollow();
     }
 
@@ -49,8 +51,21 @@ public class PlayerCamera : MonoBehaviour {
         );
     }
 
-    private void IsCameraMovable(bool state) {
-        isCameraMovable = state;
+    private void CameraMove(Vector3 targetPosition, float speed = 30) {
+        isCameraFollowPlayer = false;
+        cameraSpeed = speed;
+
+        transform.position = Vector3.Lerp(
+            transform.position,
+            new Vector3(targetPosition.x, targetPosition.y, cameraZ),
+            cameraSpeed * Time.fixedDeltaTime
+        );
+
+        cameraSpeed = cameraOriginalSpeed;
+    }
+
+    private void IsCameraFollowPlayer(bool state) {
+        isCameraFollowPlayer = state;
     }
 
     private void CameraZoomIn(bool state) {

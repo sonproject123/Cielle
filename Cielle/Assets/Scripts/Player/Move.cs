@@ -36,6 +36,9 @@ public class Move : MonoBehaviour {
     [SerializeField] float verticalInput;
     [SerializeField] float horizontalDash;
     [SerializeField] float verticalDash;
+    [SerializeField] float originalSpeed;
+
+    public Action<float, Vector3> OnForcedMove;
 
     void Awake() {
         animator = GetComponent<Animator>();
@@ -45,6 +48,8 @@ public class Move : MonoBehaviour {
     }
 
     private void Start() {
+        OnForcedMove = (float distance, Vector3 dir) => { ForcedMove(distance, dir); };
+
         isMovable = true;
         isOnGround = false;
         isOnThinGround = false;
@@ -60,6 +65,7 @@ public class Move : MonoBehaviour {
         verticalInput = 0;
         horizontalDash = 0;
         verticalDash = 0;
+        originalSpeed = Stats.Instance.Speed;
     }
 
     private void OnCollisionStay(Collision collision) {
@@ -296,14 +302,13 @@ public class Move : MonoBehaviour {
     }
 
     IEnumerator Dive() {
-        float originalSpeed = Stats.Instance.Speed;
         Stats.Instance.Speed *= 0.3f;
         float startY = rigidBody.position.y;
         isOnFlying = false;
         rigidBody.useGravity = true;
+        rigidBody.linearVelocity = Vector3.zero;
         //isMovable = false;
         isDashable = false;
-        rigidBody.linearVelocity = Vector3.zero;
 
         WaitForFixedUpdate wffu = GeneralStats.Instance.WFFU;
         RaycastHit floor;
@@ -429,12 +434,30 @@ public class Move : MonoBehaviour {
         UIManager.OnBulletUse?.Invoke();
     }
 
-    public void ForcedMove(float distance) {
+    private void ForcedMove(float distance, Vector3 dir) {
         isOnFlying = false;
+        rigidBody.useGravity = true;
+        rigidBody.linearVelocity = Vector3.zero;
 
+        animator.SetBool("Run", true);
+
+        StartCoroutine(ForcedMoving(distance, dir));   
     }
 
-    private void OnDisable() {
+    IEnumerator ForcedMoving(float distance, Vector3 dir) {
+        WaitForFixedUpdate wffu = GeneralStats.Instance.WFFU;
+        Vector3 originalPosition = transform.position;
+
+        while (Mathf.Abs(originalPosition.x - transform.position.x) < distance) {
+            animator.SetBool("Run", true);
+            RigidMove(dir, Stats.Instance.Speed);
+            yield return wffu;
+        }
+
+        animator.SetBool("Run", false);
+    }
+
+private void OnDisable() {
         InputManager.Instance.action -= OnkeyUpdate;
     }
 }

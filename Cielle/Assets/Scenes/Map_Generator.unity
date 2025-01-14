@@ -328,11 +328,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1605391149922423903, guid: 484579bc49518f94a92c7eef6893804a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -1280
       objectReference: {fileID: 0}
     - target: {fileID: 1605391149922423903, guid: 484579bc49518f94a92c7eef6893804a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 720
       objectReference: {fileID: 0}
     - target: {fileID: 1605391149922423903, guid: 484579bc49518f94a92c7eef6893804a, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -701,6 +701,7 @@ MonoBehaviour:
   colliders: []
   generatedRooms: []
   enemies: 
+  goal: {fileID: 0}
   mapLeftX: 0
   mapRightX: 0
   mapTopY: 0

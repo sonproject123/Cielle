@@ -6,17 +6,16 @@ using UnityEngine;
 public class BossWall : MonoBehaviour {
     [SerializeField] float originalPosition;
     [SerializeField] float movedPosition;
+    public Action<bool> OnDoorMove;
 
     private void Start() {
+        OnDoorMove = (bool isClosing) => { DoorMove(isClosing); };
         originalPosition = transform.position.y;
         movedPosition = originalPosition - 10;
     }
 
-    public void Entrance() {
-        GeneralStats.Instance.Pause = false;
-        LetterBoxManager.Instance.LetterBox();
-        StartCoroutine(DoorMoving(true));
-
+    public void DoorMove(bool isClosing) {
+        StartCoroutine(DoorMoving(isClosing));
     }
 
     IEnumerator DoorMoving(bool isClosing) {

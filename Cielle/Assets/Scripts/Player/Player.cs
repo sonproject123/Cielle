@@ -70,7 +70,8 @@ public class Player : MonoBehaviour, IHitable {
     }
 
     private void Update() {
-        LookAtCursor();
+        if (!GeneralStats.Instance.Pause)
+            LookAtCursor();
     }
 
     private void LookAtCursor() {

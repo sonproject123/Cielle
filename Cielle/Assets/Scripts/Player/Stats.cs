@@ -102,7 +102,7 @@ public class Stats : Singleton<Stats> {
 
         invincible = 0.5f;
 
-        jumpHeight = 60;
+        jumpHeight = 70;
 
         dashSpeed = 30;
         dashTime = 0.3f;
