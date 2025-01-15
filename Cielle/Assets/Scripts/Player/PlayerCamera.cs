@@ -31,7 +31,7 @@ public class PlayerCamera : MonoBehaviour {
         OnCameraZoomIn = (bool state) => { CameraZoomIn(state); };
         OnDive = (float power) => { Dive(power); };
 
-        cameraOriginalSpeed = 120;
+        cameraOriginalSpeed = 60;
         cameraSpeed = cameraOriginalSpeed;
         cameraOriginalY = 0;
         cameraY = cameraOriginalY;

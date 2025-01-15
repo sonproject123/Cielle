@@ -6,6 +6,8 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour {
+    [SerializeField] Canvas canvas;
+
     [SerializeField] Slider hpBar;
     [SerializeField] Text hpText;
     [SerializeField] Text hpMaxText;
@@ -25,6 +27,9 @@ public class UIManager : MonoBehaviour {
 
     [SerializeField] Text MetalText;
 
+    [SerializeField] bool isUILocked;
+
+    public static Action<float> OnUIAlpha;
     public static Action OnUpdateHpBar;
     public static Action OnUpdateShieldBar;
     public static Action<bool> OnShieldOnOff;
@@ -36,6 +41,10 @@ public class UIManager : MonoBehaviour {
     public static Action<float, float> OnWeaponChangeCooltime;
 
     private void Awake() {
+        canvas = gameObject.GetComponent<Canvas>();
+
+        OnUIAlpha = (float alpha) => { ForcedUIAlpha(alpha); };
+
         OnUpdateHpBar = () => { HpBar(); };
 
         OnUpdateShieldBar = () => { ShieldBar(); };
@@ -53,6 +62,8 @@ public class UIManager : MonoBehaviour {
     }
 
     private void Start() {
+        isUILocked = false;
+
         hpBar.maxValue = Stats.Instance.MaxHp;
         hpMaxText.text = Stats.Instance.MaxHp.ToString();
         HpBar();
@@ -72,7 +83,36 @@ public class UIManager : MonoBehaviour {
         MetalText.text = Stats.Instance.Metals.ToString();
     }
 
-    public void HpBar() {
+    public void MouseOn() {
+        if (!isUILocked)
+            StartCoroutine(UIAlpha(0.01f));
+    }
+
+    public void MouseOff() {
+        if (!isUILocked)
+            StartCoroutine(UIAlpha(1));
+    }
+
+    private void ForcedUIAlpha(float alpha) {
+        isUILocked = true;
+        StartCoroutine(UIAlpha(alpha));
+    }
+    IEnumerator UIAlpha(float alpha) {
+        WaitForFixedUpdate wffu = GeneralStats.Instance.WFFU;
+        float time = 0;
+        float currentAlpha = canvas.GetComponent<CanvasGroup>().alpha;
+        float duration = 0.2f;
+
+        while (time < duration) {
+            time += Time.deltaTime;
+
+            float t = Mathf.Clamp01(time / duration);
+            canvas.GetComponent<CanvasGroup>().alpha = Mathf.Lerp(currentAlpha, alpha, t);
+
+            yield return wffu;
+        }
+    }
+    private void HpBar() {
         hpBar.value = Stats.Instance.Hp;
         if (Stats.Instance.Hp <= 0.0)
             hpText.text = "0";
@@ -80,7 +120,7 @@ public class UIManager : MonoBehaviour {
             hpText.text = Stats.Instance.Hp.ToString();
     }
 
-    public void ShieldBar() {
+    private void ShieldBar() {
         shieldBar.value = Stats.Instance.Shield;
         if (Stats.Instance.Shield <= 0.0)
             shieldText.text = "0";
@@ -88,11 +128,11 @@ public class UIManager : MonoBehaviour {
             shieldText.text = Stats.Instance.Shield.ToString();
     }
 
-    public void ShieldOnOff(bool state) {
+    private void ShieldOnOff(bool state) {
         shieldBar.gameObject.SetActive(state);
     }
 
-    public void BulletUse() {
+    private void BulletUse() {
         if (Stats.Instance.BulletRemain > 9999) {
             Stats.Instance.BulletRemain = Stats.Instance.BulletMax;
             return;
@@ -102,7 +142,7 @@ public class UIManager : MonoBehaviour {
         bulletRemainText.text = Stats.Instance.BulletRemain.ToString();
     }
 
-    public void BulletChange() {
+    private void BulletChange() {
         bulletBar.maxValue = Stats.Instance.BulletMax;
         bulletBar.value = Stats.Instance.BulletRemain;
 
@@ -116,16 +156,16 @@ public class UIManager : MonoBehaviour {
         }
     }
 
-    public void MetalChange() {
+    private void MetalChange() {
         MetalText.text = Stats.Instance.Metals.ToString();
     }
 
-    public void WeaponCooltime(float time, float maxTime) {
+    private void WeaponCooltime(float time, float maxTime) {
         mainWeaponCooltime.maxValue = maxTime;
         mainWeaponCooltime.value = time;
     }
 
-    public void WeaponChange() {
+    private void WeaponChange() {
         string mainWeaponIconPath = "Icons/" + Stats.Instance.MainGunData.code;
         string subWeaponIconPath = "Icons/" + Stats.Instance.SubGunData.code;
         mainWeaponIcon.sprite = Resources.Load<Sprite>(mainWeaponIconPath);
@@ -136,7 +176,7 @@ public class UIManager : MonoBehaviour {
             subWeaponIcon.sprite = Resources.Load<Sprite>("Icons/BLANK");
     }
 
-    public void WeaponChangeCooltime(float time, float maxTime) {
+    private void WeaponChangeCooltime(float time, float maxTime) {
         subWeaponCooltime.maxValue = maxTime;
         subWeaponCooltime.value = time;
     }

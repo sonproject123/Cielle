@@ -15,12 +15,12 @@
       "cooltime": 1.25,
       "bulletSpeed": 9,
       "price": 10,
-      "code": "Lesser_Gun_Drone"
+      "code": "Common/Lesser_Gun_Drone"
     },
     {
       "id": 2,
       "name": "양산형 셸레 레이저 드론",
-      "hp": 200,
+      "hp": 150,
       "shield": 0,
       "attack": 75,
       "attackShield": 15,
@@ -29,10 +29,27 @@
       "stoppingPower": 1,
       "stoppingTime": 0.1,
       "stoppingResistance": 5,
-      "cooltime": 5,
+      "cooltime": 3,
       "bulletSpeed": 20,
       "price": 15,
-      "code": "Lesser_Laser_Drone"
+      "code": "Common/Lesser_Laser_Drone"
+    },
+    {
+      "id": 80,
+      "name": "캡틴 웨인",
+      "hp": 3000,
+      "shield": 0,
+      "attack": 30,
+      "attackShield": 0,
+      "defense": 5,
+      "speed": 10,
+      "stoppingPower": 1.5,
+      "stoppingTime": 0.1,
+      "stoppingResistance": 0,
+      "cooltime": 0,
+      "bulletSpeed": 10,
+      "price": 100,
+      "code": "Boss/Cpt_Wayne"
     }
   ]
 }

@@ -34,6 +34,8 @@ public class BossEntrance : MonoBehaviour {
             bw.OnDoorMove(true);
         }
 
-        PlayerCamera.OnCameraMove?.Invoke(true, bossPosition.position, 1f);
+        UIManager.OnUIAlpha(0);
+        PlayerCamera.OnCameraMove?.Invoke(true, bossPosition.position, 0.2f);
+        Stats.Instance.IsInvincible = true;
     }
 }

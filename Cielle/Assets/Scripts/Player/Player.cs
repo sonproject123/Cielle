@@ -7,7 +7,6 @@ using UnityEngine.Rendering;
 public class Player : MonoBehaviour, IHitable {
     [SerializeField] Transform playerCenter;
     [SerializeField] Volume hitVolume;
-    [SerializeField] bool isInvincible;
 
     [SerializeField] float shieldRegenTime;
     [SerializeField] float shieldBreakRegenTime;
@@ -22,13 +21,12 @@ public class Player : MonoBehaviour, IHitable {
         shieldRegenTime = 0;
         shieldBreakRegenTime = 0;
 
-        isInvincible = false;
         isShieldBreak = false;
         isShieldRegen = false;
     }
 
     public void Hit(float damage, float damageShield, float stoppingPower, float stoppingTime, Vector3 hitPosition) {
-        if (!isInvincible) {
+        if (!Stats.Instance.IsInvincible) {
             if (Stats.Instance.IsShieldOn) {
                 Stats.Instance.Shield -= Mathf.Max(1, damage - Stats.Instance.ShieldDef);
                 UIManager.OnUpdateShieldBar?.Invoke();
@@ -86,9 +84,9 @@ public class Player : MonoBehaviour, IHitable {
     }
 
     IEnumerator Invincible(float invincibleTime) {
-        isInvincible = true;
+        Stats.Instance.IsInvincible = true;
         yield return CoroutineCache.WaitForSecond(invincibleTime);
-        isInvincible = false;
+        Stats.Instance.IsInvincible = false;
     }
 
     private void Stun(float power, Vector3 hitPosition) {

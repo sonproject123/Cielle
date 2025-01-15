@@ -42,6 +42,7 @@ public class Stats : Singleton<Stats> {
     [SerializeField] bool isMove;
     [SerializeField] bool isStuned;
     [SerializeField] bool isLeft;
+    [SerializeField] bool isInvincible;
 
     [SerializeField] int mainWeaponId;
     [SerializeField] int subWeaponId;
@@ -115,6 +116,7 @@ public class Stats : Singleton<Stats> {
         isMove = false;
         isStuned = false;
         isLeft = false;
+        isInvincible = false;
 
         gainRange = 4;
         metals = 0;
@@ -247,6 +249,11 @@ public class Stats : Singleton<Stats> {
     public bool IsLeft {
         get { return isLeft; }
         set { isLeft = value; }
+    }
+
+    public bool IsInvincible {
+        get { return isInvincible; }
+        set { isInvincible = value; }
     }
 
     public int MainWeaponId {
