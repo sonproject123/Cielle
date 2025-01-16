@@ -18,16 +18,16 @@ public class PlayerCamera : MonoBehaviour {
     [SerializeField] Vector3 targetPosition;
     [SerializeField] float forcedMoveSpeed;
 
-    public static Action<bool, Vector3, float> OnCameraMove;
-    public static Action<bool> OnIsCameraMovable;
+    public static Action<Vector3, float> OnCameraMove;
+    public static Action<bool> OnIsCameraFollow;
     public static Action<bool> OnCameraZoomIn;
     public static Action<float> OnDive;
 
     private void Start() {
         player = Stats.Instance.PlayerCenter;
 
-        OnCameraMove = (bool isOn, Vector3 targetPosition, float speed) => { CameraForcedMoveInit(isOn, targetPosition, speed); };
-        OnIsCameraMovable = (bool state) => { IsCameraFollowPlayer(state); };
+        OnCameraMove = (Vector3 targetPosition, float speed) => { CameraForcedMoveInit(targetPosition, speed); };
+        OnIsCameraFollow = (bool state) => { IsCameraFollowPlayer(state); };
         OnCameraZoomIn = (bool state) => { CameraZoomIn(state); };
         OnDive = (float power) => { Dive(power); };
 
@@ -57,17 +57,10 @@ public class PlayerCamera : MonoBehaviour {
         );
     }
 
-    private void CameraForcedMoveInit(bool isOn, Vector3 targetPosition, float speed) {
-        if (isOn) {
-            this.targetPosition = targetPosition;
-            forcedMoveSpeed = speed;
-            isCameraFollowPlayer = false;
-            isCameraForcedMove = true;
-        }
-        else {
-            isCameraFollowPlayer = true;
-            isCameraForcedMove= false;
-        }
+    private void CameraForcedMoveInit(Vector3 targetPosition, float speed) {
+        this.targetPosition = targetPosition;
+        forcedMoveSpeed = speed;
+        IsCameraFollowPlayer(false);
     }
 
     private void CameraForcedMove() {
@@ -80,6 +73,7 @@ public class PlayerCamera : MonoBehaviour {
 
     private void IsCameraFollowPlayer(bool state) {
         isCameraFollowPlayer = state;
+        isCameraForcedMove = !state;
     }
 
     private void CameraZoomIn(bool state) {

@@ -3,6 +3,7 @@
     {
       "id": 1,
       "name": "양산형 셸레 건 드론",
+      "subtitle": "",
       "hp": 100,
       "shield": 0,
       "attack": 30,
@@ -20,6 +21,7 @@
     {
       "id": 2,
       "name": "양산형 셸레 레이저 드론",
+      "subtitle": "",
       "hp": 150,
       "shield": 0,
       "attack": 75,
@@ -37,6 +39,7 @@
     {
       "id": 80,
       "name": "캡틴 웨인",
+      "subtitle": "경찰기동타격대장",
       "hp": 3000,
       "shield": 0,
       "attack": 30,

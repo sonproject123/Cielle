@@ -8,9 +8,17 @@ public class BossEntrance : MonoBehaviour {
     [SerializeField] Move playerMove;
     [SerializeField] RoomTemplateStats goalRTS;
 
+    [SerializeField] bool isEndable;
+
     private void Start() {
+        isEndable = false;
         goalRTS = transform.parent.gameObject.GetComponent<RoomTemplateStats>();
         bossPosition = GameObject.Find("Boss Point").transform;
+    }
+
+    private void Update() {
+        if (isEndable && Input.anyKeyDown)
+            EndDirection();
     }
 
     private void OnTriggerEnter(Collider other) {
@@ -23,7 +31,9 @@ public class BossEntrance : MonoBehaviour {
 
     private void Entrance() {
         GeneralStats.Instance.Pause = true;
+        Stats.Instance.IsInvincible = true;
         LetterBoxManager.Instance.LetterBox();
+
         if (transform.position.x < player.transform.position.x)
             playerMove.OnForcedMove(5, Vector3.left);
         else
@@ -35,7 +45,37 @@ public class BossEntrance : MonoBehaviour {
         }
 
         UIManager.OnUIAlpha(0);
-        PlayerCamera.OnCameraMove?.Invoke(true, bossPosition.position, 0.2f);
-        Stats.Instance.IsInvincible = true;
+        PlayerCamera.OnCameraMove?.Invoke(bossPosition.position, 0.2f);
+
+        GameObject popUp = PopUpManager.Instance.ShowPopUp(PopUpTypes.BOSS_NAME);
+        BossName bn = popUp.GetComponent<BossName>();
+        bn.OnNameInput?.Invoke("테스트용 이명","테스트 보스 이름");
+
+        StartCoroutine(WaitSomeSecond());
+    }
+
+    IEnumerator WaitSomeSecond() {
+        WaitForFixedUpdate wffu = GeneralStats.Instance.WFFU;
+        float time = 0;
+
+        while(time < 1) {
+            time += Time.deltaTime;
+
+            yield return wffu;
+        }
+
+        isEndable = true;
+    }
+
+    private void EndDirection() {
+        GeneralStats.Instance.Pause = false;
+        Stats.Instance.IsInvincible = false;
+        LetterBoxManager.Instance.LetterBox();
+
+        UIManager.OnUIAlpha(1);
+        PlayerCamera.OnIsCameraFollow?.Invoke(true);
+        PopUpManager.Instance.ClosePopUp(PopUpTypes.BOSS_NAME);
+
+        gameObject.SetActive(false);
     }
 }

@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public enum PopUpTypes {
-    LOCALMAP
+    LOCALMAP,
+    BOSS_NAME
 }
 
 public class PopUpManager : Singleton<PopUpManager> {
     [SerializeField] Dictionary<PopUpTypes, GameObject> popUps = new Dictionary<PopUpTypes, GameObject>();
 
-    public void ShowPopUp(PopUpTypes type) {
+    public GameObject ShowPopUp(PopUpTypes type) {
         GameObject popUp;
 
         if (popUps.TryGetValue(type, out popUp))
@@ -21,6 +22,8 @@ public class PopUpManager : Singleton<PopUpManager> {
 
             popUps.Add(type, popUp);
         }
+
+        return popUp;
     }
 
     public void ClosePopUp(PopUpTypes type) {

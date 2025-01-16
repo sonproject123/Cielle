@@ -6,6 +6,7 @@ using UnityEngine;
 public class EnemyData {
     public int id;
     public string name;
+    public string subtitle;
     public float hp;
     public float shield;
     public float attack;

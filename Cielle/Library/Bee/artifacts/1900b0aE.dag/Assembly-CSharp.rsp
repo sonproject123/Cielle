@@ -506,6 +506,7 @@
 "Assets/Scripts/Player/PlayerCamera.cs"
 "Assets/Scripts/Player/PlayerUI.cs"
 "Assets/Scripts/Player/Stats.cs"
+"Assets/Scripts/PopUps/BossName.cs"
 -langversion:9.0
 /deterministic
 /optimize+

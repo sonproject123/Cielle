@@ -2042,6 +2042,7 @@ MonoBehaviour:
   isMove: 0
   isStuned: 0
   isLeft: 0
+  isInvincible: 0
   mainWeaponId: 0
   subWeaponId: 0
   mainGunData:
@@ -2775,6 +2776,7 @@ MonoBehaviour:
   initColor: {r: 0, g: 0, b: 0, a: 0}
   onColor: {r: 0, g: 0, b: 0, a: 0}
   on: 0
+  isOnToggle: 0
 --- !u!114 &1827832997
 MonoBehaviour:
   m_ObjectHideFlags: 0
