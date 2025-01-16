@@ -22,9 +22,12 @@ public class MapGenerator_Generic : MonoBehaviour {
     [SerializeField] Collider2D[] colliders;
 
     [SerializeField] protected List<GameObject> generatedRooms = new List<GameObject>();
+    [SerializeField] protected RoomTemplateStats goal = null;
+    [SerializeField] protected Transform bossPoint = null;
+
     [SerializeField] protected List<int> enemies = new List<int>();
     [SerializeField] protected List<(int id, GameObject enemy)> generatedEnemies = new List<(int, GameObject)>();
-    [SerializeField] protected RoomTemplateStats goal = null;
+    [SerializeField] protected int bossID = -1;
 
     [SerializeField] protected float mapLeftX;
     [SerializeField] protected float mapRightX;
@@ -181,8 +184,15 @@ public class MapGenerator_Generic : MonoBehaviour {
             Transform playerSpawnPoint = room.transform.Find("Spawn Point").transform;
             player.position = playerSpawnPoint.position;
         }
-        if (node.type == "Goal")
+        if (node.type == "Goal") {
             goal = genRoomRTS;
+            foreach (Transform child in room.transform) {
+                if (child.name.StartsWith("Boss Point")) {
+                    bossPoint = child;
+                    break;
+                }
+            }
+        }
 
         return true;
     }
@@ -313,6 +323,10 @@ public class MapGenerator_Generic : MonoBehaviour {
                 generatedEnemies.Add((id, enemy));
             }
         }
+
+        GameObject boss = EnemyManager.OnUseEnemy?.Invoke(bossID);
+        boss.transform.position = new Vector3(bossPoint.position.x, bossPoint.position.y, 0);
+        generatedEnemies.Add((bossID, boss));
     }
 
     private void MapSize() {

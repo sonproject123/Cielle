@@ -9,6 +9,7 @@ public class MapGenerator_Sewer : MapGenerator_Generic {
 
         enemies.Add(1);
         enemies.Add(2);
+        bossID = 80;
 
         base.Awake();
     }

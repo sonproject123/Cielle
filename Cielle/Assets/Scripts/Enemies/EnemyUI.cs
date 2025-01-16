@@ -12,6 +12,7 @@ public class EnemyUI : MonoBehaviour {
     [SerializeField] Slider hpBar;
 
     private void Awake() {
+        mainObject = transform.parent.gameObject;
         fixRotation = transform.rotation;
 
         stats = mainObject.GetComponent<Enemy>();

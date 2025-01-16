@@ -55,6 +55,7 @@ public abstract class Enemy : MonoBehaviour, IHitable {
 
 
     private void Awake() {
+        ui = transform.Find("Enemy UI").gameObject;
         enemyUI = ui.GetComponent<EnemyUI>();
         rigidBody = GetComponent<Rigidbody>();
         originalScale = transform.localScale;

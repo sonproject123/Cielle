@@ -7,6 +7,7 @@ public class AttackRange : MonoBehaviour {
     private Enemy es;
 
     private void Start() {
+        master = transform.parent.gameObject;
         es = master.GetComponent<Enemy>();
     }
 

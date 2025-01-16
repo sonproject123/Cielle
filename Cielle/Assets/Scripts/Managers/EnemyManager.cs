@@ -49,8 +49,17 @@ public class EnemyManager : MonoBehaviour {
         if (enemyList.TryGetValue(id, out queue)) {
             if (queue.Count > 0)
                 obj = queue.Dequeue();
-            else if (JsonManager.Instance.EnemyDict.TryGetValue(id, out data))
+            else
                 obj = CreateEnemy(queue, id, "Enemies/" + data.code);
+        }
+        else if (JsonManager.Instance.EnemyDict.TryGetValue(id, out data)) {
+            enemyList.Add(id, new Queue<GameObject>());
+            if (enemyList.TryGetValue(id, out queue))
+                obj = CreateEnemy(queue, id, "Enemies/" + data.code);
+        }
+        else { 
+            Debug.LogError("유효하지 않은 id");
+            return null;
         }
 
         obj.SetActive(true);

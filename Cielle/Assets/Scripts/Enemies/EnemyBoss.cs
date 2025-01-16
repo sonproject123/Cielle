@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class EnemyBoss : Enemy {
     protected override GeneralFSM<Enemy> InitialState() {
-        return new EnemyState_InPatrol<Enemy>(this);
+        return new EnemyState_InBoss<Enemy>(this);
     }
 
     public override void OnHit(float damage, float damageShield, float stoppingPower, float stoppingTime, Vector3 hitPosition) {
@@ -22,17 +22,9 @@ public class EnemyBoss : Enemy {
 
             EnemyManager.OnReturnEnemy?.Invoke(gameObject, id);
         }
-        else if (hp > 0.0)
-        {
-            Vector3 dir = Vector3.right;
-            if (transform.position.x < hitPosition.x)
-                dir *= -1;
-        }
     }
 
     public override void Patrol() { return; }
-
     public override void Chase() { return; }
-
     public override void Attack() { return; }
 }
