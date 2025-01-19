@@ -9,6 +9,7 @@ using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
+using static UnityEditor.Recorder.OutputPath;
 
 public class MapGenerator_Generic : MonoBehaviour {
     [SerializeField] protected Transform player;
@@ -184,15 +185,8 @@ public class MapGenerator_Generic : MonoBehaviour {
             Transform playerSpawnPoint = room.transform.Find("Spawn Point").transform;
             player.position = playerSpawnPoint.position;
         }
-        if (node.type == "Goal") {
-            goal = genRoomRTS;
-            foreach (Transform child in room.transform) {
-                if (child.name.StartsWith("Boss Point")) {
-                    bossPoint = child;
-                    break;
-                }
-            }
-        }
+        if (node.type == "Goal")
+            GoalWork(genRoomRTS, room);
 
         return true;
     }
@@ -353,6 +347,16 @@ public class MapGenerator_Generic : MonoBehaviour {
 
         mapCenterX = (mapLeftX + mapRightX) / 2;
         mapCenterY = (mapTopY + mapBottomY) / 2;
+    }
+
+    private void GoalWork(RoomTemplateStats genRoomRTS, GameObject room) {
+        goal = genRoomRTS;
+        foreach (Transform child in room.transform) {
+            if (child.name.StartsWith("Boss Point")) {
+                bossPoint = child;
+                break;
+            }
+        }
     }
 
     public float MapLeftX {

@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2e40897f265050489e7e3f2769f1150, type: 3}
+  m_Name: Goal_L_RT
+  m_EditorClassIdentifier: 
+  room: {fileID: 4394890979682373147, guid: c70621c9ada51104d970d188910f5f5e, type: 3}
+  size: {x: 140, y: 70}
+  type: Goal
+  direction: 00000001

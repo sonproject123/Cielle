@@ -1,7 +1,7 @@
 using UnityEngine;
 
-public class EnemyState_InBoss<T> : GeneralFSM<T> where T : Enemy {
-    public EnemyState_InBoss(T enemy) : base(enemy) { }
+public class EnemyState_InPattern<T> : GeneralFSM<T> where T : Enemy {
+    public EnemyState_InPattern(T enemy) : base(enemy) { }
 
     public override void OnStateEnter() {
         return;

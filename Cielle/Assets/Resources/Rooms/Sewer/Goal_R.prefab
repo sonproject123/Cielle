@@ -70,6 +70,7 @@ MonoBehaviour:
   bossPosition: {fileID: 0}
   playerMove: {fileID: 0}
   goalRTS: {fileID: 0}
+  isEndable: 0
 --- !u!1 &959568767449866455
 GameObject:
   m_ObjectHideFlags: 0

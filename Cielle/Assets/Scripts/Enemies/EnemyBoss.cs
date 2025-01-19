@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public class EnemyBoss : Enemy {
+public abstract class EnemyBoss : Enemy {
     protected override GeneralFSM<Enemy> InitialState() {
-        return new EnemyState_InBoss<Enemy>(this);
+        return new EnemyState_InWait<Enemy>(this);
     }
 
     public override void OnHit(float damage, float damageShield, float stoppingPower, float stoppingTime, Vector3 hitPosition) {
@@ -23,6 +23,10 @@ public class EnemyBoss : Enemy {
             EnemyManager.OnReturnEnemy?.Invoke(gameObject, id);
         }
     }
+
+    public abstract void Wait();
+    public abstract void Pattern();
+    public abstract void Dead();
 
     public override void Patrol() { return; }
     public override void Chase() { return; }

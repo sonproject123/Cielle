@@ -427,6 +427,7 @@ MonoBehaviour:
   bossPosition: {fileID: 0}
   playerMove: {fileID: 0}
   goalRTS: {fileID: 0}
+  isEndable: 0
 --- !u!1001 &255316695243715869
 PrefabInstance:
   m_ObjectHideFlags: 0
