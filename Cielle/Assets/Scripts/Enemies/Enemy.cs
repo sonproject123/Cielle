@@ -22,6 +22,8 @@ public abstract class Enemy : MonoBehaviour, IHitable {
     [SerializeField] protected Vector3 originalScale;
     [SerializeField] protected Vector3 moveDirection;
 
+    [SerializeField] protected string enemyName;
+    [SerializeField] protected string subtitle;
     [SerializeField] protected float hp;
     [SerializeField] protected float maxHp;
     [SerializeField] protected float shield;
@@ -37,6 +39,7 @@ public abstract class Enemy : MonoBehaviour, IHitable {
     [SerializeField] protected float bulletSpeed;
     [SerializeField] protected int price;
 
+    [SerializeField] protected bool isBoss;
     [SerializeField] protected bool isSummoned;
     [SerializeField] protected bool isDead;
     [SerializeField] protected bool isAttack;
@@ -47,20 +50,24 @@ public abstract class Enemy : MonoBehaviour, IHitable {
     [SerializeField] public bool isInAttackRange;
     [SerializeField] public bool isInChaseRange;
 
-    protected abstract GeneralFSM<Enemy> InitialState();
+    protected virtual GeneralFSM<Enemy> InitialState() {
+        return new EnemyState_InPatrol<Enemy>(this);
+    }
     public abstract void Patrol();
     public abstract void Chase();
     public abstract void Attack();
     public abstract void OnHit(float damage, float damageShield, float stoppingPower, float stoppingTime, Vector3 hitPosition);
 
-
-    private void Awake() {
+    protected void Awake() {
         ui = transform.Find("Enemy UI").gameObject;
         enemyUI = ui.GetComponent<EnemyUI>();
         rigidBody = GetComponent<Rigidbody>();
         originalScale = transform.localScale;
-        currentState = InitialState();
-        currentState.OnStateEnter();
+
+        if (!isBoss) {
+            currentState = InitialState();
+            currentState.OnStateEnter();
+        }
 
         centerChecker = transform.Find("Checkers/Center Checker");
         frontChecker = transform.Find("Checkers/Front Checker");
@@ -79,7 +86,7 @@ public abstract class Enemy : MonoBehaviour, IHitable {
         }
     }
 
-    private void FixedUpdate() {
+    protected void FixedUpdate() {
         currentState.OnStateStay();
     }
 
@@ -90,6 +97,9 @@ public abstract class Enemy : MonoBehaviour, IHitable {
     }
 
     private void Initialize() {
+        enemyName = enemyData.name;
+        subtitle = enemyData.subtitle;
+
         maxHp = enemyData.hp;
         hp = maxHp;
         speed = enemyData.speed;
@@ -114,6 +124,13 @@ public abstract class Enemy : MonoBehaviour, IHitable {
     }
 
     #region Property
+    public string Name {
+        get { return enemyName; }
+    }
+
+    public string Subtitle {
+        get { return subtitle; }
+    }
 
     public int Id {
         get { return id; }
@@ -159,12 +176,18 @@ public abstract class Enemy : MonoBehaviour, IHitable {
         get { return cooltime; }
         set { cooltime = value; }
     }
+
+    public bool IsSummoned {
+        set { isSummoned = value; }
+    }
     #endregion
 
     public void Hit(float damage, float damageShield, float stoppingPower, float stoppingTime, Vector3 hitPosition) {
-        currentState.OnStateExit();
-        currentState = new EnemyState_InHit<Enemy>(this, damage, damageShield, stoppingPower, stoppingTime, hitPosition);
-        currentState.OnStateEnter();
+        if (!isBoss) {
+            currentState.OnStateExit();
+            currentState = new EnemyState_InHit<Enemy>(this, damage, damageShield, stoppingPower, stoppingTime, hitPosition);
+            currentState.OnStateEnter();
+        }
     }
     IEnumerator Stopping(Vector3 dir, float stoppingPower, float stoppingTime) {
         if (stoppingPower < 0)
@@ -322,9 +345,5 @@ public abstract class Enemy : MonoBehaviour, IHitable {
         MetalObject mo = obj.GetComponent<MetalObject>();
         if (mo != null) 
             mo.OnDrop(1);
-    }
-
-    public bool IsSummoned {
-        set { isSummoned = value; }
     }
 }

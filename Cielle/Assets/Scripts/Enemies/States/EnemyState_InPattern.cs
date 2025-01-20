@@ -4,6 +4,7 @@ public class EnemyState_InPattern<T> : GeneralFSM<T> where T : Enemy {
     public EnemyState_InPattern(T enemy) : base(enemy) { }
 
     public override void OnStateEnter() {
+        Debug.Log("Pattern!");
         return;
     }
 

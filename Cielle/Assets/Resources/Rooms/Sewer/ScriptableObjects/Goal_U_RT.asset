@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Goal_U_RT
   m_EditorClassIdentifier: 
   room: {fileID: 4394890979682373147, guid: 9ea0866bda986e64ba98174d7e683c29, type: 3}
-  size: {x: 180, y: 70}
+  size: {x: 180, y: 50}
   type: Goal
   direction: 01000000

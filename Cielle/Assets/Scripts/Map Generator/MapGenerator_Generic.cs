@@ -28,6 +28,7 @@ public class MapGenerator_Generic : MonoBehaviour {
 
     [SerializeField] protected List<int> enemies = new List<int>();
     [SerializeField] protected List<(int id, GameObject enemy)> generatedEnemies = new List<(int, GameObject)>();
+    [SerializeField] protected EnemyBoss boss;
     [SerializeField] protected int bossID = -1;
 
     [SerializeField] protected float mapLeftX;
@@ -319,8 +320,11 @@ public class MapGenerator_Generic : MonoBehaviour {
         }
 
         GameObject boss = EnemyManager.OnUseEnemy?.Invoke(bossID);
-        boss.transform.position = new Vector3(bossPoint.position.x, bossPoint.position.y, 0);
-        generatedEnemies.Add((bossID, boss));
+        if (boss != null) {
+            boss.transform.position = new Vector3(bossPoint.position.x, bossPoint.position.y, 0);
+            generatedEnemies.Add((bossID, boss));
+            this.boss = boss.GetComponent<EnemyBoss>();
+        }
     }
 
     private void MapSize() {
@@ -359,6 +363,7 @@ public class MapGenerator_Generic : MonoBehaviour {
         }
     }
 
+    #region Property
     public float MapLeftX {
         get { return mapLeftX; }
     }
@@ -386,4 +391,9 @@ public class MapGenerator_Generic : MonoBehaviour {
     public RoomTemplateStats Goal {
         get { return goal; }
     }
+
+    public EnemyBoss Boss {
+        get { return boss; }
+    }
+    #endregion
 }

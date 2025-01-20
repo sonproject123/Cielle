@@ -29,12 +29,12 @@ public class LesserLaserDrone : EnemyCommonGround {
         }
 
         Vector3 rayDir;
+        RaycastHit rayHit;
         if (transform.position.x < muzzle.position.x)
             rayDir = Vector3.left;
         else
             rayDir = Vector3.right;
 
-        RaycastHit rayHit;
         LinearBulletSpawn(new Vector3(player.position.x, transform.position.y, 0));
         if (Physics.Raycast(muzzle.position, rayDir, out rayHit, 9999, LayerMask.GetMask("Player"))) {
             //IHitable hitable = rayHit.collider.gameObject.GetComponent<IHitable>();

@@ -7,6 +7,8 @@ public class BossEntrance : MonoBehaviour {
     [SerializeField] Transform bossPosition;
     [SerializeField] Move playerMove;
     [SerializeField] RoomTemplateStats goalRTS;
+    [SerializeField] MapGenerator_Generic generator;
+    [SerializeField] EnemyBoss boss;
 
     [SerializeField] bool isEndable;
 
@@ -14,6 +16,8 @@ public class BossEntrance : MonoBehaviour {
         isEndable = false;
         goalRTS = transform.parent.gameObject.GetComponent<RoomTemplateStats>();
         bossPosition = GameObject.Find("Boss Point").transform;
+        generator = (MapGenerator_Generic)FindFirstObjectByType(typeof(MapGenerator_Generic));
+        boss = generator.Boss;
     }
 
     private void Update() {
@@ -49,7 +53,7 @@ public class BossEntrance : MonoBehaviour {
 
         GameObject popUp = PopUpManager.Instance.ShowPopUp(PopUpTypes.BOSS_NAME);
         BossName bn = popUp.GetComponent<BossName>();
-        bn.OnNameInput?.Invoke("테스트용 이명","테스트 보스 이름");
+        bn.OnNameInput?.Invoke(boss.Subtitle, boss.Name);
 
         StartCoroutine(WaitSomeSecond());
     }
@@ -58,7 +62,7 @@ public class BossEntrance : MonoBehaviour {
         WaitForFixedUpdate wffu = GeneralStats.Instance.WFFU;
         float time = 0;
 
-        while(time < 1) {
+        while (time < 1) {
             time += Time.deltaTime;
 
             yield return wffu;
@@ -75,6 +79,7 @@ public class BossEntrance : MonoBehaviour {
         UIManager.OnUIAlpha(1);
         PlayerCamera.OnIsCameraFollow?.Invoke(true);
         PopUpManager.Instance.ClosePopUp(PopUpTypes.BOSS_NAME);
+        boss.ChangeState(new EnemyState_InPattern<EnemyBoss>(boss));
 
         gameObject.SetActive(false);
     }
