@@ -1,10 +1,18 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class EnemyBoss : Enemy, IHitable {
+    [SerializeField] protected Dictionary<int, Action> patterns = new Dictionary<int, Action>();
+    [SerializeField] protected Dictionary<int, bool> patternCooltimes = new Dictionary<int, bool>();
     [SerializeField] protected new GeneralFSM<EnemyBoss> currentState;
+
+    [SerializeField] protected bool isPatternOnGoing;
 
     private new void Awake() {
         isBoss = true;
+        isPatternOnGoing = false;
         currentState = InitialBossState();
         currentState.OnStateEnter();
         ui.SetActive(false);
@@ -48,8 +56,56 @@ public abstract class EnemyBoss : Enemy, IHitable {
         }
     }
 
-    public abstract void Wait();
-    public abstract void Pattern();
+    public virtual void Wait() {
+        if (Stats.Instance.PlayerCenter.position.x < transform.position.x)
+            transform.rotation = Quaternion.Euler(0, 0, 0);
+        else
+            transform.rotation = Quaternion.Euler(0, 180, 0);
+    }
+
+    public abstract void PatternInit();
+
+    public virtual void Pattern() {
+        if (isPatternOnGoing)
+            return;
+
+        System.Random random = new System.Random();
+        int id = random.Next(1, patterns.Count + 1);
+
+        if (patternCooltimes.TryGetValue(id, out bool isOn) && isOn) {
+            isPatternOnGoing = true;
+            patterns.TryGetValue(id, out Action pattern);
+            pattern.Invoke();
+        }
+    }
+
+    protected IEnumerator PatternOngoing(float patternTime) {
+        float time = 0;
+        WaitForFixedUpdate wffu = GeneralStats.Instance.WFFU;
+
+        while (time < patternTime) {
+            time += Time.deltaTime;
+            yield return wffu;
+        }
+
+        isPatternOnGoing = false;
+    }
+
+    protected IEnumerator PatternCooltime(int id, float coolTime) {
+        patternCooltimes[id] = false;
+
+        float time = 0;
+        WaitForFixedUpdate wffu = GeneralStats.Instance.WFFU;
+
+        while (time < coolTime)
+        {
+            time += Time.deltaTime;
+            yield return wffu;
+        }
+
+        patternCooltimes[id] = true;
+    }
+
     public abstract void Dead();
 
     public override void Patrol() { return; }

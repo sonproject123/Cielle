@@ -10,7 +10,7 @@ public class ChaseRange : MonoBehaviour {
     }
 
     private void OnTriggerEnter(Collider other) {
-        if (other.CompareTag("Player"))
+        if (es != null && other.CompareTag("Player"))
             es.ChaseRange(true);
     }
 

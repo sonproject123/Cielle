@@ -1071,6 +1071,7 @@ MonoBehaviour:
   goal: {fileID: 0}
   bossPoint: {fileID: 0}
   enemies: 
+  boss: {fileID: 0}
   bossID: -1
   mapLeftX: 0
   mapRightX: 0

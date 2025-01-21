@@ -160,6 +160,8 @@ MonoBehaviour:
   backBottomChecker: {fileID: 0}
   originalScale: {x: 0, y: 0, z: 0}
   moveDirection: {x: 0, y: 0, z: 0}
+  enemyName: 
+  subtitle: 
   hp: 0
   maxHp: 0
   shield: 0
@@ -190,7 +192,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4051642542829464997}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 5
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}

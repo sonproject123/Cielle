@@ -12,7 +12,7 @@ public class AttackRange : MonoBehaviour {
     }
 
     private void OnTriggerEnter(Collider other) {
-        if (other.CompareTag("Player"))
+        if (es != null && other.CompareTag("Player"))
             es.AttackRange(true);
     }
 

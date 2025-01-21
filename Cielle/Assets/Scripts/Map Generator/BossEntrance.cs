@@ -8,7 +8,7 @@ public class BossEntrance : MonoBehaviour {
     [SerializeField] Move playerMove;
     [SerializeField] RoomTemplateStats goalRTS;
     [SerializeField] MapGenerator_Generic generator;
-    [SerializeField] EnemyBoss boss;
+    [SerializeField] EnemyBoss boss = null;
 
     [SerializeField] bool isEndable;
 
@@ -17,10 +17,11 @@ public class BossEntrance : MonoBehaviour {
         goalRTS = transform.parent.gameObject.GetComponent<RoomTemplateStats>();
         bossPosition = GameObject.Find("Boss Point").transform;
         generator = (MapGenerator_Generic)FindFirstObjectByType(typeof(MapGenerator_Generic));
-        boss = generator.Boss;
     }
 
     private void Update() {
+        if (boss == null)
+            boss = generator.Boss;
         if (isEndable && Input.anyKeyDown)
             EndDirection();
     }

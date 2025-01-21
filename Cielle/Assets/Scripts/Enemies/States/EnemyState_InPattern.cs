@@ -1,15 +1,14 @@
 using UnityEngine;
 
-public class EnemyState_InPattern<T> : GeneralFSM<T> where T : Enemy {
+public class EnemyState_InPattern<T> : GeneralFSM<T> where T : EnemyBoss {
     public EnemyState_InPattern(T enemy) : base(enemy) { }
 
     public override void OnStateEnter() {
-        Debug.Log("Pattern!");
-        return;
+        npc.PatternInit();
     }
 
     public override void OnStateStay() {
-        return;
+        npc.Pattern();
     }
 
     public override void OnStateExit() {

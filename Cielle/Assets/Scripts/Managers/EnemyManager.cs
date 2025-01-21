@@ -24,7 +24,7 @@ public class EnemyManager : MonoBehaviour {
 
             Queue<GameObject> queue = null;
             if (enemyList.TryGetValue(id, out queue)) {
-                for (int i = 0; i < 20; i++) {
+                for (int i = 0; i < 5; i++) {
                     GameObject temp = CreateEnemy(queue, id, "Enemies/" + enemyData.code);
                 }
             }
@@ -45,6 +45,9 @@ public class EnemyManager : MonoBehaviour {
         GameObject obj = null;
         Queue<GameObject> queue = null;
         EnemyData data = null;
+
+        if (!JsonManager.Instance.EnemyDict.TryGetValue(id, out data))
+            return null;
 
         if (enemyList.TryGetValue(id, out queue)) {
             if (queue.Count > 0)
