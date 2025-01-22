@@ -29,7 +29,7 @@ public class UIManager : MonoBehaviour {
 
     [SerializeField] bool isUILocked;
 
-    public static Action<float> OnUIAlpha;
+    public static Action<float, bool> OnUIAlpha;
     public static Action OnUpdateHpBar;
     public static Action OnUpdateShieldBar;
     public static Action<bool> OnShieldOnOff;
@@ -43,7 +43,7 @@ public class UIManager : MonoBehaviour {
     private void Awake() {
         canvas = gameObject.GetComponent<Canvas>();
 
-        OnUIAlpha = (float alpha) => { ForcedUIAlpha(alpha); };
+        OnUIAlpha = (float alpha, bool uiLock) => { ForcedUIAlpha(alpha, uiLock); };
 
         OnUpdateHpBar = () => { HpBar(); };
 
@@ -93,8 +93,8 @@ public class UIManager : MonoBehaviour {
             StartCoroutine(UIAlpha(1));
     }
 
-    private void ForcedUIAlpha(float alpha) {
-        isUILocked = true;
+    private void ForcedUIAlpha(float alpha, bool uiLock) {
+        isUILocked = uiLock;
         StartCoroutine(UIAlpha(alpha));
     }
     IEnumerator UIAlpha(float alpha) {

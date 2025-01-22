@@ -57,10 +57,7 @@ public abstract class EnemyBoss : Enemy, IHitable {
     }
 
     public virtual void Wait() {
-        if (Stats.Instance.PlayerCenter.position.x < transform.position.x)
-            transform.rotation = Quaternion.Euler(0, 0, 0);
-        else
-            transform.rotation = Quaternion.Euler(0, 180, 0);
+        LookAtPlayer();
     }
 
     public abstract void PatternInit();
@@ -70,11 +67,13 @@ public abstract class EnemyBoss : Enemy, IHitable {
             return;
 
         System.Random random = new System.Random();
-        int id = random.Next(1, patterns.Count + 1);
+        //int id = random.Next(1, patterns.Count + 1);
+        int id = 3;
 
         if (patternCooltimes.TryGetValue(id, out bool isOn) && isOn) {
             isPatternOnGoing = true;
             patterns.TryGetValue(id, out Action pattern);
+            LookAtPlayer();
             pattern.Invoke();
         }
     }

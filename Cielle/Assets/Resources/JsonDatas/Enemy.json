@@ -13,7 +13,7 @@
       "stoppingPower": 1,
       "stoppingTime": 0.1,
       "stoppingResistance": 0,
-      "cooltime": 1.25,
+      "cooltime": 1.1,
       "bulletSpeed": 9,
       "price": 10,
       "code": "Common/Lesser_Gun_Drone"

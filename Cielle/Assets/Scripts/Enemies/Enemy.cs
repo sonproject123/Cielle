@@ -59,7 +59,6 @@ public abstract class Enemy : MonoBehaviour, IHitable {
     public abstract void OnHit(float damage, float damageShield, float stoppingPower, float stoppingTime, Vector3 hitPosition);
 
     protected void Awake() {
-        ui = transform.Find("Enemy UI").gameObject;
         enemyUI = ui.GetComponent<EnemyUI>();
         rigidBody = GetComponent<Rigidbody>();
         originalScale = transform.localScale;
@@ -68,12 +67,6 @@ public abstract class Enemy : MonoBehaviour, IHitable {
             currentState = InitialState();
             currentState.OnStateEnter();
         }
-
-        centerChecker = transform.Find("Checkers/Center Checker");
-        frontChecker = transform.Find("Checkers/Front Checker");
-        backChecker = transform.Find("Checkers/Back Checker");
-        bottomChecker = transform.Find("Checkers/Bottom Checker");
-        backBottomChecker = transform.Find("Checkers/Back Bottom Checker");
 
         moveDirection = new Vector3(-1, 0, 0);
         transform.rotation = Quaternion.Euler(0, 0, 0);
@@ -182,6 +175,16 @@ public abstract class Enemy : MonoBehaviour, IHitable {
     }
     #endregion
 
+    public void ForcedDie() {
+        CommonHit(999999999, 999999999, 0, 0, Vector3.down);
+    }
+
+    public void Revive() {
+        isDead = false;
+        hp = maxHp;
+        enemyUI.HpBar();
+    }
+
     public void Hit(float damage, float damageShield, float stoppingPower, float stoppingTime, Vector3 hitPosition) {
         if (!isBoss) {
             currentState.OnStateExit();
@@ -202,9 +205,16 @@ public abstract class Enemy : MonoBehaviour, IHitable {
             yield return wffu;
         }
     }
-    private void TransformMove(Vector3 dir, float speed, float wallSensor) {
+    protected void TransformMove(Vector3 dir, float speed, float wallSensor) {
         if (!Physics.Raycast(transform.position, dir, wallSensor, LayerMask.GetMask("Wall")))
             transform.position += dir * speed * Time.deltaTime;
+    }
+
+    protected void LookAtPlayer() {
+        if (Stats.Instance.PlayerCenter.position.x < transform.position.x)
+            transform.rotation = Quaternion.Euler(0, 0, 0);
+        else
+            transform.rotation = Quaternion.Euler(0, 180, 0);
     }
 
     protected void CommonHit(float damage, float damageShield, float stoppingPower, float stoppingTime, Vector3 hitPosition) {
@@ -217,10 +227,9 @@ public abstract class Enemy : MonoBehaviour, IHitable {
             for (int i = 0; i < 10; i++)
                 BreakObject(hitPosition);
 
-            if (!isSummoned) {
+            if (!isSummoned)
                 for (int i = 0; i < price; i++)
                     MetalObject();
-            }
 
             EnemyManager.OnReturnEnemy?.Invoke(gameObject, id);
         }
@@ -261,17 +270,17 @@ public abstract class Enemy : MonoBehaviour, IHitable {
     protected void CommonChase() {
         if (!isChaseCooltime) {
             if (player.position.x < transform.position.x && isThisLeft == false) {
-                transform.rotation = Quaternion.Euler(0, 0, 0);
                 moveDirection = Vector3.left;
                 isThisLeft = true;
                 StartCoroutine(ChaseCooltime());
             }
             else if (player.position.x > transform.position.x && isThisLeft == true) {
-                transform.rotation = Quaternion.Euler(0, 180, 0);
                 moveDirection = Vector3.right;
                 isThisLeft = false;
                 StartCoroutine(ChaseCooltime());
             }
+
+            LookAtPlayer();
         }
 
         bool isAtEdge = EdgeCheck();
@@ -306,7 +315,7 @@ public abstract class Enemy : MonoBehaviour, IHitable {
     protected void LinearBulletSpawn(Vector3 target) {
         GameObject bullet = ObjectManager.Instance.UseObject("ENEMYBULLET");
         bullet.transform.position = muzzle.transform.position;
-        bullet.transform.rotation = muzzle.transform.rotation;
+        bullet.transform.rotation = muzzle.transform.localRotation;
 
         BulletStats(bullet, target);
     }

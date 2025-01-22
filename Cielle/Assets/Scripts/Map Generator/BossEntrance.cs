@@ -49,7 +49,7 @@ public class BossEntrance : MonoBehaviour {
             bw.OnDoorMove(true);
         }
 
-        UIManager.OnUIAlpha(0);
+        UIManager.OnUIAlpha(0, true);
         PlayerCamera.OnCameraMove?.Invoke(bossPosition.position, 0.2f);
 
         GameObject popUp = PopUpManager.Instance.ShowPopUp(PopUpTypes.BOSS_NAME);
@@ -77,7 +77,7 @@ public class BossEntrance : MonoBehaviour {
         Stats.Instance.IsInvincible = false;
         LetterBoxManager.Instance.LetterBox();
 
-        UIManager.OnUIAlpha(1);
+        UIManager.OnUIAlpha(1, false);
         PlayerCamera.OnIsCameraFollow?.Invoke(true);
         PopUpManager.Instance.ClosePopUp(PopUpTypes.BOSS_NAME);
         boss.ChangeState(new EnemyState_InPattern<EnemyBoss>(boss));
