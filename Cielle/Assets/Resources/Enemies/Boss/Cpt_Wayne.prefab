@@ -215,6 +215,7 @@ MonoBehaviour:
   isThisLeft: 0
   isInAttackRange: 0
   isInChaseRange: 0
+  patternID: 0
   isPatternOnGoing: 0
   patternPoint1: {fileID: 0}
   forwardTarget: {fileID: 2573841299455305322}
@@ -302,7 +303,7 @@ Transform:
   m_GameObject: {fileID: 8283385678371637230}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.9, y: 0.3, z: 0}
+  m_LocalPosition: {x: -0.9, y: 0.1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

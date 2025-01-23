@@ -70,7 +70,7 @@ public abstract class EnemyBoss : Enemy, IHitable {
         System.Random random = new System.Random();
         if (patternID == 0)
             patternID = random.Next(1, patterns.Count + 1);
-        patternID = 3; // test
+        patternID = 4;
 
         if (patternCooltimes.TryGetValue(patternID, out bool isOn) && isOn) {
             isPatternOnGoing = true;

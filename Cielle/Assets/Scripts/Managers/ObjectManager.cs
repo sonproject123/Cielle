@@ -34,10 +34,23 @@ public class ObjectManager : Singleton<ObjectManager>{
             JsonManager.Instance.ObjectDict.TryGetValue(name, out data);
             CreateObject(queue, data.path);
         }
-        obj = queue.Dequeue();
+        else {
+            while (queue.Count > 0) {
+                obj = queue.Dequeue();
+                if (obj.activeInHierarchy)
+                    continue;
+                else
+                    break;
+            }
+        }
+
+        if(obj == null) {
+            JsonManager.Instance.ObjectDict.TryGetValue(name, out data);
+            CreateObject(queue, data.path);
+            obj = queue.Dequeue();
+        }
 
         obj.SetActive(true);
-        Debug.Log(queue.Count);
         obj.transform.parent = null;
         return obj;
     }
@@ -45,10 +58,10 @@ public class ObjectManager : Singleton<ObjectManager>{
     public void ReturnObject(GameObject obj, string name) {
         Queue<GameObject> queue;
 
-        obj.gameObject.SetActive(false);
         obj.transform.SetParent(transform);
-
         objectList.TryGetValue(name, out queue);
         queue.Enqueue(obj);
+
+        obj.gameObject.SetActive(false);
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class CptWayne : EnemyBoss {
     [SerializeField] GameObject patternPoint1;
@@ -95,9 +96,9 @@ public class CptWayne : EnemyBoss {
     }
 
     private void Pattern3() {
-        float patternTime = 1.5f;
-        float cooltime = patternTime + 1;
-        //float cooltime = 5;
+        float patternTime = 2;
+        float cooltime = patternTime + 3;
+
         StartCoroutine(PatternOngoing(patternTime));
 
         StartCoroutine(Pattern3Attack());
@@ -124,8 +125,7 @@ public class CptWayne : EnemyBoss {
             muzzle.localRotation = muzzleRotation.rotation;
             LinearBulletSpawn(forwardTarget.position, 90);
 
-            while (time < cooltime)
-            {
+            while (time < cooltime) {
                 time += Time.deltaTime;
                 yield return wffu;
             }
@@ -137,13 +137,48 @@ public class CptWayne : EnemyBoss {
     }
 
     private void Pattern4() {
-        float patternTime = 1;
-        float cooltime = 3000;
+        float patternTime = 2;
+        float cooltime = patternTime + 3;
+
         StartCoroutine(PatternOngoing(patternTime));
+
+        StartCoroutine(Pattern4Attack());
+
         StartCoroutine(PatternCooltime(4, cooltime));
     }
 
-    
+    IEnumerator Pattern4Attack() {
+        float time = 0;
+        float cooltime = 0.15f;
+        WaitForFixedUpdate wffu = GeneralStats.Instance.WFFU;
+
+        while (time < Time.fixedDeltaTime) {
+            time += Time.deltaTime;
+            yield return wffu;
+        }
+
+        for (int i = 0; i < 10; i++) {
+            time = 0;
+            muzzleRotation.localRotation = Quaternion.Euler(0,0,0);
+            muzzle.localRotation = muzzleRotation.rotation;
+            LinearBulletSpawn(forwardTarget.position, 90);
+
+            while (time < cooltime) {
+                time += Time.deltaTime;
+                yield return wffu;
+            }
+
+            if (i == 4) {
+                while (time < cooltime * 5) {
+                    time += Time.deltaTime;
+                    yield return wffu;
+                }
+            }
+        }
+
+        muzzleRotation.rotation = Quaternion.Euler(0, 0, 0);
+        muzzle.localRotation = muzzleRotation.rotation;
+    }
 
     public override void Dead() {
     }
