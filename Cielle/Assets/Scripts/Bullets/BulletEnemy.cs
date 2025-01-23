@@ -8,42 +8,23 @@ public class BulletEnemy : MonoBehaviour {
     [SerializeField] protected float speed;
     [SerializeField] protected float stoppingPower;
     [SerializeField] protected float stoppingTime;
+    [SerializeField] protected float angle;
     [SerializeField] protected Vector3 target;
 
     [SerializeField] Transform bulletRotation;
     [SerializeField] Vector3 direction;
 
-    private void Start() {
+    public void BulletInit(float attack, float attackShield, float speed, float stoppingPower, float stoppingTime, float angle, Vector3 target) {
+        this.attack = attack;
+        this.attackShield = attackShield;
+        this.speed = speed;
+        this.stoppingPower = stoppingPower;
+        this.stoppingTime = stoppingTime;
+        this.angle = angle;
+        this.target = target;
+
         Vector3 direction = MathCalculator.Instance.Normalizer(target, transform.position);
         bulletRotation.rotation = Quaternion.LookRotation(direction);
-    }
-
-    public float Atk {
-        get { return attack; }
-        set { attack = value; }
-    }
-    public float AtkShield {
-        get { return attackShield; }
-        set { attackShield = value; }
-    }
-
-    public float Speed {
-        get { return speed; } 
-        set { speed = value; } 
-    }
-    public float StoppingPower {
-        get { return stoppingPower; }
-        set { stoppingPower = value; }
-    }
-
-    public float StoppingTime {
-        get { return stoppingTime; }
-        set { stoppingTime = value; }
-    }
-
-    public Vector3 Target {
-        get { return target; }
-        set { target = value; }
     }
 
     private void FixedUpdate() {
@@ -56,8 +37,7 @@ public class BulletEnemy : MonoBehaviour {
             hitable.Hit(attack, attackShield, stoppingPower, stoppingTime, transform.position);
             ObjectManager.Instance.ReturnObject(gameObject, "ENEMYBULLET");
         }
-        else if (other.CompareTag("Wall")) {
+        else if (other.CompareTag("Wall"))
             ObjectManager.Instance.ReturnObject(gameObject, "ENEMYBULLET");
-        }
     }
 }

@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &659276983209976127
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8506911365463128881}
+  m_Layer: 0
+  m_Name: Muzzle
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8506911365463128881
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 659276983209976127}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2, y: 0.2, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8984013425319458554}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4051642542829464997
 GameObject:
   m_ObjectHideFlags: 0
@@ -31,8 +62,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1.5, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.75, y: 1.125, z: 0.75}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 8984013425319458554}
   - {fileID: 2322478186134582718}
@@ -149,7 +180,7 @@ MonoBehaviour:
     code: 
   player: {fileID: 0}
   muzzleRotation: {fileID: 8984013425319458554}
-  muzzle: {fileID: 6415189389170138322}
+  muzzle: {fileID: 8506911365463128881}
   ui: {fileID: 4300269938879505862}
   enemyUI: {fileID: 0}
   rigidBody: {fileID: 0}
@@ -256,7 +287,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8984013425319458554}
   m_Layer: 0
-  m_Name: Rifle Rotation
+  m_Name: Muzzle Rotation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -277,6 +308,7 @@ Transform:
   m_Children:
   - {fileID: 6415189389170138322}
   - {fileID: 2573841299455305322}
+  - {fileID: 8506911365463128881}
   m_Father: {fileID: 8163278936035718432}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &3560042528525357390

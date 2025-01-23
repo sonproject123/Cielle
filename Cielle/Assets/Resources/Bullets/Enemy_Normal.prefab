@@ -141,9 +141,9 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5
-  m_Height: 2
+  m_Height: 4
   m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: -1, z: 0}
 --- !u!54 &4023832087833951520
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -184,7 +184,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attack: 0
+  attackShield: 0
   speed: 0
+  stoppingPower: 0
+  stoppingTime: 0
   target: {x: 0, y: 0, z: 0}
   bulletRotation: {fileID: 712401172097635015}
   direction: {x: 0, y: 0, z: 0}

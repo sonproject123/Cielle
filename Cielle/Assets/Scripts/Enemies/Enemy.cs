@@ -312,24 +312,17 @@ public abstract class Enemy : MonoBehaviour, IHitable {
         isInChaseRange = value;
     }
 
-    protected void LinearBulletSpawn(Vector3 target) {
+    protected void LinearBulletSpawn(Vector3 target, float angle = 0) {
         GameObject bullet = ObjectManager.Instance.UseObject("ENEMYBULLET");
         bullet.transform.position = muzzle.transform.position;
-        bullet.transform.rotation = muzzle.transform.localRotation;
-
-        BulletStats(bullet, target);
+        bullet.transform.rotation = Quaternion.Euler(muzzle.transform.eulerAngles.x, muzzle.transform.eulerAngles.y, muzzle.transform.eulerAngles.z + angle);
+        
+        BulletStats(bullet, angle, target);
     }
 
-    protected void BulletStats(GameObject bullet, Vector3 target) {
+    protected void BulletStats(GameObject bullet, float angle, Vector3 target) {
         BulletEnemy bulletEnemy = bullet.GetComponent<BulletEnemy>();
-        if (bulletEnemy != null) {
-            bulletEnemy.Atk = attack;
-            bulletEnemy.AtkShield = attackShield;
-            bulletEnemy.Speed = bulletSpeed;
-            bulletEnemy.StoppingPower = stoppingPower;
-            bulletEnemy.StoppingTime = stoppingTime;
-            bulletEnemy.Target = target;
-        }
+        bulletEnemy.BulletInit(attack, attackShield, bulletSpeed, stoppingPower, stoppingTime, angle, target);
     }
 
     protected void BreakObject(Vector3 hitPosition) {

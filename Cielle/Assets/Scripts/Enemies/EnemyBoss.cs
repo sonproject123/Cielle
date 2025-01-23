@@ -8,6 +8,7 @@ public abstract class EnemyBoss : Enemy, IHitable {
     [SerializeField] protected Dictionary<int, bool> patternCooltimes = new Dictionary<int, bool>();
     [SerializeField] protected new GeneralFSM<EnemyBoss> currentState;
 
+    [SerializeField] protected int patternID;
     [SerializeField] protected bool isPatternOnGoing;
 
     private new void Awake() {
@@ -67,12 +68,13 @@ public abstract class EnemyBoss : Enemy, IHitable {
             return;
 
         System.Random random = new System.Random();
-        //int id = random.Next(1, patterns.Count + 1);
-        int id = 3;
+        if (patternID == 0)
+            patternID = random.Next(1, patterns.Count + 1);
+        patternID = 3; // test
 
-        if (patternCooltimes.TryGetValue(id, out bool isOn) && isOn) {
+        if (patternCooltimes.TryGetValue(patternID, out bool isOn) && isOn) {
             isPatternOnGoing = true;
-            patterns.TryGetValue(id, out Action pattern);
+            patterns.TryGetValue(patternID, out Action pattern);
             LookAtPlayer();
             pattern.Invoke();
         }

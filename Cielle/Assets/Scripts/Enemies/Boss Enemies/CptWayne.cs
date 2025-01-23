@@ -45,9 +45,18 @@ public class CptWayne : EnemyBoss {
         patternPoint1.transform.position = new Vector3(transform.position.x + offsetX, transform.position.y + offsetY, transform.position.z);
     }
 
+    public override void Pattern() {
+        if (patternCooltimes.TryGetValue(1, out bool isOn) && isOn)
+            patternID = 1;
+        else
+            patternID = 0;
+
+        base.Pattern();
+    }
+
     private void Pattern1() {
-        float patternTime = 3;
-        float cooltime = 30;
+        float patternTime = 2;
+        float cooltime = patternTime + 23;
         StartCoroutine(PatternOngoing(patternTime));
 
         foreach(var enemy in pattern1Enemies)
@@ -69,8 +78,8 @@ public class CptWayne : EnemyBoss {
     }
 
     private void Pattern2() {
-        float patternTime = 3;
-        float cooltime = 2;
+        float patternTime = 2.5f;
+        float cooltime = patternTime + 1;
 
         float offsetX = 75;
         float offsetY = 125;
@@ -86,8 +95,9 @@ public class CptWayne : EnemyBoss {
     }
 
     private void Pattern3() {
-        float patternTime = 2;
-        float cooltime = 5;
+        float patternTime = 1.5f;
+        float cooltime = patternTime + 1;
+        //float cooltime = 5;
         StartCoroutine(PatternOngoing(patternTime));
 
         StartCoroutine(Pattern3Attack());
@@ -98,29 +108,31 @@ public class CptWayne : EnemyBoss {
     IEnumerator Pattern3Attack() {
         float offset = -15;
         float time = 0;
-        float cooltime = 0.15f;
+        float cooltime = 0.1f;
         WaitForFixedUpdate wffu = GeneralStats.Instance.WFFU;
 
-        for (int angle = 0; angle <= 5; angle++) {
-            muzzleRotation.localRotation = Quaternion.Euler(muzzleRotation.localRotation.x, muzzleRotation.localRotation.y, offset * angle);
-            LinearBulletSpawn(forwardTarget.position);
-
-            while (time < cooltime) {
-                time += Time.deltaTime;
-                yield return wffu;
-            }
-            time = 0;
+        while (time < Time.fixedDeltaTime) {
+            time += Time.deltaTime;
+            yield return wffu;
         }
 
-        for (int angle = 4; angle >= 0; angle--) {
+        int angle = 0;
+        int plus = 1;
+        while (angle >= 0) {
+            time = 0;
             muzzleRotation.localRotation = Quaternion.Euler(muzzleRotation.localRotation.x, muzzleRotation.localRotation.y, offset * angle);
-            LinearBulletSpawn(forwardTarget.position);
+            muzzle.localRotation = muzzleRotation.rotation;
+            LinearBulletSpawn(forwardTarget.position, 90);
 
-            while (time < cooltime) {
+            while (time < cooltime)
+            {
                 time += Time.deltaTime;
                 yield return wffu;
             }
-            time = 0;
+
+            angle += plus;
+            if (angle >= 5)
+                plus = -1;
         }
     }
 
