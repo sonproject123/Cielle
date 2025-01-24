@@ -9,31 +9,21 @@ public class CptWayne : EnemyBoss {
     [SerializeField] Transform forwardTarget;
     [SerializeField] List<Enemy> pattern1Enemies = new List<Enemy>();
 
-    Action pattern1;
-    Action pattern2;
-    Action pattern3;
-    Action pattern4;
-
     private void Start() {
         PatternAdd();
     }
 
-    private void PatternAdd() {
-        pattern1 = () => { Pattern1(); };
-        patterns.Add(1, pattern1);
+    private new void PatternAdd() {
+        patternActions = new Action[6];
 
-        pattern2 = () => { Pattern2(); };
-        patterns.Add(2, pattern2);
+        int index = 1;
+        patternActions[index++] = Pattern1;
+        patternActions[index++] = Pattern2;
+        patternActions[index++] = Pattern3;
+        patternActions[index++] = Pattern4;
+        patternActions[index++] = Pattern5;
 
-        pattern3 = () => { Pattern3(); };
-        patterns.Add(3, pattern3);
-
-        pattern4 = () => { Pattern4(); };
-        patterns.Add(4, pattern4);
-
-
-        for (int i = 1; i <= patterns.Count; i++)
-            patternCooltimes.Add(i, true);
+        base.PatternAdd();
     }
 
     public override void PatternInit() {
@@ -47,7 +37,9 @@ public class CptWayne : EnemyBoss {
     }
 
     public override void Pattern() {
-        if (patternCooltimes.TryGetValue(1, out bool isOn) && isOn)
+        if (isInChaseRange && patternCooltimes.TryGetValue(5, out bool is5On) && is5On)
+            patternID = 5;
+        else if (patternCooltimes.TryGetValue(1, out bool is1On) && is1On)
             patternID = 1;
         else
             patternID = 0;
@@ -56,10 +48,6 @@ public class CptWayne : EnemyBoss {
     }
 
     private void Pattern1() {
-        float patternTime = 2;
-        float cooltime = patternTime + 23;
-        StartCoroutine(PatternOngoing(patternTime));
-
         foreach(var enemy in pattern1Enemies)
             enemy.ForcedDie();
         pattern1Enemies.Clear();
@@ -74,36 +62,21 @@ public class CptWayne : EnemyBoss {
             enemy.transform.position = new Vector3(point.position.x, point.position.y, 0);
             pattern1Enemies.Add(enemyStat);
         }
-
-        StartCoroutine(PatternCooltime(1, cooltime));
     }
 
     private void Pattern2() {
-        float patternTime = 2.5f;
-        float cooltime = patternTime + 1;
-
         float offsetX = 75;
         float offsetY = 125;
-        StartCoroutine(PatternOngoing(patternTime));
 
         if (Stats.Instance.PlayerCenter.position.x < transform.position.x)
             offsetX *= -1;
 
         rigidBody.AddForce(Vector3.right * offsetX, ForceMode.Impulse);
         rigidBody.AddForce(Vector3.up * offsetY, ForceMode.Impulse);
-
-        StartCoroutine(PatternCooltime(2, cooltime));
     }
 
     private void Pattern3() {
-        float patternTime = 2;
-        float cooltime = patternTime + 3;
-
-        StartCoroutine(PatternOngoing(patternTime));
-
         StartCoroutine(Pattern3Attack());
-
-        StartCoroutine(PatternCooltime(3, cooltime));
     }
 
     IEnumerator Pattern3Attack() {
@@ -122,7 +95,6 @@ public class CptWayne : EnemyBoss {
         while (angle >= 0) {
             time = 0;
             muzzleRotation.localRotation = Quaternion.Euler(muzzleRotation.localRotation.x, muzzleRotation.localRotation.y, offset * angle);
-            muzzle.localRotation = muzzleRotation.rotation;
             LinearBulletSpawn(forwardTarget.position, 90);
 
             while (time < cooltime) {
@@ -137,14 +109,7 @@ public class CptWayne : EnemyBoss {
     }
 
     private void Pattern4() {
-        float patternTime = 2;
-        float cooltime = patternTime + 3;
-
-        StartCoroutine(PatternOngoing(patternTime));
-
         StartCoroutine(Pattern4Attack());
-
-        StartCoroutine(PatternCooltime(4, cooltime));
     }
 
     IEnumerator Pattern4Attack() {
@@ -157,10 +122,16 @@ public class CptWayne : EnemyBoss {
             yield return wffu;
         }
 
-        for (int i = 0; i < 10; i++) {
+        Vector3 playerPosition = player.position;
+        for (int i = 1; i <= 3 * 3; i++) {
             time = 0;
-            muzzleRotation.localRotation = Quaternion.Euler(0,0,0);
-            muzzle.localRotation = muzzleRotation.rotation;
+
+            float angle = MathCalculator.Instance.Angle(playerPosition, muzzle.position);
+            if (playerPosition.x < transform.position.x)
+                muzzleRotation.localRotation = Quaternion.Euler(0, 0, angle + 180);
+            else
+                muzzleRotation.localRotation = Quaternion.Euler(0, 0, angle * -1);
+
             LinearBulletSpawn(forwardTarget.position, 90);
 
             while (time < cooltime) {
@@ -168,16 +139,39 @@ public class CptWayne : EnemyBoss {
                 yield return wffu;
             }
 
-            if (i == 4) {
-                while (time < cooltime * 5) {
+            if (i % 3 == 0) {
+                while (time < cooltime * 3) {
                     time += Time.deltaTime;
                     yield return wffu;
                 }
+                LookAtPlayer();
+                playerPosition = player.position;
             }
         }
 
-        muzzleRotation.rotation = Quaternion.Euler(0, 0, 0);
+        muzzleRotation.localRotation = Quaternion.Euler(0, 0, 0);
         muzzle.localRotation = muzzleRotation.rotation;
+    }
+
+    private void Pattern5() {
+        RaycastHit2D leftHit = Physics2D.Raycast(transform.position, Vector2.left, 9999, LayerMask.GetMask("Wall"));
+        RaycastHit2D rightHit = Physics2D.Raycast(transform.position, Vector2.right, 9999, LayerMask.GetMask("Wall"));
+
+        StartCoroutine(Pattern5Move(leftHit.distance, rightHit.distance));
+    }
+
+    IEnumerator Pattern5Move(float left, float right) {
+        float time = 0;
+        WaitForFixedUpdate wffu = GeneralStats.Instance.WFFU;
+
+        while(time < 0.5f) {
+            if (left > right)
+                rigidBody.MovePosition(rigidBody.position + Vector3.left * speed * Time.deltaTime);
+            else
+                rigidBody.MovePosition(rigidBody.position + Vector3.right * speed * Time.deltaTime);
+            time += Time.deltaTime;
+            yield return wffu;
+        }
     }
 
     public override void Dead() {

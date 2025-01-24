@@ -6,6 +6,7 @@ public class JsonManager : Singleton<JsonManager> {
     [SerializeField] Dictionary<int, GunData> gunDict = new Dictionary<int, GunData>();
     [SerializeField] Dictionary<string, ObjectData> objectDict = new Dictionary<string, ObjectData>();
     [SerializeField] Dictionary<int, EnemyData> enemyDict = new Dictionary<int, EnemyData>();
+    [SerializeField] Dictionary<int, BossPatternData> bossPatternDict = new Dictionary<int, BossPatternData>();
 
     private new void Awake() {
         base.Awake();
@@ -27,6 +28,11 @@ public class JsonManager : Singleton<JsonManager> {
         EnemyDataList enemyData = JsonUtility.FromJson<EnemyDataList>(jsonData.text);
         foreach (var obj in enemyData.enemysData)
             enemyDict.Add(obj.id, obj);
+
+        jsonData = Resources.Load<TextAsset>("JsonDatas/Boss Pattern");
+        BossPatternDataList bossPatternData = JsonUtility.FromJson<BossPatternDataList>(jsonData.text);
+        foreach (var obj in bossPatternData.BossPatternsData)
+            bossPatternDict.Add(obj.id, obj);
     }
 
     public Dictionary<int, GunData> GunDict {
@@ -39,5 +45,9 @@ public class JsonManager : Singleton<JsonManager> {
 
     public Dictionary<int, EnemyData> EnemyDict {
         get { return enemyDict; }
+    }
+
+    public Dictionary<int, BossPatternData> BossPatternDict {
+        get { return bossPatternDict; }
     }
 }

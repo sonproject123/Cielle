@@ -72,7 +72,7 @@ public abstract class Enemy : MonoBehaviour, IHitable {
         transform.rotation = Quaternion.Euler(0, 0, 0);
     }
 
-    private void OnEnable() {
+    protected virtual void OnEnable() {
         if (id != 0) {
             JsonManager.Instance.EnemyDict.TryGetValue(id, out enemyData);
             Initialize();

@@ -8,6 +8,8 @@ public abstract class EnemyBoss : Enemy, IHitable {
     [SerializeField] protected Dictionary<int, bool> patternCooltimes = new Dictionary<int, bool>();
     [SerializeField] protected new GeneralFSM<EnemyBoss> currentState;
 
+    [SerializeField] protected BossPatternData patternData;
+    [SerializeField] protected Action[] patternActions;
     [SerializeField] protected int patternID;
     [SerializeField] protected bool isPatternOnGoing;
 
@@ -17,7 +19,14 @@ public abstract class EnemyBoss : Enemy, IHitable {
         currentState = InitialBossState();
         currentState.OnStateEnter();
         ui.SetActive(false);
+        
         base.Awake();
+    }
+
+    private new void OnEnable() {
+        base.OnEnable();
+        if (id != 0)
+            JsonManager.Instance.BossPatternDict.TryGetValue(id, out patternData);
     }
 
     protected new void FixedUpdate() {
@@ -63,6 +72,13 @@ public abstract class EnemyBoss : Enemy, IHitable {
 
     public abstract void PatternInit();
 
+    protected virtual void PatternAdd() {
+        for (int i = 1; i < patternActions.Length; i++) {
+            patterns.Add(i, patternActions[i]);
+            patternCooltimes.Add(i, true);
+        }
+    }
+
     public virtual void Pattern() {
         if (isPatternOnGoing)
             return;
@@ -70,12 +86,14 @@ public abstract class EnemyBoss : Enemy, IHitable {
         System.Random random = new System.Random();
         if (patternID == 0)
             patternID = random.Next(1, patterns.Count + 1);
-        patternID = 4;
 
         if (patternCooltimes.TryGetValue(patternID, out bool isOn) && isOn) {
             isPatternOnGoing = true;
             patterns.TryGetValue(patternID, out Action pattern);
             LookAtPlayer();
+
+            StartCoroutine(PatternOngoing(patternData.patternTime[patternID]));
+            StartCoroutine(PatternCooltime(patternID, patternData.cooltime[patternID]));
             pattern.Invoke();
         }
     }
@@ -94,12 +112,10 @@ public abstract class EnemyBoss : Enemy, IHitable {
 
     protected IEnumerator PatternCooltime(int id, float coolTime) {
         patternCooltimes[id] = false;
-
         float time = 0;
         WaitForFixedUpdate wffu = GeneralStats.Instance.WFFU;
 
-        while (time < coolTime)
-        {
+        while (time < coolTime) {
             time += Time.deltaTime;
             yield return wffu;
         }
