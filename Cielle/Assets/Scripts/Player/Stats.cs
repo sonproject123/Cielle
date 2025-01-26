@@ -77,7 +77,7 @@ public class Stats : Singleton<Stats> {
     private void Start() {
         #region Initialize
         mainWeaponId = 1;
-        subWeaponId = 2;
+        subWeaponId = 3;
         GunInit();
 
         maxHp = 100;

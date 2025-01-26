@@ -56,14 +56,14 @@ public class BossEntrance : MonoBehaviour {
         BossName bn = popUp.GetComponent<BossName>();
         bn.OnNameInput?.Invoke(boss.Subtitle, boss.Name);
 
-        StartCoroutine(WaitSomeSecond());
+        StartCoroutine(WaitSomeSecond(1));
     }
 
-    IEnumerator WaitSomeSecond() {
+    IEnumerator WaitSomeSecond(float waitTime) {
         WaitForFixedUpdate wffu = GeneralStats.Instance.WFFU;
         float time = 0;
 
-        while (time < 1) {
+        while (time < waitTime) {
             time += Time.deltaTime;
 
             yield return wffu;

@@ -17,11 +17,12 @@ public class CptWayne : EnemyBoss {
         patternActions = new Action[6];
 
         int index = 1;
-        patternActions[index++] = Pattern1;
-        patternActions[index++] = Pattern2;
-        patternActions[index++] = Pattern3;
-        patternActions[index++] = Pattern4;
-        patternActions[index++] = Pattern5;
+        patternActions[index++] = Pattern1; // 드론 소환
+        patternActions[index++] = Pattern2; // 점프
+        patternActions[index++] = Pattern3; // 원형 사격
+        patternActions[index++] = Pattern4; // 지향 점사 사격
+        patternActions[index++] = Pattern5; // 순보
+        //patternActions[index++] = Pattern6; // 수류탄 투척
 
         base.PatternAdd();
     }
@@ -37,8 +38,10 @@ public class CptWayne : EnemyBoss {
     }
 
     public override void Pattern() {
-        if (isInChaseRange && patternCooltimes.TryGetValue(5, out bool is5On) && is5On)
+        if (isInChaseRange && patternCooltimes.TryGetValue(5, out bool is5On) && is5On) {
             patternID = 5;
+            StartCoroutine(PatternCooltime(2, patternData.cooltime[2]));
+        }
         else if (patternCooltimes.TryGetValue(1, out bool is1On) && is1On)
             patternID = 1;
         else {
@@ -68,8 +71,8 @@ public class CptWayne : EnemyBoss {
     }
 
     private void Pattern2() {
-        float offsetX = 75;
-        float offsetY = 125;
+        float offsetX = 60;
+        float offsetY = 90;
 
         if (Stats.Instance.PlayerCenter.position.x < transform.position.x)
             offsetX *= -1;
@@ -83,9 +86,9 @@ public class CptWayne : EnemyBoss {
     }
 
     IEnumerator Pattern3Attack() {
-        float offset = -15;
+        float offset = -10;
         float time = 0;
-        float cooltime = 0.1f;
+        float cooltime = 0.075f;
         WaitForFixedUpdate wffu = GeneralStats.Instance.WFFU;
 
         while (time < Time.fixedDeltaTime) {
@@ -96,6 +99,9 @@ public class CptWayne : EnemyBoss {
         int angle = 0;
         int plus = 1;
         while (angle >= 0) {
+            if (isDead)
+                yield break;
+
             time = 0;
             muzzleRotation.localRotation = Quaternion.Euler(muzzleRotation.localRotation.x, muzzleRotation.localRotation.y, offset * angle);
             LinearBulletSpawn(forwardTarget.position, 90);
@@ -106,7 +112,7 @@ public class CptWayne : EnemyBoss {
             }
 
             angle += plus;
-            if (angle >= 5)
+            if (angle >= 8)
                 plus = -1;
         }
     }
@@ -127,6 +133,9 @@ public class CptWayne : EnemyBoss {
 
         Vector3 playerPosition = player.position;
         for (int i = 1; i <= 3 * 3; i++) {
+            if (isDead)
+                yield break;
+
             time = 0;
 
             float angle = MathCalculator.Instance.Angle(playerPosition, muzzle.position);
@@ -143,7 +152,7 @@ public class CptWayne : EnemyBoss {
             }
 
             if (i % 3 == 0) {
-                while (time < cooltime * 3) {
+                while (time < cooltime * 2) {
                     time += Time.deltaTime;
                     yield return wffu;
                 }
@@ -170,6 +179,9 @@ public class CptWayne : EnemyBoss {
         WaitForFixedUpdate wffu = GeneralStats.Instance.WFFU;
 
         while(time < 0.5f) {
+            if (isDead)
+                yield break;
+
             if (left > right)
                 rigidBody.MovePosition(rigidBody.position + Vector3.left * speed * Time.deltaTime);
             else
@@ -179,6 +191,15 @@ public class CptWayne : EnemyBoss {
         }
     }
 
+    private void Pattern6() {
+
+    }
+
     public override void Dead() {
+        foreach (var enemy in pattern1Enemies)
+            enemy.ForcedDie();
+        pattern1Enemies.Clear();
+
+        base.Dead();
     }
 }

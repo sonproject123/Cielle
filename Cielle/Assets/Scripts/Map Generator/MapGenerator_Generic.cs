@@ -324,6 +324,7 @@ public class MapGenerator_Generic : MonoBehaviour {
             boss.transform.position = new Vector3(bossPoint.position.x, bossPoint.position.y, 0);
             generatedEnemies.Add((bossID, boss));
             this.boss = boss.GetComponent<EnemyBoss>();
+            this.boss.GoalRTS = goal;
         }
     }
 

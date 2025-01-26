@@ -174,6 +174,7 @@ public abstract class Enemy : MonoBehaviour, IHitable {
     }
 
     public bool IsSummoned {
+        get { return isSummoned; }
         set { isSummoned = value; }
     }
     #endregion
@@ -223,6 +224,7 @@ public abstract class Enemy : MonoBehaviour, IHitable {
     protected void CommonHit(float damage, float damageShield, float stoppingPower, float stoppingTime, Vector3 hitPosition) {
         hp -= Mathf.Max(1, damage - defense);
         enemyUI.HpBar();
+        BreakObject(hitPosition);
 
         if (hp <= 0.0 && !isDead) {
             isDead = true;

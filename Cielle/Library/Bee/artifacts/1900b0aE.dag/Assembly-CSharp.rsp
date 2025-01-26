@@ -467,6 +467,7 @@
 "Assets/Scripts/Enemies/EnemyUI.cs"
 "Assets/Scripts/Enemies/States/EnemyState_InAttack.cs"
 "Assets/Scripts/Enemies/States/EnemyState_InChase.cs"
+"Assets/Scripts/Enemies/States/EnemyState_InDead.cs"
 "Assets/Scripts/Enemies/States/EnemyState_InHit.cs"
 "Assets/Scripts/Enemies/States/EnemyState_InPatrol.cs"
 "Assets/Scripts/Enemies/States/EnemyState_InPattern.cs"

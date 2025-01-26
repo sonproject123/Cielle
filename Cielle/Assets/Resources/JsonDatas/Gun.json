@@ -61,7 +61,7 @@
       "id": 3,
       "name": "샷건",
       "descriptions": "한번에 탄을 다발로 발사하는 샷건.",
-      "atk": 15,
+      "atk": 20,
       "atkShield": 0,
       "minSpeed": 50,
       "maxSpeed": 70,
