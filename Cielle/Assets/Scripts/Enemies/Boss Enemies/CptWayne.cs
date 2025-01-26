@@ -41,8 +41,11 @@ public class CptWayne : EnemyBoss {
             patternID = 5;
         else if (patternCooltimes.TryGetValue(1, out bool is1On) && is1On)
             patternID = 1;
-        else
-            patternID = 0;
+        else {
+            do
+                patternID = random.Next(1, patterns.Count + 1);
+            while (patternID == 5);
+        }
 
         base.Pattern();
     }
@@ -154,8 +157,10 @@ public class CptWayne : EnemyBoss {
     }
 
     private void Pattern5() {
-        RaycastHit2D leftHit = Physics2D.Raycast(transform.position, Vector2.left, 9999, LayerMask.GetMask("Wall"));
-        RaycastHit2D rightHit = Physics2D.Raycast(transform.position, Vector2.right, 9999, LayerMask.GetMask("Wall"));
+        RaycastHit leftHit;
+        Physics.Raycast(transform.position, Vector2.left, out leftHit, 9999, LayerMask.GetMask("Wall"));
+        RaycastHit rightHit;
+        Physics.Raycast(transform.position, Vector2.right, out rightHit, 9999, LayerMask.GetMask("Wall"));
 
         StartCoroutine(Pattern5Move(leftHit.distance, rightHit.distance));
     }

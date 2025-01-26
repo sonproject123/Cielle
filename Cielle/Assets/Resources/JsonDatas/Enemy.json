@@ -45,7 +45,7 @@
       "attack": 30,
       "attackShield": 0,
       "defense": 5,
-      "speed": 20,
+      "speed": 40,
       "stoppingPower": 1.5,
       "stoppingTime": 0.1,
       "stoppingResistance": 0,

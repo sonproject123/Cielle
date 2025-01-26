@@ -83,7 +83,6 @@ public abstract class EnemyBoss : Enemy, IHitable {
         if (isPatternOnGoing)
             return;
 
-        System.Random random = new System.Random();
         if (patternID == 0)
             patternID = random.Next(1, patterns.Count + 1);
 

@@ -50,6 +50,8 @@ public abstract class Enemy : MonoBehaviour, IHitable {
     [SerializeField] public bool isInAttackRange;
     [SerializeField] public bool isInChaseRange;
 
+    [SerializeField] protected System.Random random;
+
     protected virtual GeneralFSM<Enemy> InitialState() {
         return new EnemyState_InPatrol<Enemy>(this);
     }
@@ -59,6 +61,7 @@ public abstract class Enemy : MonoBehaviour, IHitable {
     public abstract void OnHit(float damage, float damageShield, float stoppingPower, float stoppingTime, Vector3 hitPosition);
 
     protected void Awake() {
+        random = new System.Random();
         enemyUI = ui.GetComponent<EnemyUI>();
         rigidBody = GetComponent<Rigidbody>();
         originalScale = transform.localScale;
