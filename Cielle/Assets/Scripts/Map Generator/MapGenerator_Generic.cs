@@ -325,6 +325,7 @@ public class MapGenerator_Generic : MonoBehaviour {
             generatedEnemies.Add((bossID, boss));
             this.boss = boss.GetComponent<EnemyBoss>();
             this.boss.GoalRTS = goal;
+            this.boss.gameObject.SetActive(false);
         }
     }
 

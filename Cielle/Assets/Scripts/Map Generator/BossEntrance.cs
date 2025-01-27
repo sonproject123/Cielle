@@ -38,6 +38,7 @@ public class BossEntrance : MonoBehaviour {
         GeneralStats.Instance.Pause = true;
         Stats.Instance.IsInvincible = true;
         LetterBoxManager.Instance.LetterBox();
+        boss.gameObject.SetActive(true);
 
         if (transform.position.x < player.transform.position.x)
             playerMove.OnForcedMove(5, Vector3.left);
@@ -81,6 +82,7 @@ public class BossEntrance : MonoBehaviour {
         PlayerCamera.OnIsCameraFollow?.Invoke(true);
         PopUpManager.Instance.ClosePopUp(PopUpTypes.BOSS_NAME);
         boss.ChangeState(new EnemyState_InPattern<EnemyBoss>(boss));
+        boss.IsActive = true;
 
         gameObject.SetActive(false);
     }

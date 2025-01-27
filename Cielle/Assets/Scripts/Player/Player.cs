@@ -12,6 +12,7 @@ public class Player : MonoBehaviour, IHitable {
     [SerializeField] float shieldBreakRegenTime;
     [SerializeField] bool isShieldBreak;
     [SerializeField] bool isShieldRegen;
+    [SerializeField] bool isDead;
 
     private void Awake() {
         hitVolume = GameObject.Find("Hit Volume").GetComponent<Volume>();
@@ -23,6 +24,7 @@ public class Player : MonoBehaviour, IHitable {
 
         isShieldBreak = false;
         isShieldRegen = false;
+        isDead = false;
     }
 
     public void Hit(float damage, float damageShield, float stoppingPower, float stoppingTime, Vector3 hitPosition) {
@@ -32,7 +34,7 @@ public class Player : MonoBehaviour, IHitable {
                 UIManager.OnUpdateShieldBar?.Invoke();
 
                 if (Stats.Instance.Shield <= 0.0) {
-                    StartCoroutine(ShieldBreak());
+                    StartCoroutine(SlowZoomIn(1));
                     StartCoroutine(Invincible(Stats.Instance.Invincible));
 
                     Stats.Instance.IsShieldOn = false;
@@ -58,13 +60,23 @@ public class Player : MonoBehaviour, IHitable {
                 UIManager.OnUpdateHpBar?.Invoke();
                 shieldBreakRegenTime = 0;
 
-                if (Stats.Instance.Hp <= 0.0) {
-                    Debug.Log("You Died");
-                }
+                if (Stats.Instance.Hp <= 0.0 && !isDead) {
+                    isDead = true;
+                    Dead();
+                } 
                 else
                     StartCoroutine(Invincible(Stats.Instance.Invincible));
             }
         }
+    }
+
+    private void Dead() {
+        Debug.Log("You Died");
+
+        GeneralStats.Instance.Pause = true;
+        Stats.Instance.IsInvincible = true;
+        //LetterBoxManager.Instance.LetterBox();
+        StartCoroutine(SlowZoomIn(3));
     }
 
     private void Update() {
@@ -158,7 +170,7 @@ public class Player : MonoBehaviour, IHitable {
         StartCoroutine(ShieldRegenerator());
     }
 
-    IEnumerator ShieldBreak() {
+    IEnumerator SlowZoomIn(float duration) {
         float time = 0;
         float slowTime = 0.1f;
         WaitForFixedUpdate wffu = GeneralStats.Instance.WFFU;
@@ -166,7 +178,7 @@ public class Player : MonoBehaviour, IHitable {
         GeneralStats.Instance.SlowTime(slowTime);
         PlayerCamera.OnCameraZoomIn?.Invoke(true);
 
-        while(time < 1.0f * slowTime) {
+        while(time < duration * slowTime) {
             time += Time.deltaTime;
             yield return wffu;
         }

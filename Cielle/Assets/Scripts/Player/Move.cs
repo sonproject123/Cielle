@@ -38,6 +38,8 @@ public class Move : MonoBehaviour {
     [SerializeField] float verticalDash;
     [SerializeField] float originalSpeed;
 
+    [SerializeField] int aniRun = Animator.StringToHash("Run");
+
     public Action<float, Vector3> OnForcedMove;
 
     void Awake() {
@@ -100,7 +102,7 @@ public class Move : MonoBehaviour {
             if (isOnFlying)
                 return;
             else
-                animator.SetBool("Run", false);
+                animator.SetBool(aniRun, false);
         }
     }
 
@@ -236,7 +238,7 @@ public class Move : MonoBehaviour {
     }
 
     private void GroundMove() {
-        animator.SetBool("Run", true);
+        animator.SetBool(aniRun, true);
 
         Vector3 dir = new Vector3(verticalInput, 0, 0);
         if (RaycastCheck(dir, 0.3f))
@@ -366,6 +368,7 @@ public class Move : MonoBehaviour {
     private void LocalMapInit() {
         PopUpManager.Instance.ShowPopUp(PopUpTypes.LOCALMAP);
         localMapCamera.position = new Vector3(transform.position.x, transform.position.y, localMapCamera.position.z);
+        GeneralStats.Instance.SlowTime(0);
     }
 
     private void LocalMap() {
@@ -375,17 +378,18 @@ public class Move : MonoBehaviour {
             PopUpManager.Instance.ClosePopUp(PopUpTypes.LOCALMAP);
             InputManager.Instance.action -= LocalMap;
             InputManager.Instance.action += OnkeyUpdate;
+            GeneralStats.Instance.SlowTime();
             return;
         }
 
         if (Input.GetKey(KeyCode.W))
-            localMapCamera.position += Vector3.up * speed * Time.deltaTime;
+            localMapCamera.position += Vector3.up * speed * Time.unscaledDeltaTime;
         if (Input.GetKey(KeyCode.S))
-            localMapCamera.position += Vector3.down * speed * Time.deltaTime;
+            localMapCamera.position += Vector3.down * speed * Time.unscaledDeltaTime;
         if (Input.GetKey(KeyCode.A))
-            localMapCamera.position += Vector3.left * speed * Time.deltaTime;
+            localMapCamera.position += Vector3.left * speed * Time.unscaledDeltaTime;
         if (Input.GetKey(KeyCode.D))
-            localMapCamera.position += Vector3.right * speed * Time.deltaTime;
+            localMapCamera.position += Vector3.right * speed * Time.unscaledDeltaTime;
     }
 
     IEnumerator WeaponChangeCooltime(float cooltime) {

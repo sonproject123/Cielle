@@ -13,13 +13,15 @@ public abstract class EnemyBoss : Enemy, IHitable {
     [SerializeField] protected BossPatternData patternData;
     [SerializeField] protected Action[] patternActions;
     [SerializeField] protected int patternID;
+    [SerializeField] protected bool isActive;
     [SerializeField] protected bool isPatternOnGoing;
-    [SerializeField] protected bool isSkipEndable;
+    [SerializeField] protected bool isSkipable;
 
     private new void Awake() {
         isBoss = true;
+        isActive = false;
         isPatternOnGoing = false;
-        isSkipEndable = false;
+        isSkipable = false;
         currentState = InitialBossState();
         currentState.OnStateEnter();
         ui.SetActive(false);
@@ -52,6 +54,8 @@ public abstract class EnemyBoss : Enemy, IHitable {
     }
 
     public new void Hit(float damage, float damageShield, float stoppingPower, float stoppingTime, Vector3 hitPosition) {
+        if (!isActive)
+            return;
         hp -= Mathf.Max(1, damage - defense);
         enemyUI.HpBar();
         BreakObject(hitPosition);
@@ -134,7 +138,7 @@ public abstract class EnemyBoss : Enemy, IHitable {
     }
 
     public virtual void OnDead() {
-        if (isSkipEndable && Input.anyKeyDown)
+        if (isSkipable && Input.anyKeyDown)
             EndDirection();
     }
 
@@ -165,7 +169,7 @@ public abstract class EnemyBoss : Enemy, IHitable {
             yield return wffu;
         }
 
-        isSkipEndable = true;
+        isSkipable = true;
     }
 
     public override void Patrol() { return; }
@@ -175,5 +179,9 @@ public abstract class EnemyBoss : Enemy, IHitable {
 
     public RoomTemplateStats GoalRTS {
         set { goalRTS = value; }
+    }
+
+    public bool IsActive {
+        set { isActive = value; }
     }
 }

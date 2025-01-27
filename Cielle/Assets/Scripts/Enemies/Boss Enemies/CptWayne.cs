@@ -88,7 +88,7 @@ public class CptWayne : EnemyBoss {
     IEnumerator Pattern3Attack() {
         float offset = -10;
         float time = 0;
-        float cooltime = 0.075f;
+        float cooltime = 0.05f;
         WaitForFixedUpdate wffu = GeneralStats.Instance.WFFU;
 
         while (time < Time.fixedDeltaTime) {
@@ -96,7 +96,7 @@ public class CptWayne : EnemyBoss {
             yield return wffu;
         }
 
-        int angle = 0;
+        float angle = 0;
         int plus = 1;
         while (angle >= 0) {
             if (isDead)
@@ -112,9 +112,13 @@ public class CptWayne : EnemyBoss {
             }
 
             angle += plus;
-            if (angle >= 8)
+            if (angle >= 8) {
                 plus = -1;
+                angle += 0.5f;
+            }
         }
+
+        muzzleRotation.localRotation = Quaternion.Euler(muzzleRotation.localRotation.x, muzzleRotation.localRotation.y, 0);
     }
 
     private void Pattern4() {
