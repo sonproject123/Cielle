@@ -125,7 +125,7 @@ public abstract class EnemyBoss : Enemy, IHitable {
     public virtual void Dead() {
         GeneralStats.Instance.Pause = true;
         Stats.Instance.IsInvincible = true;
-        LetterBoxManager.Instance.LetterBox();
+        LetterBoxManager.Instance.LetterBox(true);
 
         foreach (var wall in goalRTS.bossWalls) {
             BossWall bw = wall.GetComponent<BossWall>();
@@ -145,7 +145,7 @@ public abstract class EnemyBoss : Enemy, IHitable {
     private void EndDirection() {
         GeneralStats.Instance.Pause = false;
         Stats.Instance.IsInvincible = false;
-        LetterBoxManager.Instance.LetterBox();
+        LetterBoxManager.Instance.LetterBox(false);
 
         UIManager.OnUIAlpha(1, false);
         PlayerCamera.OnIsCameraFollow?.Invoke(true);

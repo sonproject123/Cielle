@@ -28,6 +28,6 @@ public class ButtonManager : Singleton<ButtonManager> {
     }
 
     public void LetterBoxTest() {
-        LetterBoxManager.Instance.LetterBox();
+        LetterBoxManager.Instance.LetterBox(true);
     }
 }

@@ -7,6 +7,7 @@ using UnityEngine.Rendering;
 public class Player : MonoBehaviour, IHitable {
     [SerializeField] Transform playerCenter;
     [SerializeField] Volume hitVolume;
+    [SerializeField] Animator animator;
 
     [SerializeField] float shieldRegenTime;
     [SerializeField] float shieldBreakRegenTime;
@@ -14,7 +15,10 @@ public class Player : MonoBehaviour, IHitable {
     [SerializeField] bool isShieldRegen;
     [SerializeField] bool isDead;
 
+    [SerializeField] int aniDeath = Animator.StringToHash("Death");
+
     private void Awake() {
+        animator = GetComponent<Animator>();
         hitVolume = GameObject.Find("Hit Volume").GetComponent<Volume>();
     }
 
@@ -62,7 +66,7 @@ public class Player : MonoBehaviour, IHitable {
 
                 if (Stats.Instance.Hp <= 0.0 && !isDead) {
                     isDead = true;
-                    Dead();
+                    Dead(hitPosition);
                 } 
                 else
                     StartCoroutine(Invincible(Stats.Instance.Invincible));
@@ -70,12 +74,16 @@ public class Player : MonoBehaviour, IHitable {
         }
     }
 
-    private void Dead() {
-        Debug.Log("You Died");
+    private void Dead(Vector3 hitPosition) {
+        if (hitPosition.x > playerCenter.position.x)
+            transform.localScale = new Vector3(1, 1, 1);
+        else
+            transform.localScale = new Vector3(1, 1, -1);
 
+        animator.SetTrigger(aniDeath);
         GeneralStats.Instance.Pause = true;
         Stats.Instance.IsInvincible = true;
-        //LetterBoxManager.Instance.LetterBox();
+        LetterBoxManager.Instance.LetterBox(true);
         StartCoroutine(SlowZoomIn(3));
     }
 

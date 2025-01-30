@@ -24,17 +24,17 @@ public class LetterBoxManager : Singleton<LetterBoxManager> {
         isOnToggle = false;
     }
 
-    public void LetterBox() {
+    public void LetterBox(bool isOn) {
         if (!isOnToggle)
-            StartCoroutine(LetterBoxToggle());
+            StartCoroutine(LetterBoxToggle(isOn));
     }
 
-    IEnumerator LetterBoxToggle() {
+    IEnumerator LetterBoxToggle(bool isOn) {
         float speed = 7;
         isOnToggle = true;
         WaitForFixedUpdate wffu = GeneralStats.Instance.WFFU;
 
-        if (on) {
+        if (!isOn && on) {
             top.color = originalColor;
             bottom.color = originalColor;
             onColor = top.color;
@@ -50,7 +50,7 @@ public class LetterBoxManager : Singleton<LetterBoxManager> {
             top.gameObject.SetActive(false);
             bottom.gameObject.SetActive(false);
         }
-        else {
+        else if(isOn && !on) {
             top.color = initColor;
             bottom.color = initColor;
             top.gameObject.SetActive(true);

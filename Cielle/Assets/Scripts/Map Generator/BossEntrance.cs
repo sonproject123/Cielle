@@ -37,7 +37,7 @@ public class BossEntrance : MonoBehaviour {
     private void Entrance() {
         GeneralStats.Instance.Pause = true;
         Stats.Instance.IsInvincible = true;
-        LetterBoxManager.Instance.LetterBox();
+        LetterBoxManager.Instance.LetterBox(true);
         boss.gameObject.SetActive(true);
 
         if (transform.position.x < player.transform.position.x)
@@ -76,7 +76,7 @@ public class BossEntrance : MonoBehaviour {
     private void EndDirection() {
         GeneralStats.Instance.Pause = false;
         Stats.Instance.IsInvincible = false;
-        LetterBoxManager.Instance.LetterBox();
+        LetterBoxManager.Instance.LetterBox(false);
 
         UIManager.OnUIAlpha(1, false);
         PlayerCamera.OnIsCameraFollow?.Invoke(true);
