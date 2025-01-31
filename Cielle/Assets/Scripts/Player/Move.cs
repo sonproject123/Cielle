@@ -275,7 +275,6 @@ public class Move : MonoBehaviour {
 
     IEnumerator FlyStart() {
         isDashable = false;
-        //isMovable = false;
         isOnGround = false;
         isOnThinGround = false;
         isOnFlying = true;
@@ -299,7 +298,6 @@ public class Move : MonoBehaviour {
             yield return wffu;
         }
 
-        //isMovable = true;
         isDashable = true;
     }
 
@@ -309,7 +307,6 @@ public class Move : MonoBehaviour {
         isOnFlying = false;
         rigidBody.useGravity = true;
         rigidBody.linearVelocity = Vector3.zero;
-        //isMovable = false;
         isDashable = false;
 
         WaitForFixedUpdate wffu = GeneralStats.Instance.WFFU;
@@ -334,7 +331,6 @@ public class Move : MonoBehaviour {
         rigidBody.linearVelocity = Vector3.zero;
 
         Stats.Instance.Speed = originalSpeed;
-        //isMovable = true;
         isDashable = true;
     }
 

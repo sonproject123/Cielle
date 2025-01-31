@@ -66,17 +66,20 @@ public class Stats : Singleton<Stats> {
     }
 
     void OnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode) {
-        if (scene.buildIndex == 0)
-            return;
-        player = GameObject.Find("Player Center").transform;
+        if (scene.buildIndex == 0) {
+            GeneralStats.Instance.Pause = false;
+            LetterBoxManager.Instance.LetterBox(false);
+            Initialize();
+        }
+        else
+            player = GameObject.Find("Player Center").transform;
     }
 
     private void OnDisable() {
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
-    private void Start() {
-        #region Initialize
+    private void Initialize() {
         mainWeaponId = 1;
         subWeaponId = 3;
         GunInit();
@@ -122,7 +125,6 @@ public class Stats : Singleton<Stats> {
 
         gainRange = 4;
         metals = 0;
-        #endregion
     }
 
     #region Property

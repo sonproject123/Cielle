@@ -29,6 +29,7 @@ public class BulletEnemy : MonoBehaviour {
 
     private void FixedUpdate() {
         transform.position += bulletRotation.forward * speed * Time.deltaTime;
+        transform.position = new Vector3(transform.position.x, transform.position.y, 0);
     }
 
     private void OnTriggerEnter(Collider other) {

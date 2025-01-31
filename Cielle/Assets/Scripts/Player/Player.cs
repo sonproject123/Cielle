@@ -8,6 +8,9 @@ public class Player : MonoBehaviour, IHitable {
     [SerializeField] Transform playerCenter;
     [SerializeField] Volume hitVolume;
     [SerializeField] Animator animator;
+    [SerializeField] Canvas playerCanvas;
+    [SerializeField] PlayerUI playerUI;
+    [SerializeField] Rigidbody rigidBody;
 
     [SerializeField] float shieldRegenTime;
     [SerializeField] float shieldBreakRegenTime;
@@ -19,6 +22,8 @@ public class Player : MonoBehaviour, IHitable {
 
     private void Awake() {
         animator = GetComponent<Animator>();
+        playerUI = playerCanvas.GetComponent<PlayerUI>();
+        rigidBody = GetComponent<Rigidbody>();
         hitVolume = GameObject.Find("Hit Volume").GetComponent<Volume>();
     }
 
@@ -66,7 +71,7 @@ public class Player : MonoBehaviour, IHitable {
 
                 if (Stats.Instance.Hp <= 0.0 && !isDead) {
                     isDead = true;
-                    Dead(hitPosition);
+                    StartCoroutine(Dead(hitPosition));
                 } 
                 else
                     StartCoroutine(Invincible(Stats.Instance.Invincible));
@@ -74,17 +79,32 @@ public class Player : MonoBehaviour, IHitable {
         }
     }
 
-    private void Dead(Vector3 hitPosition) {
+    IEnumerator Dead(Vector3 hitPosition) {
+        float time = 0;
+        WaitForFixedUpdate wffu = GeneralStats.Instance.WFFU;
+
         if (hitPosition.x > playerCenter.position.x)
             transform.localScale = new Vector3(1, 1, 1);
         else
             transform.localScale = new Vector3(1, 1, -1);
 
+        transform.position = new Vector3(transform.position.x, transform.position.y, -3f);
+        rigidBody.useGravity = true;
+
         animator.SetTrigger(aniDeath);
         GeneralStats.Instance.Pause = true;
         Stats.Instance.IsInvincible = true;
         LetterBoxManager.Instance.LetterBox(true);
+        UIManager.OnUIAlpha(0, true);
+        playerUI.DeadBackground();
         StartCoroutine(SlowZoomIn(3));
+
+        while (time < 3) {
+            time += Time.deltaTime;
+            yield return wffu;
+        }
+
+        PopUpManager.Instance.ShowPopUp(PopUpTypes.DEAD);
     }
 
     private void Update() {
