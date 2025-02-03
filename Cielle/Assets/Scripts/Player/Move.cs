@@ -21,7 +21,7 @@ public class Move : MonoBehaviour {
     [SerializeField] PlayerUI playerUI;
     [SerializeField] Transform localMapCamera;
 
-    [SerializeField] GameObject gun;
+    [SerializeField] public GameObject nearObject = null;
 
     [SerializeField] bool isMovable;
     [SerializeField] bool isOnGround;
@@ -195,11 +195,16 @@ public class Move : MonoBehaviour {
         }
 
         // Reload
-        if(Input.GetKeyDown(KeyCode.R)) {
+        if (Input.GetKeyDown(KeyCode.R)) {
             if (Stats.Instance.BulletRemain == Stats.Instance.BulletMax)
                 return;
 
             Reload();
+        }
+
+        // Gain
+        if (Input.GetKeyDown(KeyCode.E) && nearObject != null) {
+            
         }
 
         // Map
@@ -210,7 +215,7 @@ public class Move : MonoBehaviour {
         }
 
         // Weapon Change
-        if(Input.GetAxis("Mouse ScrollWheel") != 0 && isWeaponChangeable) {
+        if (Input.GetAxis("Mouse ScrollWheel") != 0 && isWeaponChangeable) {
             if (GunFire.Instance.IsShootable == false || Stats.Instance.SubGunData.id == 0)
                 return;
 

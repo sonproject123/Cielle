@@ -509,6 +509,8 @@
 "Assets/Scripts/Module/MathCalculator.cs"
 "Assets/Scripts/Module/Singleton.cs"
 "Assets/Scripts/Object/BreakObject.cs"
+"Assets/Scripts/Object/ItemObject.cs"
+"Assets/Scripts/Object/Item_GunObject.cs"
 "Assets/Scripts/Object/MetalObject.cs"
 "Assets/Scripts/Player/Gain.cs"
 "Assets/Scripts/Player/GunFire.cs"

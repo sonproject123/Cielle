@@ -18,23 +18,10 @@ public class MouseManager : Singleton<MouseManager> {
     }
 
     public void State(int state) {
-        switch (state) {
-            case 0:
-                Cursor.SetCursor(cursorNormal, Vector2.zero, CursorMode.ForceSoftware);
-                break;
-            case 1:
-                CrossCursor();
-                break;
-            case 2:
-                CrossCursor();
-                break;
-            case 3:
-                CrossCursor();
-                break;
-            case 4:
-                CrossCursor();
-                break;
-        }
+        if (state == 0)
+            Cursor.SetCursor(cursorNormal, Vector2.zero, CursorMode.ForceSoftware);
+        else
+            CrossCursor();
     }
 
     private void CrossCursor() {
