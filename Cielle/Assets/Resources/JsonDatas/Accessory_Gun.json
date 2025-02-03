@@ -1,0 +1,54 @@
+{
+  "accessory_GunsData": [
+    {
+      "id": 0,
+      "name": "blank",
+      "descriptions": "빈 악세사리",
+      "value": 0,
+      "type": "BLANK",
+      "code": "BLANK",
+      "exclusive": "ALL",
+      "rarity": "BLANK"
+    },
+    {
+      "id": 1,
+      "name": "보정기",
+      "descriptions": "총기 반동/탄퍼짐 -50%",
+      "value": 0.5,
+      "type": "MUZZLE",
+      "code": "COMPENSATOR",
+      "exclusive": "ALL",
+      "rarity": "COMMON"
+    },
+    {
+      "id": 2,
+      "name": "퀵 드로우 탄창",
+      "descriptions": "재장전 시간 -30%",
+      "value": 0.7,
+      "type": "MAGAZINE",
+      "code": "QUICKDRAW",
+      "exclusive": "ALL",
+      "rarity": "COMMON"
+    },
+    {
+      "id": 3,
+      "name": "대용량 탄창",
+      "descriptions": "최대 탄약 수 +50%",
+      "value": 0.5,
+      "type": "MAGAZINE",
+      "code": "LARGEMAGAZINE",
+      "exclusive": "ALL",
+      "rarity": "COMMON"
+    },
+    {
+      "id": 10,
+      "name": "드래곤 브레스",
+      "descriptions": "탄퍼짐 -50%, 유효사거리 +50%",
+      "value": 0.5,
+      "type": "MUZZLE",
+      "code": "DRAGONBREATH",
+      "exclusive": "SHOTGUN",
+      "rarity": "RARE"
+    }
+  ]
+}
