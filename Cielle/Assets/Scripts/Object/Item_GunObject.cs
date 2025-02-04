@@ -3,7 +3,7 @@ using UnityEngine;
 public class Item_GunObject : ItemObject {
 
     protected override void Awake() {
-        type = ItemObjectType.GUN;
+        type = ItemObjectType.ITEM_GUN;
         base.Awake();
     }
 

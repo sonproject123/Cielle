@@ -332,7 +332,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 7671
+    m_Bits: 40439
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -415,4 +415,7 @@ MonoBehaviour:
   cameraY: 0
   cameraOriginalZ: 0
   cameraZ: 0
-  isCameraMovable: 0
+  isCameraFollowPlayer: 0
+  isCameraForcedMove: 0
+  targetPosition: {x: 0, y: 0, z: 0}
+  forcedMoveSpeed: 0

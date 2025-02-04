@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class ObjectManager : Singleton<ObjectManager>{
     [SerializeField] Dictionary<string, Queue<GameObject>> objectList = new Dictionary<string, Queue<GameObject>>();
+    [SerializeField] List<(string, GameObject)> activedObjects = new List<(string, GameObject)>();
 
     private void Start() {
         foreach(var dict in JsonManager.Instance.ObjectDict) {
@@ -15,6 +16,19 @@ public class ObjectManager : Singleton<ObjectManager>{
                 for (int i = 0; i < dict.Value.count; i++)
                     CreateObject(queue, dict.Value.path);
             }
+        }
+    }
+
+    public void AllReturn() {
+        for (int i = activedObjects.Count - 1; i >= 0; i--) {
+            Queue<GameObject> queue;
+
+            activedObjects[i].Item2.transform.SetParent(transform);
+            objectList.TryGetValue(activedObjects[i].Item1, out queue);
+            queue.Enqueue(activedObjects[i].Item2);
+
+            activedObjects[i].Item2.SetActive(false);
+            activedObjects.RemoveAt(i);
         }
     }
 
@@ -44,12 +58,13 @@ public class ObjectManager : Singleton<ObjectManager>{
             }
         }
 
-        if(obj == null) {
+        if (obj == null) {
             JsonManager.Instance.ObjectDict.TryGetValue(name, out data);
             CreateObject(queue, data.path);
             obj = queue.Dequeue();
         }
 
+        activedObjects.Add((name, obj));
         obj.SetActive(true);
         obj.transform.parent = null;
         return obj;
@@ -62,6 +77,7 @@ public class ObjectManager : Singleton<ObjectManager>{
         objectList.TryGetValue(name, out queue);
         queue.Enqueue(obj);
 
+        activedObjects.Remove((name, obj));
         obj.gameObject.SetActive(false);
     }
 }

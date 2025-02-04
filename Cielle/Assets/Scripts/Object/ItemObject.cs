@@ -2,16 +2,17 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public enum ItemObjectType {
-    GUN,
-    BLADE,
-    ACCESSORY_GUN,
-    ACCESSORY_BLADE,
-    ACCESSORY_BODY
+    ITEM_GUN,
+    ITEM_BLADE,
+    ITEM_ACCESSORY_GUN,
+    ITEM_ACCESSORY_BLADE,
+    ITEM_ACCESSORY_BODY
 }
 
 public abstract class ItemObject : MonoBehaviour {
     [SerializeField] protected GameObject imageObject;
     [SerializeField] protected SpriteRenderer spriteRenderer;
+    [SerializeField] protected GameObject keyObject;
     [SerializeField] protected Move playerMove;
 
     [SerializeField] protected int id;
@@ -24,6 +25,7 @@ public abstract class ItemObject : MonoBehaviour {
         spriteRenderer = imageObject.GetComponent<SpriteRenderer>();
 
         isPlayerEnter = false;
+        keyObject.SetActive(false);
     }
 
     public void Initialize(int id) {
@@ -36,14 +38,18 @@ public abstract class ItemObject : MonoBehaviour {
 
     protected abstract void InitializeChild();
 
+    public void GetItem() {
+        ObjectManager.Instance.ReturnObject(transform.parent.gameObject, type.ToString());
+    }
+
     private void OnTriggerEnter(Collider other) {
         if (other.CompareTag("Player")) {
             if (playerMove == null)
                 playerMove = other.gameObject.GetComponent<Move>();
             
             isPlayerEnter = true;
-            playerMove.nearObject = this.gameObject;
-            Debug.Log(playerMove.nearObject);
+            playerMove.nearObject = this;
+            keyObject.SetActive(true);
         }
     }
 
@@ -51,7 +57,15 @@ public abstract class ItemObject : MonoBehaviour {
         if (other.CompareTag("Player")) { 
             isPlayerEnter = false;
             playerMove.nearObject = null;
-            Debug.Log(playerMove.nearObject);
+            keyObject.SetActive(false);
         }
+    }
+
+    public ItemObjectType Type {
+        get { return type; }
+    }
+
+    public int ID {
+        get { return id; }
     }
 }

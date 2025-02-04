@@ -34,6 +34,11 @@
       "name": "METALOBJECT",
       "count": 100,
       "path": "Objects/Metal"
+    },
+    {
+      "name": "ITEM_GUN",
+      "count": 10,
+      "path": "Objects/Item_Gun"
     }
   ]
 }

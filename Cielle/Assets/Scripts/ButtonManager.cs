@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class ButtonManager : Singleton<ButtonManager> {
+public class ButtonManager : MonoBehaviour {
     [SerializeField] Transform spawnPoint;
     public void WeaponChange(int id) {
         Stats.Instance.MainWeaponId = id;
@@ -23,8 +23,14 @@ public class ButtonManager : Singleton<ButtonManager> {
         enemy.transform.position = new Vector3(spawnPoint.position.x + positionX, spawnPoint.position.y, 0);
     }
 
-    public void BossDoor(bool isClosing) {
-        
+    public void WeaponObject(int id) {
+        GameObject obj = ObjectManager.Instance.UseObject("ITEM_GUN");
+        obj.transform.position = spawnPoint.position;
+        GameObject objChild = obj.transform.Find("Interact").gameObject;
+
+        ItemObject io = objChild.GetComponent<ItemObject>();
+        if (io != null)
+            io.Initialize(id);
     }
 
     public void LetterBoxTest() {

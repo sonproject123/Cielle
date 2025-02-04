@@ -69,6 +69,7 @@ public class Stats : Singleton<Stats> {
         if (scene.buildIndex == 0) {
             GeneralStats.Instance.Pause = false;
             LetterBoxManager.Instance.LetterBox(false);
+            ObjectManager.Instance.AllReturn();
             Initialize();
         }
         else
@@ -81,7 +82,7 @@ public class Stats : Singleton<Stats> {
 
     private void Initialize() {
         mainWeaponId = 1;
-        subWeaponId = 3;
+        subWeaponId = 0;
         GunInit();
 
         maxHp = 100;

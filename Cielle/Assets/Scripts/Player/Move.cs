@@ -21,7 +21,7 @@ public class Move : MonoBehaviour {
     [SerializeField] PlayerUI playerUI;
     [SerializeField] Transform localMapCamera;
 
-    [SerializeField] public GameObject nearObject = null;
+    [SerializeField] public ItemObject nearObject = null;
 
     [SerializeField] bool isMovable;
     [SerializeField] bool isOnGround;
@@ -204,7 +204,7 @@ public class Move : MonoBehaviour {
 
         // Gain
         if (Input.GetKeyDown(KeyCode.E) && nearObject != null) {
-            
+            GainItem();
         }
 
         // Map
@@ -364,6 +364,27 @@ public class Move : MonoBehaviour {
 
         isMovable = true;
         isDashable = true;
+    }
+
+    private void GainItem() {
+        switch (nearObject.Type) {
+            case ItemObjectType.ITEM_GUN:
+                GainGun();
+                break;
+        }
+    }
+
+    private void GainGun() {
+        if (Stats.Instance.SubWeaponId == 0) {
+            Stats.Instance.SubWeaponId = nearObject.ID;
+            nearObject.GetItem();
+        }
+        else {
+
+        }
+
+        Stats.Instance.GunInit();
+        UIManager.OnWeaponChange?.Invoke();
     }
 
     private void LocalMapInit() {
