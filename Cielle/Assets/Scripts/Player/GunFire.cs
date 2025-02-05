@@ -81,7 +81,7 @@ public class GunFire : Singleton<GunFire> {
         bullet.transform.position = new Vector3(muzzle.position.x, muzzle.position.y + 1, 0);
 
         float angle = MathCalculator.Instance.Angle(bullet.transform.position, mouse);
-        bullet.transform.rotation = Quaternion.Euler(0, 0, angle);
+        bullet.transform.rotation = Quaternion.Euler(0, 0, angle + 90);
 
         BulletPlayer bulletPlayer = bullet.GetComponent<BulletPlayer>();
         if (bulletPlayer != null) {

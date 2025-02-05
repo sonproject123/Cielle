@@ -5,7 +5,7 @@ m_ProjectFiles:
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 638742488357984005
+      ticks: 638743352209600762
     m_Hash: 2972667166
   m_LockFileStatus:
     m_FilePath: C:/Users/Administrator/Desktop/Cielle/Cielle/Packages/packages-lock.json
@@ -13,7 +13,7 @@ m_ProjectFiles:
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 638742488357984005
+      ticks: 638743352209600762
     m_Hash: 928375009
 m_EmbeddedPackageManifests:
   m_ManifestsStatus:
@@ -23,7 +23,7 @@ m_EmbeddedPackageManifests:
       m_ContentTrackingEnabled: 1
       m_ModificationDate:
         serializedVersion: 2
-        ticks: 638742488357984005
+        ticks: 638743352209590480
       m_Hash: 834156773
 m_LocalPackages:
   m_LocalFileStatus: []
@@ -1689,9 +1689,11 @@ m_ResolvedPackages:
     - 1.8.5
     - 1.8.6
     - 1.8.7
+    - 1.8.8
     compatible:
     - 1.8.7
-    recommended: 1.8.7
+    - 1.8.8
+    recommended: 1.8.8
     deprecated: []
   dependencies:
   - name: com.unity.modules.audio

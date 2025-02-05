@@ -7,6 +7,7 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour {
     [SerializeField] Canvas canvas;
+    [SerializeField] GameObject pauseBackground;
 
     [SerializeField] Slider hpBar;
     [SerializeField] Text hpText;
@@ -42,6 +43,7 @@ public class UIManager : MonoBehaviour {
 
     private void Awake() {
         canvas = gameObject.GetComponent<Canvas>();
+        pauseBackground.SetActive(false);
 
         OnUIAlpha = (float alpha, bool uiLock) => { ForcedUIAlpha(alpha, uiLock); };
 

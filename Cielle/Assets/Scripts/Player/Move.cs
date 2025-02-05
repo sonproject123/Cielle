@@ -369,22 +369,40 @@ public class Move : MonoBehaviour {
     private void GainItem() {
         switch (nearObject.Type) {
             case ItemObjectType.ITEM_GUN:
-                GainGun();
+                GainWeapon();
                 break;
         }
     }
 
-    private void GainGun() {
+    private void GainWeapon() {
         if (Stats.Instance.SubWeaponId == 0) {
+            int currentBullet = Stats.Instance.BulletRemain;
             Stats.Instance.SubWeaponId = nearObject.ID;
             nearObject.GetItem();
+            Stats.Instance.GunInit();
+            UIManager.OnWeaponChange?.Invoke();
+            Stats.Instance.BulletRemain = currentBullet;
+            UIManager.OnBulletUse?.Invoke();
         }
-        else {
+        else if (GunFire.Instance.IsShootable && !isReloading) {
+            int slotID = Stats.Instance.MainWeaponId;
+            Vector3 objectPosition = nearObject.transform.position;
+            Stats.Instance.MainWeaponId = nearObject.ID;
+            nearObject.GetItem();
+            Stats.Instance.GunInit();
+            UIManager.OnWeaponChange?.Invoke();
+            UIManager.OnBulletUse?.Invoke();
 
+            if (nearObject.Type == ItemObjectType.ITEM_GUN) {
+                GameObject obj = ObjectManager.Instance.UseObject("ITEM_GUN");
+                obj.transform.position = objectPosition;
+                GameObject objChild = obj.transform.Find("Interact").gameObject;
+
+                ItemObject io = objChild.GetComponent<ItemObject>();
+                if (io != null)
+                    io.Initialize(slotID);
+            }
         }
-
-        Stats.Instance.GunInit();
-        UIManager.OnWeaponChange?.Invoke();
     }
 
     private void LocalMapInit() {

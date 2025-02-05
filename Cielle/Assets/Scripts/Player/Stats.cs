@@ -81,7 +81,7 @@ public class Stats : Singleton<Stats> {
     }
 
     private void Initialize() {
-        mainWeaponId = 1;
+        mainWeaponId = 2;
         subWeaponId = 0;
         GunInit();
 
