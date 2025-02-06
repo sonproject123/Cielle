@@ -37,8 +37,8 @@ public class GunFire : Singleton<GunFire> {
         animator = Panimator;
 
         gun = Stats.Instance.MainGunData;
-        atk = Stats.Instance.Atk * gun.atk;
-        atkShield = Stats.Instance.AtkShield;
+        atk = gun.atk * Stats.Instance.Atk * ItemStats.Instance.Attack;
+        atkShield = Stats.Instance.AtkShield * ItemStats.Instance.AttackShield;
         minSpeed = gun.minSpeed;
         maxSpeed = gun.maxSpeed;
         stoppingPower = gun.stopping;
@@ -93,7 +93,7 @@ public class GunFire : Singleton<GunFire> {
             bulletPlayer.BulletName = bulletName;
             bulletPlayer.MuzzlePosition = muzzle.position;
 
-            Vector3 randomRange = MathCalculator.Instance.RandomTarget(gun.recoil, gun.recoil);
+            Vector3 randomRange = MathCalculator.Instance.RandomTarget(gun.recoil * ItemStats.Instance.GunRecoil, gun.recoil * ItemStats.Instance.GunRecoil);
             bulletPlayer.Target = mouse + randomRange;
         }
     }

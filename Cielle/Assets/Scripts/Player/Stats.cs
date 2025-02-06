@@ -83,7 +83,7 @@ public class Stats : Singleton<Stats> {
     private void Initialize() {
         mainWeaponId = 2;
         subWeaponId = 0;
-        GunInit();
+        GunInitAtScene0();
 
         maxHp = 100;
         hp = maxHp;
@@ -331,5 +331,17 @@ public class Stats : Singleton<Stats> {
         bulletMax = mainGunData.bullet;
         bulletRemain = bulletMax;
         UIManager.OnBulletChange?.Invoke();
+    }
+
+    private void GunInitAtScene0() {
+        JsonManager.Instance.GunDict.TryGetValue(mainWeaponId, out mainGunData);
+        JsonManager.Instance.GunDict.TryGetValue(subWeaponId, out subGunData);
+
+        mainGunCode = mainGunData.code;
+        mainGunFireType = (GunFireType)System.Enum.Parse(typeof(GunFireType), mainGunData.type);
+        subGunCode = subGunData.code;
+
+        bulletMax = mainGunData.bullet;
+        bulletRemain = bulletMax;
     }
 }

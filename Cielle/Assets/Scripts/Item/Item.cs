@@ -1,10 +1,18 @@
 using UnityEngine;
 
-public enum ItemType {
-    GUN,
-    BLADE,
-    ACCESSORY,
-    GUNACCESSORY
+
+public enum Item_Rarity {
+    COMMON,
+    RARE,
+    UNIQUE
+}
+
+public enum Accessories_Gun_Type {
+    MUZZLE,
+    MAGAZINE,
+    SCOPE,
+    BOOST,
+    BULLET
 }
 
 public class Item : MonoBehaviour {

@@ -474,6 +474,7 @@
 "Assets/Scripts/Enemies/States/EnemyState_InPattern.cs"
 "Assets/Scripts/Enemies/States/EnemyState_InWait.cs"
 "Assets/Scripts/Item/Item.cs"
+"Assets/Scripts/Item/Item_Accessories_Gun.cs"
 "Assets/Scripts/Managers/AudioManager.cs"
 "Assets/Scripts/Managers/EnemyManager.cs"
 "Assets/Scripts/Managers/EnemySpawnManager.cs"

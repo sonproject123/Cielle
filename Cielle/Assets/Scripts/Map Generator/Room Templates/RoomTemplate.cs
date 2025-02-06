@@ -1,6 +1,5 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName ="NewRoomTemplate",menuName ="Create Room Template")]
 public class RoomTemplate : ScriptableObject {
     public GameObject room;
     public Vector2 size;
