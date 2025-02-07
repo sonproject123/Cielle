@@ -14,12 +14,14 @@ public abstract class ItemObject : MonoBehaviour {
     [SerializeField] protected SpriteRenderer spriteRenderer;
     [SerializeField] protected GameObject keyObject;
     [SerializeField] protected Move playerMove;
+    [SerializeField] protected Text price;
 
     [SerializeField] protected int id;
     [SerializeField] protected string iconPath;
     [SerializeField] protected ItemObjectType type;
 
     [SerializeField] protected bool isPlayerEnter;
+    [SerializeField] protected bool isFree;
 
     protected virtual void Awake() {
         spriteRenderer = imageObject.GetComponent<SpriteRenderer>();
@@ -28,8 +30,12 @@ public abstract class ItemObject : MonoBehaviour {
         keyObject.SetActive(false);
     }
 
-    public void Initialize(int id) {
+    public void Initialize(int id, bool isFree) {
         this.id = id;
+        this.isFree = isFree;
+        if (isFree)
+            price.gameObject.SetActive(false);
+
         InitializeChild();
         spriteRenderer.sprite = Resources.Load<Sprite>(iconPath);
         if (spriteRenderer.sprite == null)
@@ -61,11 +67,6 @@ public abstract class ItemObject : MonoBehaviour {
         }
     }
 
-    public ItemObjectType Type {
-        get { return type; }
-    }
-
-    public int ID {
-        get { return id; }
-    }
+    public ItemObjectType Type { get { return type; } }
+    public int ID { get { return id; } }
 }

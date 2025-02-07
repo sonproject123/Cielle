@@ -8,9 +8,9 @@ public class Item_GunObject : ItemObject {
     }
 
     protected override void InitializeChild() {
-        GunData gunData;
-        JsonManager.Instance.GunDict.TryGetValue(id, out gunData);
+        GunData data;
+        JsonManager.Instance.GunDict.TryGetValue(id, out data);
 
-        iconPath = "Icons/" + gunData.code;
+        iconPath = "Icons/" + data.code;
     }
 }

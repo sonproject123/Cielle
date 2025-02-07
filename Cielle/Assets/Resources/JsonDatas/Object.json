@@ -39,6 +39,11 @@
       "name": "ITEM_GUN",
       "count": 10,
       "path": "Objects/Item_Gun"
+    },
+    {
+      "name": "ITEM_ACCESSORY_GUN",
+      "count": 10,
+      "path": "Objects/Item_Accessory_Gun"
     }
   ]
 }

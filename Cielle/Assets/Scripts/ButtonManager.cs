@@ -30,7 +30,7 @@ public class ButtonManager : MonoBehaviour {
 
         ItemObject io = objChild.GetComponent<ItemObject>();
         if (io != null)
-            io.Initialize(id);
+            io.Initialize(id, true);
     }
 
     public void LetterBoxTest() {
