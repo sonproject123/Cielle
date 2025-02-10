@@ -80,23 +80,14 @@ public class Stats : Singleton<Stats> {
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
-    private void Initialize() {
-        mainWeaponId = 2;
-        subWeaponId = 0;
-        GunInitAtScene0();
-
+    public void InitializedStats() {
         maxHp = 100;
-        hp = maxHp;
-
         maxShield = 100;
-        shield = maxShield;
         shieldDefense = 1;
         shieldRegen = 10; // per second
         shieldCooltime = 10;
         shieldBreakCooltime = 20;
         shieldInvincible = 0.1f;
-        isShieldOn = true;
-
         attack = 1;
         attackShield = 0;
 
@@ -117,15 +108,25 @@ public class Stats : Singleton<Stats> {
         flyTime = 0.5f;
         flySpeed = 20;
         flyDashSpeed = 40;
+        gainRange = 4;
+    }
 
+    private void Initialize() {
+        mainWeaponId = 1;
+        subWeaponId = 0;
+        GunInitAtScene0();
+        InitializedStats();
+        
+        hp = maxHp;
+        shield = maxShield;
+        metals = 0;
+
+        isShieldOn = true;
         isMove = false;
         isStuned = false;
         isLeft = false;
         isInvincible = false;
         isDead = false;
-
-        gainRange = 4;
-        metals = 0;
     }
 
     #region Property
@@ -327,8 +328,8 @@ public class Stats : Singleton<Stats> {
         mainGunCode = mainGunData.code;
         mainGunFireType = (GunFireType)System.Enum.Parse(typeof(GunFireType), mainGunData.type);
         subGunCode = subGunData.code;
-       
-        bulletMax = mainGunData.bullet;
+
+        bulletMax = (int)((float)MainGunData.bullet * ItemStats.Instance.MaxBullet);
         bulletRemain = bulletMax;
         UIManager.OnBulletChange?.Invoke();
     }

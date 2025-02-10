@@ -25,6 +25,8 @@ public class Item_Accessories_Gun : ScriptableObject {
     public float invincible = 1;
 
     public float gunRecoil = 1;
+    public float reloadTime = 1;
+    public float bulletLife = 1;
 
     public float maxBullet = 1;
 

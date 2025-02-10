@@ -11,7 +11,7 @@ public class BulletShotgun : BulletPlayer {
         float bulletTime = 0;
         WaitForFixedUpdate wffu = GeneralStats.Instance.WFFU;
 
-        while (bulletTime < 0.1f) {
+        while (bulletTime < 0.1f * ItemStats.Instance.BulletLife) {
             transform.position += bulletRotation.forward * speed * Time.deltaTime;
 
             bulletTime += Time.fixedDeltaTime;

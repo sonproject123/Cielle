@@ -433,10 +433,10 @@ public class Move : MonoBehaviour {
 
     IEnumerator WeaponReload() {
         float time = 0;
-        float reloadTime = Stats.Instance.MainGunData.reload;
+        float reloadTime = Stats.Instance.MainGunData.reload * ItemStats.Instance.ReloadTime;
         WaitForFixedUpdate wffu = GeneralStats.Instance.WFFU;
 
-        while(time < reloadTime) {
+        while (time < reloadTime) {
             yield return wffu;
             time += Time.deltaTime;
             playerUI.Reloading(time, reloadTime);

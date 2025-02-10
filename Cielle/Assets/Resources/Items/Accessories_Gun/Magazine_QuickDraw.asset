@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aff1ed020b3d4d547998980bec48c4a2, type: 3}
+  m_Name: Magazine_QuickDraw
+  m_EditorClassIdentifier: 
+  id: 1
+  itemName: "\uD035 \uB4DC\uB85C\uC6B0 \uD0C4\uCC3D"
+  descriptions: "\uC7A5\uC804 \uC18D\uB3C4 *0.5"
+  maxHp: 0
+  maxHpMult: 1
+  maxShield: 0
+  maxShieldMult: 1
+  shieldDefense: 1
+  shieldRegen: 1
+  shieldCooltime: 1
+  shieldBreakCooltime: 1
+  shieldInvincible: 1
+  attack: 1
+  attackShield: 1
+  defense: 1
+  invincible: 1
+  gunRecoil: 1
+  reloadTime: 0.5
+  maxBullet: 1
+  type: 1
+  code: MAGAZINE_QUICKDRAW
+  exclusive: 
+  rarity: 0
+  price: 50

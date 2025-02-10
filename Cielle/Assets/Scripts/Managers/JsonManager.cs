@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class JsonManager : Singleton<JsonManager> {
     [SerializeField] Dictionary<int, GunData> gunDict = new Dictionary<int, GunData>();
-    [SerializeField] Dictionary<int, Accessory_GunData> accessory_GunDict = new Dictionary<int, Accessory_GunData>();
     [SerializeField] Dictionary<string, ObjectData> objectDict = new Dictionary<string, ObjectData>();
     [SerializeField] Dictionary<int, EnemyData> enemyDict = new Dictionary<int, EnemyData>();
     [SerializeField] Dictionary<int, BossPatternData> bossPatternDict = new Dictionary<int, BossPatternData>();
@@ -19,11 +18,6 @@ public class JsonManager : Singleton<JsonManager> {
         GunDataList gunData = JsonUtility.FromJson<GunDataList>(jsonData.text);
         foreach (var data in gunData.gunsData)
             gunDict.Add(data.id, data);
-
-        jsonData = Resources.Load<TextAsset>("JsonDatas/Accessory_Gun");
-        Accessory_GunDataList Accessory_GunData = JsonUtility.FromJson<Accessory_GunDataList>(jsonData.text);
-        foreach (var data in Accessory_GunData.accessory_GunsData)
-            accessory_GunDict.Add(data.id, data);
 
         jsonData = Resources.Load<TextAsset>("JsonDatas/Object");
         ObjectDataList objectData = JsonUtility.FromJson<ObjectDataList>(jsonData.text);
@@ -47,10 +41,6 @@ public class JsonManager : Singleton<JsonManager> {
 
     public Dictionary<string, ObjectData> ObjectDict {
         get { return objectDict; }
-    }
-
-    public Dictionary<int, Accessory_GunData> Accessory_GunDict {
-        get { return accessory_GunDict; }
     }
 
     public Dictionary<int, EnemyData> EnemyDict {

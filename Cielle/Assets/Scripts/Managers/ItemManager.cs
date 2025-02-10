@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -18,11 +19,6 @@ public enum Accessories_Gun_Type {
 
 public class ItemManager : Singleton<ItemManager> {
     [SerializeField] Dictionary<Accessories_Gun_Type, Dictionary<int, Item_Accessories_Gun>> acGunDict = new Dictionary<Accessories_Gun_Type, Dictionary<int, Item_Accessories_Gun>>();
-    [SerializeField] Dictionary<int, Item_Accessories_Gun> acGunMuzzleDict = new Dictionary<int, Item_Accessories_Gun>();
-    [SerializeField] Dictionary<int, Item_Accessories_Gun> acGunMagazineDict = new Dictionary<int, Item_Accessories_Gun>();
-    [SerializeField] Dictionary<int, Item_Accessories_Gun> acGunScopeDict = new Dictionary<int, Item_Accessories_Gun>();
-    [SerializeField] Dictionary<int, Item_Accessories_Gun> acGunBoostDict = new Dictionary<int, Item_Accessories_Gun>();
-    [SerializeField] Dictionary<int, Item_Accessories_Gun> acGunBulletDict = new Dictionary<int, Item_Accessories_Gun>();
 
     [SerializeField] Dictionary<Accessories_Gun_Type, int> mainWeaponAcGunSlot = new Dictionary<Accessories_Gun_Type, int>();
     [SerializeField] Dictionary<Accessories_Gun_Type, int> subWeaponAcGunSlot = new Dictionary<Accessories_Gun_Type, int>();
@@ -48,11 +44,11 @@ public class ItemManager : Singleton<ItemManager> {
     }
 
     private void InitializeDict() {
-        acGunDict.Add(Accessories_Gun_Type.MUZZLE, acGunMuzzleDict);
-        acGunDict.Add(Accessories_Gun_Type.MAGAZINE, acGunMagazineDict);
-        acGunDict.Add(Accessories_Gun_Type.SCOPE, acGunScopeDict);
-        acGunDict.Add(Accessories_Gun_Type.BOOST, acGunBoostDict);
-        acGunDict.Add(Accessories_Gun_Type.BULLET, acGunBulletDict);
+        acGunDict.Add(Accessories_Gun_Type.MUZZLE, new Dictionary<int, Item_Accessories_Gun>());
+        acGunDict.Add(Accessories_Gun_Type.MAGAZINE, new Dictionary<int, Item_Accessories_Gun>());
+        acGunDict.Add(Accessories_Gun_Type.SCOPE, new Dictionary<int, Item_Accessories_Gun>());
+        acGunDict.Add(Accessories_Gun_Type.BOOST, new Dictionary<int, Item_Accessories_Gun>());
+        acGunDict.Add(Accessories_Gun_Type.BULLET, new Dictionary<int, Item_Accessories_Gun>());
 
         Item_Accessories_Gun[] acGuns = Resources.LoadAll<Item_Accessories_Gun>("Items/Accessories_Gun");
         foreach(var acGun in acGuns) {
@@ -67,17 +63,85 @@ public class ItemManager : Singleton<ItemManager> {
         Item_Accessory_GunObject acObj = nearObject as Item_Accessory_GunObject;
 
         Dictionary<int, Item_Accessories_Gun> acDict;
-        acGunDict.TryGetValue(acObj.acType, out acDict);
+        acGunDict.TryGetValue(acObj.AcType, out acDict);
 
-        mainWeaponAcGunSlot[acObj.acType] = acObj.ID;
+        if (mainWeaponAcGunSlot[acObj.AcType] != 0) {
+            GameObject obj = ObjectManager.Instance.UseObject("ITEM_ACCESSORY_GUN");
+            obj.transform.position = nearObject.gameObject.transform.position;
+            GameObject objChild = obj.transform.Find("Interact").gameObject;
+
+            Item_Accessory_GunObject io = objChild.GetComponent<Item_Accessory_GunObject>();
+            if (io != null)
+                io.Initialize(mainWeaponAcGunSlot[acObj.AcType], true, acObj.AcType);
+        }
+
+        mainWeaponAcGunSlot[acObj.AcType] = acObj.ID;
         EquipmentUpdate();
         acObj.GetItem();
     }
 
     private void EquipmentUpdate() {
+        float currentHp = Stats.Instance.Hp;
+        float currentShield = Stats.Instance.Shield;
+        int currentBullet = Stats.Instance.BulletRemain;
+        ItemStats.Instance.Initialize();
+        Stats.Instance.InitializedStats();
+
         foreach(var slot in mainWeaponAcGunSlot) {
-            //ItemStats.Instance.MaxHP = 
+            if (slot.Value == 0)
+                continue;
+            Dictionary<int, Item_Accessories_Gun> dataDict;
+            acGunDict.TryGetValue(slot.Key, out dataDict);
+            Item_Accessories_Gun data;
+            dataDict.TryGetValue(slot.Value, out data);
+
+            ItemStats.Instance.MaxHP += data.maxHp;
+            ItemStats.Instance.MaxHPMult *= data.maxHpMult;
+
+            ItemStats.Instance.MaxShield += data.maxShield;
+            ItemStats.Instance.MaxShieldMult *= data.maxShieldMult;
+            ItemStats.Instance.ShieldDefense *= data.shieldDefense;
+
+            ItemStats.Instance.ShieldRegen *= data.shieldRegen;
+            ItemStats.Instance.ShieldCooltime *= data.shieldCooltime;
+            ItemStats.Instance.ShieldBreakCooltime *= data.shieldBreakCooltime;
+            ItemStats.Instance.ShieldInvincible *= data.shieldInvincible;
+
+            ItemStats.Instance.Attack *= data.attack;
+            ItemStats.Instance.AttackShield *= data.attackShield;
+
+            ItemStats.Instance.Defense *= data.defense;
+            ItemStats.Instance.Invincible *= data.invincible;
+
+            ItemStats.Instance.GunRecoil *= data.gunRecoil;
+            ItemStats.Instance.ReloadTime *= data.reloadTime;
+            ItemStats.Instance.BulletLife *= data.bulletLife;
+            ItemStats.Instance.MaxBullet *= data.maxBullet;
         }
+
+        Stats.Instance.MaxHp += ItemStats.Instance.MaxHP;
+        Stats.Instance.MaxHp *= ItemStats.Instance.MaxHPMult;
+
+        Stats.Instance.MaxShield += ItemStats.Instance.MaxShield;
+        Stats.Instance.MaxShield *= ItemStats.Instance.MaxShieldMult;
+        Stats.Instance.ShieldDef *= ItemStats.Instance.ShieldDefense;
+
+        Stats.Instance.ShieldRegen *= ItemStats.Instance.ShieldRegen;
+        Stats.Instance.ShieldCooltime *= ItemStats.Instance.ShieldCooltime;
+        Stats.Instance.ShieldBreakCooltime *= ItemStats.Instance.ShieldBreakCooltime;
+        Stats.Instance.ShieldInvincible *= ItemStats.Instance.ShieldInvincible;
+
+        Stats.Instance.Atk *= ItemStats.Instance.Attack;
+        Stats.Instance.AtkShield *= ItemStats.Instance.AttackShield;
+
+        Stats.Instance.Def *= ItemStats.Instance.Defense;
+        Stats.Instance.Invincible *= ItemStats.Instance.Invincible;
+
+        Stats.Instance.Hp = Mathf.Min(currentHp, Stats.Instance.MaxHp);
+        Stats.Instance.Shield = Mathf.Min(currentShield, Stats.Instance.Shield);
+        Stats.Instance.GunInit();
+        Stats.Instance.BulletRemain = Mathf.Min(currentBullet, Stats.Instance.BulletMax);
+        UIManager.OnBulletChange?.Invoke();
     }
 
     public void EquipWeapon(ItemObject nearObject, bool isReloading) {
@@ -111,5 +175,10 @@ public class ItemManager : Singleton<ItemManager> {
         }
     }
 
-    public Dictionary<int, Item_Accessories_Gun> AcGunDict { get { return acGunMuzzleDict; } }
+    public Dictionary<int, Item_Accessories_Gun> AcGunDict(Accessories_Gun_Type type) {
+        Dictionary<int, Item_Accessories_Gun> dict;
+        acGunDict.TryGetValue(type, out dict);
+
+        return dict;
+    }
 }

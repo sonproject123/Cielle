@@ -46,6 +46,7 @@ public abstract class ItemObject : MonoBehaviour {
 
     public void GetItem() {
         ObjectManager.Instance.ReturnObject(transform.parent.gameObject, type.ToString());
+        playerMove.nearObject = null;
     }
 
     private void OnTriggerEnter(Collider other) {

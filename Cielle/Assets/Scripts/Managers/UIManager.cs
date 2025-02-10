@@ -149,6 +149,7 @@ public class UIManager : MonoBehaviour {
         bulletBar.value = Stats.Instance.BulletRemain;
 
         if (Stats.Instance.BulletRemain > 9999) {
+            bulletBar.value = Stats.Instance.BulletMax;
             bulletMaxText.text = "INF";
             bulletRemainText.text = "";
         }

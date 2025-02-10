@@ -278,7 +278,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1487298783033355830}
   - component: {fileID: 9140239976526880921}
-  - component: {fileID: 7606473674384621528}
   - component: {fileID: 3482354993203056785}
   m_Layer: 0
   m_Name: Interact
@@ -323,28 +322,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.5, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &7606473674384621528
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3960817767853752687}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4151e2a6113bf1d41bf987a8da905006, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  imageObject: {fileID: 1156240935047992175}
-  spriteRenderer: {fileID: 0}
-  keyObject: {fileID: 7659492058591258908}
-  playerMove: {fileID: 0}
-  price: {fileID: 0}
-  id: 1
-  iconPath: 
-  type: 0
-  isPlayerEnter: 0
-  isFree: 0
 --- !u!114 &3482354993203056785
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -367,6 +344,7 @@ MonoBehaviour:
   type: 0
   isPlayerEnter: 0
   isFree: 0
+  acType: 0
 --- !u!1 &6329789765897214002
 GameObject:
   m_ObjectHideFlags: 0

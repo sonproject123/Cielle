@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 1
   itemName: "\uBCF4\uC815\uAE30"
-  descriptions: "\uCD1D\uAE30 \uBC18\uB3D9 \uB610\uB294 \uD0C4\uD37C\uC9D0 -30%"
+  descriptions: "\uCD1D\uAE30 \uBC18\uB3D9 \uB610\uB294 \uD0C4\uD37C\uC9D0 * 0.7"
   maxHp: 0
   maxHpMult: 1
   maxShield: 0
@@ -29,8 +29,10 @@ MonoBehaviour:
   defense: 1
   invincible: 1
   gunRecoil: 0.7
+  reloadTime: 1
+  maxBullet: 1
   type: 0
-  code: COMPENSATOR
+  code: MUZZLE_COMPENSATOR
   exclusive: 
   rarity: 0
   price: 50
